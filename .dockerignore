@@ -1,0 +1,11 @@
+**/node_modules
+**/.nuxt
+**/.output
+**/.tmp
+**/.cache
+**/.strapi
+**/build
+**/dist
+**/.env
+**/.env.*
+**/*.log

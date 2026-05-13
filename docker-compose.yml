@@ -1,0 +1,68 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ecran_cms}
+      POSTGRES_USER: ${POSTGRES_USER:-strapi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-strapi_password}
+    volumes:
+      - ./.docker-data/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - ecran_internal
+
+  strapi:
+    image: ratson-nuxt:latest
+    working_dir: /workspace
+    command: sh -lc "pnpm install && pnpm develop --host 0.0.0.0"
+    env_file:
+      - ./backend/.env
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 1337
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${POSTGRES_DB:-ecran_cms}
+      DATABASE_USERNAME: ${POSTGRES_USER:-strapi}
+      DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-strapi_password}
+      DATABASE_SSL: "false"
+      PUBLIC_URL: ${STRAPI_PUBLIC_URL:-http://localhost:1337}
+    ports:
+      - "1337:1337"
+    volumes:
+      - ./backend:/workspace
+      - ./.docker-data/strapi/node_modules:/workspace/node_modules
+      - ./.docker-data/strapi/uploads:/workspace/public/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - ecran_internal
+      - ecran_public
+
+  frontend:
+    image: ecran-frontend:latest
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+      NUXT_PUBLIC_STRAPI_URL: ${NUXT_PUBLIC_STRAPI_URL:-http://localhost:1337}
+      STRAPI_URL: http://strapi:1337
+    ports:
+      - "3005:3000"
+    depends_on:
+      strapi:
+        condition: service_started
+    networks:
+      - ecran_public
+
+networks:
+  ecran_internal:
+    internal: true
+  ecran_public:

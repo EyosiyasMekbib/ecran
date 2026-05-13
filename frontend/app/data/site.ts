@@ -1,0 +1,53 @@
+export const navItems = [
+  { label: 'Home', to: '/' },
+  { label: 'Who We Are', to: '/who-we-are' },
+  { label: 'Programs', to: '/programs' },
+  { label: 'Impact Stories', to: '/impact-stories' },
+  { label: 'Resources', to: '/resources' },
+  { label: 'Get Involved', to: '/get-involved' },
+  { label: 'Contact', to: '/contact' }
+]
+
+export const programs = [
+  {
+    title: 'Evidence and Policy Advocacy',
+    text: 'Turning research, field learning, and child-rights data into policy asks that decision makers can act on.'
+  },
+  {
+    title: 'Child Protection Systems',
+    text: 'Supporting stronger prevention, reporting, referral, and response pathways for children at risk of violence or neglect.'
+  },
+  {
+    title: 'Child Participation',
+    text: 'Creating safe spaces where children and young people can contribute to decisions that affect their lives.'
+  },
+  {
+    title: 'Network Coordination',
+    text: 'Bringing civil society members, technical partners, and community actors together around shared advocacy priorities.'
+  }
+]
+
+export const impactStories = [
+  {
+    place: 'Addis Ababa',
+    title: 'A coordinated voice for child rights advocacy',
+    text: 'ECRAN convenes practitioners and advocates around a shared agenda: practical, evidence-led action for survival, development, protection, and participation.'
+  },
+  {
+    place: 'Regional partners',
+    title: 'From field evidence to policy dialogue',
+    text: 'The network helps translate local realities into concise briefs, partner conversations, and advocacy moments with public institutions.'
+  },
+  {
+    place: 'Member organizations',
+    title: 'Shared learning that travels',
+    text: 'Members exchange tools, case learning, and referral knowledge so strong practice can move across programs instead of staying isolated.'
+  }
+]
+
+export const resources = [
+  { type: 'Annual report', title: 'ECRAN organizational profile 2025', meta: 'PDF, coming soon' },
+  { type: 'Policy brief', title: 'Child participation in local decision making', meta: 'Brief, coming soon' },
+  { type: 'Publication', title: 'Evidence standards for child-rights advocacy', meta: 'Guide, coming soon' },
+  { type: 'Toolkit', title: 'Partner inquiry and membership pack', meta: 'Download, coming soon' }
+]

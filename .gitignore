@@ -1,0 +1,13 @@
+.docker-data/
+.pnpm-store/
+node_modules/
+.env
+.env.*
+!.env.example
+.nuxt/
+.output/
+.tmp/
+.cache/
+dist/
+.DS_Store
+*.log

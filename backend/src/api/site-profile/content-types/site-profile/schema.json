@@ -1,0 +1,46 @@
+{
+  "kind": "singleType",
+  "collectionName": "site_profiles",
+  "info": {
+    "singularName": "site-profile",
+    "pluralName": "site-profiles",
+    "displayName": "Site Profile"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "organizationName": {
+      "type": "string",
+      "required": true,
+      "default": "Ethiopian Child Rights Advocacy Network"
+    },
+    "mission": {
+      "type": "text"
+    },
+    "vision": {
+      "type": "text"
+    },
+    "legalStatus": {
+      "type": "text"
+    },
+    "registrationNumber": {
+      "type": "string",
+      "default": "7750"
+    },
+    "email": {
+      "type": "email"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "address": {
+      "type": "text"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    }
+  }
+}
