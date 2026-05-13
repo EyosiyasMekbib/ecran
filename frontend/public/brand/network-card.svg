@@ -1,0 +1,15 @@
+<svg width="720" height="520" viewBox="0 0 720 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Network coordination visual</title>
+  <desc id="desc">Connected partner nodes forming a coordinated advocacy network.</desc>
+  <rect width="720" height="520" rx="24" fill="#FBFCFD"/>
+  <rect x="94" y="92" width="532" height="336" rx="22" fill="#FFFFFF" stroke="#D8E5EA" stroke-width="2"/>
+  <path d="M196 330L292 196L410 320L524 180M196 330L410 320M292 196L524 180M292 196L410 320" stroke="#D8E5EA" stroke-width="8" stroke-linecap="round"/>
+  <circle cx="196" cy="330" r="46" fill="#DFF4F6" stroke="#0B8FA7" stroke-width="10"/>
+  <circle cx="292" cy="196" r="46" fill="#FFFFFF" stroke="#24306F" stroke-width="10"/>
+  <circle cx="410" cy="320" r="46" fill="#DFF4F6" stroke="#24306F" stroke-width="10"/>
+  <circle cx="524" cy="180" r="46" fill="#FFFFFF" stroke="#0B8FA7" stroke-width="10"/>
+  <circle cx="196" cy="330" r="10" fill="#151B26"/>
+  <circle cx="292" cy="196" r="10" fill="#151B26"/>
+  <circle cx="410" cy="320" r="10" fill="#151B26"/>
+  <circle cx="524" cy="180" r="10" fill="#151B26"/>
+</svg>

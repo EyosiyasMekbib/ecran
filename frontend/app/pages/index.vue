@@ -17,18 +17,34 @@ useHead({
       <p>
         ECRAN is an independent not-for-profit organization bringing partners, members, donors, and public stakeholders around a clear child-rights agenda for Ethiopia.
       </p>
+      <div class="hero-signals" aria-label="ECRAN focus areas">
+        <span>Policy evidence</span>
+        <span>Child protection</span>
+        <span>Participation</span>
+      </div>
       <div class="hero-actions">
         <NuxtLink to="/get-involved" class="button primary">Partner with ECRAN</NuxtLink>
         <NuxtLink to="/programs" class="button secondary">Explore programs</NuxtLink>
       </div>
     </div>
     <div class="hero-panel reveal delay-1" aria-label="ECRAN advocacy priorities">
-      <img src="/ecran-logo.jpg" alt="ECRAN logo" />
-      <div class="priority-orbit">
+      <div class="panel-header">
+        <div class="panel-mark" aria-hidden="true">ECRAN</div>
+        <div>
+          <span>National platform</span>
+          <strong>Child-rights advocacy network</strong>
+        </div>
+      </div>
+      <img class="hero-asset" src="/brand/advocacy-field.svg" alt="Abstract child-rights advocacy field notes and evidence pathways" />
+      <div class="rights-compass">
         <span>Survival</span>
         <span>Development</span>
         <span>Protection</span>
         <span>Participation</span>
+      </div>
+      <div class="panel-note">
+        <span>ACSO No. 7750</span>
+        <p>Registered local organization under Civil Societies Proclamation No. 1113/2019.</p>
       </div>
     </div>
   </section>
@@ -81,8 +97,11 @@ useHead({
     </div>
     <div class="program-list">
       <article v-for="program in programs" :key="program.title">
-        <h3>{{ program.title }}</h3>
-        <p>{{ program.text }}</p>
+        <img :src="program.image" :alt="`${program.title} visual`" />
+        <div>
+          <h3>{{ program.title }}</h3>
+          <p>{{ program.text }}</p>
+        </div>
       </article>
     </div>
   </section>

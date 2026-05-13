@@ -1,0 +1,17 @@
+<svg width="720" height="520" viewBox="0 0 720 520" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Evidence and policy brief visual</title>
+  <desc id="desc">Layered research documents and evidence markers in ECRAN colors.</desc>
+  <rect width="720" height="520" rx="24" fill="#FBFCFD"/>
+  <path d="M80 92H640M80 196H640M80 300H640M80 404H640M156 40V480M292 40V480M428 40V480M564 40V480" stroke="#D8E5EA" stroke-opacity=".56"/>
+  <rect x="116" y="84" width="332" height="350" rx="18" fill="#FFFFFF" stroke="#D8E5EA" stroke-width="2"/>
+  <rect x="156" y="126" width="150" height="18" rx="9" fill="#24306F"/>
+  <rect x="156" y="174" width="226" height="10" rx="5" fill="#D8E5EA"/>
+  <rect x="156" y="204" width="186" height="10" rx="5" fill="#D8E5EA"/>
+  <rect x="156" y="266" width="236" height="96" rx="14" fill="#DFF4F6"/>
+  <path d="M184 330C214 295 242 290 272 320C303 351 330 332 364 288" stroke="#0B8FA7" stroke-width="10" stroke-linecap="round"/>
+  <rect x="402" y="148" width="190" height="246" rx="18" fill="#EEF6F7" stroke="#D8E5EA" stroke-width="2"/>
+  <circle cx="462" cy="218" r="28" fill="#24306F"/>
+  <circle cx="530" cy="218" r="28" fill="#0B8FA7"/>
+  <rect x="444" y="282" width="104" height="12" rx="6" fill="#5F6B7A" fill-opacity=".45"/>
+  <rect x="444" y="314" width="76" height="12" rx="6" fill="#5F6B7A" fill-opacity=".3"/>
+</svg>

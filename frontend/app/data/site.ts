@@ -11,19 +11,23 @@ export const navItems = [
 export const programs = [
   {
     title: 'Evidence and Policy Advocacy',
-    text: 'Turning research, field learning, and child-rights data into policy asks that decision makers can act on.'
+    text: 'Turning research, field learning, and child-rights data into policy asks that decision makers can act on.',
+    image: '/brand/evidence-card.svg'
   },
   {
     title: 'Child Protection Systems',
-    text: 'Supporting stronger prevention, reporting, referral, and response pathways for children at risk of violence or neglect.'
+    text: 'Supporting stronger prevention, reporting, referral, and response pathways for children at risk of violence or neglect.',
+    image: '/brand/protection-card.svg'
   },
   {
     title: 'Child Participation',
-    text: 'Creating safe spaces where children and young people can contribute to decisions that affect their lives.'
+    text: 'Creating safe spaces where children and young people can contribute to decisions that affect their lives.',
+    image: '/brand/participation-card.svg'
   },
   {
     title: 'Network Coordination',
-    text: 'Bringing civil society members, technical partners, and community actors together around shared advocacy priorities.'
+    text: 'Bringing civil society members, technical partners, and community actors together around shared advocacy priorities.',
+    image: '/brand/network-card.svg'
   }
 ]
 
