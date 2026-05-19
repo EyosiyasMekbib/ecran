@@ -1,27 +1,4 @@
 <script setup lang="ts">
-const teamFunctions = [
-  {
-    label: '01',
-    title: 'Strategic leadership',
-    text: 'Sets direction, maintains governance discipline, and keeps ECRAN’s advocacy agenda focused.'
-  },
-  {
-    label: '02',
-    title: 'Program coordination',
-    text: 'Connects evidence, member learning, and field priorities across ECRAN’s core program lanes.'
-  },
-  {
-    label: '03',
-    title: 'Partnerships',
-    text: 'Builds practical relationships with members, public stakeholders, donors, and technical partners.'
-  },
-  {
-    label: '04',
-    title: 'Communications',
-    text: 'Turns evidence, updates, and advocacy priorities into clear public-facing materials.'
-  }
-]
-
 const workingPrinciples = [
   'Evidence before messaging',
   'Safeguarding in every engagement',
@@ -31,13 +8,7 @@ const workingPrinciples = [
 </script>
 
 <template>
-  <PageHero
-    eyebrow="Our team"
-    title="A focused coordination team for governance, programs, partnerships, and communication."
-    text="ECRAN’s team helps the network turn shared priorities into organized action, clear communication, and accountable delivery."
-  />
-
-  <section class="team-overview">
+  <section class="team-overview" style="padding-top: clamp(6rem, 10vw, 10rem);">
     <div class="team-overview-copy">
       <p class="eyebrow">Team role</p>
       <h2>Small enough to stay focused, connected enough to support a national platform.</h2>
@@ -51,14 +22,6 @@ const workingPrinciples = [
         <li v-for="principle in workingPrinciples" :key="principle">{{ principle }}</li>
       </ol>
     </div>
-  </section>
-
-  <section class="team-system" aria-label="Team functions">
-    <article v-for="(item, index) in teamFunctions" :key="item.title" :style="{ '--index': index }">
-      <span>{{ item.label }}</span>
-      <h2>{{ item.title }}</h2>
-      <p>{{ item.text }}</p>
-    </article>
   </section>
 
   <section class="team-directory">
