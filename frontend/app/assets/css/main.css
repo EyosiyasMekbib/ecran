@@ -223,7 +223,7 @@ main {
 .above-fold {
   display: flex;
   flex-direction: column;
-  height: 100svh;
+  height: calc(100svh - 7.3rem);
   overflow: hidden;
   background: var(--paper);
 }
@@ -1467,6 +1467,11 @@ h1 {
   .home-hero {
     min-height: auto;
     margin-top: 0;
+  }
+
+  .above-fold {
+    height: auto;
+    overflow: visible;
   }
 
   .hero-container {
