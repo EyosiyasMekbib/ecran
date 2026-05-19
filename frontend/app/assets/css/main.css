@@ -1388,52 +1388,50 @@ h1 {
   max-width: 1400px;
   margin: 0 auto;
   padding: clamp(5rem, 8vw, 9rem) var(--gutter);
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: clamp(3rem, 6vw, 6rem);
 }
 
-.objectives-header {
-  position: sticky;
-  top: 4rem;
-  align-self: start;
+.objectives-heading-block {
+  margin-bottom: clamp(3rem, 5vw, 5rem);
+  max-width: 48rem;
 }
 
-.objectives-intro {
-  color: var(--muted);
-  font-size: 1.15rem;
+.objectives-summary {
+  font-size: 1.2rem;
   line-height: 1.6;
+  color: var(--muted);
   margin-top: 1.5rem;
 }
 
-.objectives-list {
+.objectives-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.objective-card {
+  padding: clamp(2.5rem, 4vw, 4rem) clamp(2rem, 3vw, 3.5rem);
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
   display: flex;
   flex-direction: column;
-  gap: 2.2rem;
+  gap: 1.5rem;
+  transition: background-color 0.3s ease;
 }
 
-.objective-item {
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 2rem;
-  padding-bottom: 2.2rem;
-  border-bottom: 1px solid var(--line);
+.objective-card:hover {
+  background-color: rgba(223, 244, 246, 0.12);
 }
 
-.objective-item:last-child {
-  border-bottom: none;
-  padding-bottom: 0;
-}
-
-.obj-number {
+.objective-num {
   font-family: var(--font-heading);
-  font-size: 1.6rem;
+  font-size: 2.2rem;
   font-weight: 700;
   color: var(--brand);
   line-height: 1;
 }
 
-.obj-text {
+.objective-desc {
   font-size: 1.05rem;
   line-height: 1.65;
   color: var(--ink);
@@ -1518,7 +1516,7 @@ h1 {
   .form-layout,
   .contact-grid,
   .site-footer,
-  .objectives-section {
+  .objectives-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1532,8 +1530,8 @@ h1 {
     overflow: visible;
   }
 
-  .objectives-header {
-    position: static;
+  .objective-card {
+    padding: 2rem 1.5rem;
   }
 
   .hero-container {
