@@ -43,9 +43,6 @@ watch(() => route.path, () => {
             {{ item.label }}
           </NuxtLink>
           <div v-if="item.children?.length" class="subnav" :class="{ 'is-open': openSubnav === item.to }">
-            <NuxtLink :to="item.to" :class="{ active: route.path === item.to }">
-              Overview
-            </NuxtLink>
             <NuxtLink v-for="child in item.children" :key="child.to" :to="child.to" :class="{ active: route.path === child.to }">
               {{ child.label }}
             </NuxtLink>
