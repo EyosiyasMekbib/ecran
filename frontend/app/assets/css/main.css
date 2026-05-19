@@ -52,8 +52,6 @@ textarea {
 }
 
 .site-header {
-  position: sticky;
-  top: 0;
   background: rgba(251, 252, 253, 0.95);
   backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--line);
