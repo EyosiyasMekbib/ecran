@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { impactStories, programs, resources } from '~/data/site'
+import { impactStories, resources } from '~/data/site'
 
 useHead({
   title: 'ECRAN | Ethiopian Child Rights Advocacy Network',
@@ -35,7 +35,7 @@ useHead({
           </p>
           <div class="hero-actions">
             <NuxtLink to="/get-involved" class="button primary">Partner with ECRAN</NuxtLink>
-            <NuxtLink to="/programs" class="button secondary">Explore programs</NuxtLink>
+            <NuxtLink to="/who-we-are/about-us" class="button secondary">Learn more about us</NuxtLink>
           </div>
         </div>
         <div class="hero-visual reveal delay-1" aria-label="Ethiopian children standing together outdoors">

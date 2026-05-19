@@ -14,10 +14,10 @@
         <section>
           <h2>Quick Links</h2>
           <nav class="footer-nav">
-            <NuxtLink to="/who-we-are">Who We Are</NuxtLink>
-            <NuxtLink to="/programs">Our Programs</NuxtLink>
-            <NuxtLink to="/impact-stories">Impact Stories</NuxtLink>
+            <NuxtLink to="/who-we-are/about-us">Who We Are</NuxtLink>
+            <NuxtLink to="/news/announcements">News & Announcements</NuxtLink>
             <NuxtLink to="/resources">Resources</NuxtLink>
+            <a href="https://forms.google.com" target="_blank" rel="noopener noreferrer">Get Involved</a>
           </nav>
         </section>
         <section>

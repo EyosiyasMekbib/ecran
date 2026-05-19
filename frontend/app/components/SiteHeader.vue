@@ -51,6 +51,7 @@ watch(() => route.path, () => {
       </nav>
 
       <div class="header-actions-wrapper">
+        <a href="https://forms.google.com" target="_blank" rel="noopener noreferrer" class="header-cta">Get Involved</a>
         <button class="menu-button" type="button" :aria-expanded="open" aria-controls="primary-navigation" @click="open = !open">
           <span />
           <span />

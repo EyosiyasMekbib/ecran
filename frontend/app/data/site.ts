@@ -9,10 +9,16 @@ export const navItems = [
       { label: 'Our Team', to: '/who-we-are/our-team' }
     ]
   },
-  { label: 'Programs', to: '/programs' },
-  { label: 'Impact Stories', to: '/impact-stories' },
+  {
+    label: 'News',
+    to: '/news',
+    children: [
+      { label: 'Announcements', to: '/news/announcements' },
+      { label: 'Vacancies', to: '/news/vacancies' },
+      { label: 'Bids', to: '/news/bids' }
+    ]
+  },
   { label: 'Resources', to: '/resources' },
-  { label: 'Get Involved', to: '/get-involved' },
   { label: 'Contact', to: '/contact' }
 ]
 
