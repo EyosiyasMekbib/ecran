@@ -21,7 +21,6 @@ useHead({
         <div class="node-dot dot-3"></div>
         <div class="node-dot dot-4"></div>
         <div class="node-dot dot-5"></div>
-        <div class="node-dot dot-6"></div>
       </div>
       <div class="hero-container">
         <div class="hero-copy reveal">
