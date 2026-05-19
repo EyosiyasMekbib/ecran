@@ -1383,6 +1383,63 @@ h1 {
   }
 }
 
+/* Objectives Section */
+.objectives-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(5rem, 8vw, 9rem) var(--gutter);
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: clamp(3rem, 6vw, 6rem);
+}
+
+.objectives-header {
+  position: sticky;
+  top: 4rem;
+  align-self: start;
+}
+
+.objectives-intro {
+  color: var(--muted);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  margin-top: 1.5rem;
+}
+
+.objectives-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2.2rem;
+}
+
+.objective-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2rem;
+  padding-bottom: 2.2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.objective-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.obj-number {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--brand);
+  line-height: 1;
+}
+
+.obj-text {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--ink);
+  margin: 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1460,7 +1517,8 @@ h1 {
   .story-timeline,
   .form-layout,
   .contact-grid,
-  .site-footer {
+  .site-footer,
+  .objectives-section {
     grid-template-columns: 1fr;
   }
 
@@ -1472,6 +1530,10 @@ h1 {
   .above-fold {
     height: auto;
     overflow: visible;
+  }
+
+  .objectives-header {
+    position: static;
   }
 
   .hero-container {
@@ -1581,6 +1643,7 @@ h1 {
   .partners-container,
   .home-hero,
   .story-section,
+  .objectives-section,
   .program-preview,
   .news-band,
   .resource-callout,

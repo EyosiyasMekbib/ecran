@@ -95,6 +95,58 @@ useHead({
     </section>
   </div>
 
+  <section class="objectives-section">
+    <div class="objectives-header">
+      <p class="eyebrow">Network Focus</p>
+      <h2>Stated Objectives</h2>
+      <p class="objectives-intro">
+        ECRAN operates under ten defined objectives to coordinate CSOs, influence policy, build local capacity, and generate evidence for children's rights.
+      </p>
+    </div>
+    <div class="objectives-list">
+      <div class="objective-item">
+        <span class="obj-number">01</span>
+        <p class="obj-text">Coordinate efforts that are being made by CSOs and Community-Based Organizations (CBOs) engaged in advocacy and promotion of the rights of children.</p>
+      </div>
+      <div class="objective-item">
+        <span class="obj-number">02</span>
+        <p class="obj-text">Liaise with government departments, line ministries and other development partners in matters related to policy formulation, implementation and monitoring of international and regional instruments regarding the protection of the rights of children.</p>
+      </div>
+      <div class="objective-item">
+        <span class="obj-number">03</span>
+        <p class="obj-text">Actively engage in the compilation of CSOs Complimentary Reports regarding the commitments made by the Government of Ethiopia to the UN Committee on the Rights of the child, UN Human Rights Council and African Committee of Experts on the Rights and Welfare of the Child.</p>
+      </div>
+      <div class="objective-item">
+        <span class="obj-number">04</span>
+        <p class="obj-text">Build capacities of its members in conducting advocacy work, organizing data regarding the situation of vulnerable children, contribute effectively to the promotion of child rights and to the development of interventions in different parts of Ethiopia.</p>
+      </div>
+      <div class="objective-item">
+        <span class="obj-number">05</span>
+        <p class="obj-text">Work closely with duty bearers and stakeholders in the monitoring and implementation of national, regional and international frameworks and legal instruments concerning the rights of children in Ethiopia.</p>
+      </div>
+      <div class="objective-item">
+        <span class="obj-number">06</span>
+        <p class="obj-text">In consultation with the concerned authorities, duty bearers and stakeholders, organize platforms for members of the network to conduct dialogue on common challenges that are being faced by children and deliberate on ways of overcoming such challenges.</p>
+      </div>
+      <div class="objective-item">
+        <span class="obj-number">07</span>
+        <p class="obj-text">Undertake basic and action oriented research to generate evidence on the current status of Ethiopian Children and serve as a data clearing house through producing physical and web-based information and reports that are aimed at developing new programs and interventions for children.</p>
+      </div>
+      <div class="objective-item">
+        <span class="obj-number">08</span>
+        <p class="obj-text">Prepare evidence based policy papers/briefs on children’s rights to help policy makers and practitioners consider better ways of addressing the problem.</p>
+      </div>
+      <div class="objective-item">
+        <span class="obj-number">09</span>
+        <p class="obj-text">Establish and strengthen partnerships and membership with other networks at national, regional and international level.</p>
+      </div>
+      <div class="objective-item">
+        <span class="obj-number">10</span>
+        <p class="obj-text">Organize training and advocacy programs for leaders of public, private and not-for profit institutions to create a cadre of supportive and competent role models who will be advocating for the rights of Ethiopian children in their various jurisdictions.</p>
+      </div>
+    </div>
+  </section>
+
 
 
   <section class="news-band">
