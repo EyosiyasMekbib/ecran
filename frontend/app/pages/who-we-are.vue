@@ -18,23 +18,26 @@
   <section class="governance-grid">
     <article>
       <span>01</span>
-      <h2>Governance Structure</h2>
-      <p>Transparent leadership, clear accountability, and member-informed priorities guide ECRAN’s advocacy agenda.</p>
+      <h2>About Us</h2>
+      <p>ECRAN’s purpose, mission, vision, legal status, and evidence-led approach to child-rights advocacy.</p>
+      <NuxtLink to="/who-we-are/about-us">Read about us</NuxtLink>
     </article>
     <article>
       <span>02</span>
-      <h2>Board of Directors</h2>
-      <p>The board provides strategic oversight, organizational stewardship, and safeguarding-oriented governance.</p>
+      <h2>Our Members</h2>
+      <p>The organizations and practitioners who contribute field learning, technical expertise, and shared advocacy priorities.</p>
+      <NuxtLink to="/who-we-are/our-members">Meet our members</NuxtLink>
     </article>
     <article>
       <span>03</span>
-      <h2>Membership</h2>
-      <p>Members contribute field learning, technical expertise, community insight, and a shared commitment to children’s rights.</p>
+      <h2>Our Team</h2>
+      <p>The coordination team supporting governance, programs, partnerships, communication, and accountable delivery.</p>
+      <NuxtLink to="/who-we-are/our-team">See our team</NuxtLink>
     </article>
     <article>
       <span>04</span>
-      <h2>Legal Status</h2>
-      <p>Registered in Ethiopia under Civil Societies Proclamation No. 1113/2019 with ACSO registration number 7750.</p>
+      <h2>Governance</h2>
+      <p>Transparent leadership, board oversight, and member-informed priorities guide ECRAN’s advocacy agenda.</p>
     </article>
   </section>
 </template>

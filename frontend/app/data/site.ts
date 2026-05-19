@@ -1,6 +1,14 @@
 export const navItems = [
   { label: 'Home', to: '/' },
-  { label: 'Who We Are', to: '/who-we-are' },
+  {
+    label: 'Who We Are',
+    to: '/who-we-are',
+    children: [
+      { label: 'About Us', to: '/who-we-are/about-us' },
+      { label: 'Our Members', to: '/who-we-are/our-members' },
+      { label: 'Our Team', to: '/who-we-are/our-team' }
+    ]
+  },
   { label: 'Programs', to: '/programs' },
   { label: 'Impact Stories', to: '/impact-stories' },
   { label: 'Resources', to: '/resources' },

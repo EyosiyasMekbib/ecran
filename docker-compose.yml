@@ -32,7 +32,7 @@ services:
       DATABASE_USERNAME: ${POSTGRES_USER:-strapi}
       DATABASE_PASSWORD: ${POSTGRES_PASSWORD:-strapi_password}
       DATABASE_SSL: "false"
-      PUBLIC_URL: ${STRAPI_PUBLIC_URL:-http://localhost:1337}
+      PUBLIC_URL: ${STRAPI_PUBLIC_URL:-http://192.168.1.100:1337}
     ports:
       - "1337:1337"
     volumes:
@@ -52,7 +52,7 @@ services:
       NODE_ENV: production
       HOST: 0.0.0.0
       PORT: 3000
-      NUXT_PUBLIC_STRAPI_URL: ${NUXT_PUBLIC_STRAPI_URL:-http://localhost:1337}
+      NUXT_PUBLIC_STRAPI_URL: ${NUXT_PUBLIC_STRAPI_URL:-http://192.168.1.100:1337}
       STRAPI_URL: http://strapi:1337
     ports:
       - "3005:3000"

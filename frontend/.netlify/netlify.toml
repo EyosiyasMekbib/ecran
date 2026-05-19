@@ -1,0 +1,29 @@
+plugins = []
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "/Users/eyosiyasmekbib/Documents/Projects/ecran/frontend/.output/public"
+publishOrigin = "config"
+commandOrigin = "config"
+base = "/Users/eyosiyasmekbib/Documents/Projects/ecran/frontend"
+command = "pnpm generate"
+
+[build.environment]
+NODE_VERSION = "22"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
