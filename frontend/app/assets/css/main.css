@@ -242,7 +242,7 @@ main {
 
 .hero-container {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: 4fr 6fr;
   align-items: center;
   height: 100%;
   max-width: 1400px;
@@ -267,7 +267,7 @@ main {
   right: 0;
   top: 0;
   bottom: 0;
-  width: 50vw;
+  width: 60vw;
   z-index: 2;
   overflow: hidden;
   border-radius: 1rem 0 0 1rem;
