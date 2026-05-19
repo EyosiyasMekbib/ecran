@@ -397,7 +397,7 @@ main {
   max-width: 1400px;
   margin: 0 auto;
   width: 100%;
-  padding: 1.5rem var(--gutter);
+  padding: 2.2rem var(--gutter);
 }
 
 .partners-section h3 {
@@ -418,8 +418,8 @@ main {
 }
 
 .partner-placeholder {
-  height: 2rem;
-  width: 8rem;
+  height: 2.5rem;
+  width: 9.5rem;
   background: var(--line);
   border-radius: 4px;
   opacity: 0.5;
