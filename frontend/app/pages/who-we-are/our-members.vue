@@ -1,22 +1,4 @@
 <script setup lang="ts">
-const memberLanes = [
-  {
-    label: 'Field evidence',
-    title: 'Community-rooted learning',
-    text: 'Members surface local realities, referral gaps, protection concerns, and promising practice from the places where children live.'
-  },
-  {
-    label: 'Technical exchange',
-    title: 'Shared standards and tools',
-    text: 'The network helps members compare methods, align language, and turn program experience into usable advocacy resources.'
-  },
-  {
-    label: 'Policy voice',
-    title: 'Coordinated advocacy moments',
-    text: 'Members shape practical messages for public dialogue, donor conversations, and child-rights accountability.'
-  }
-]
-
 const memberCommitments = [
   'Child safeguarding and ethical participation',
   'Evidence-informed public communication',
@@ -26,13 +8,7 @@ const memberCommitments = [
 </script>
 
 <template>
-  <PageHero
-    eyebrow="Our members"
-    title="A member network grounded in field evidence and shared public purpose."
-    text="ECRAN’s members bring child-rights practice, community insight, and technical knowledge into one coordinated advocacy platform."
-  />
-
-  <section class="member-brief">
+  <section class="member-brief" style="padding-top: clamp(6rem, 10vw, 10rem);">
     <div class="member-brief-copy">
       <p class="eyebrow">Membership platform</p>
       <h2>Members make the work credible because they stay close to children, families, and local systems.</h2>
@@ -48,22 +24,27 @@ const memberCommitments = [
     </aside>
   </section>
 
-  <section class="member-map" aria-label="How ECRAN members contribute">
-    <article v-for="(lane, index) in memberLanes" :key="lane.title" :style="{ '--index': index }">
-      <span>{{ lane.label }}</span>
-      <h2>{{ lane.title }}</h2>
-      <p>{{ lane.text }}</p>
-    </article>
-  </section>
-
-  <section class="member-directory-empty">
-    <div>
-      <p class="eyebrow">Member directory</p>
-      <h2>Public member profiles can be added as ECRAN confirms publishing permissions.</h2>
+  <section class="member-directory">
+    <div class="directory-header">
+      <p class="eyebrow">Network Members</p>
+      <h2>ECRAN coalition partners</h2>
+      <p class="directory-intro">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
     </div>
-    <p>
-      This page is ready to hold member names, regions, focus areas, and profile links once the organization approves what should be public.
-    </p>
-    <NuxtLink to="/get-involved" class="button secondary">Ask about membership</NuxtLink>
+    
+    <div class="members-grid">
+      <article v-for="n in 6" :key="n" class="member-card">
+        <div class="member-meta">
+          <span class="member-region">Region {{ n }}</span>
+          <span class="member-tag">Child Rights</span>
+        </div>
+        <h3>Lorem Ipsum Organization {{ n }}</h3>
+        <p>
+          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+        </p>
+        <span class="member-link">View Profile &rarr;</span>
+      </article>
+    </div>
   </section>
 </template>

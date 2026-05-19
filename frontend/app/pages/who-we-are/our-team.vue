@@ -61,13 +61,28 @@ const workingPrinciples = [
     </article>
   </section>
 
-  <section class="team-directory-empty">
-    <div>
-      <p class="eyebrow">Team profiles</p>
-      <h2>Staff and leadership profiles can be published when names, roles, and photos are approved.</h2>
+  <section class="team-directory">
+    <div class="directory-header">
+      <p class="eyebrow">Our Team</p>
+      <h2>Staff & leadership</h2>
+      <p class="directory-intro">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+      </p>
     </div>
-    <p>
-      The layout is prepared for real team profiles without using placeholder names or generic avatars.
-    </p>
+    
+    <div class="team-grid">
+      <article v-for="n in 4" :key="n" class="team-card">
+        <div class="team-avatar-placeholder">
+          <span>LI</span>
+        </div>
+        <div class="team-card-info">
+          <h3>Lorem Ipsum Member {{ n }}</h3>
+          <span class="team-role">Role Designation</span>
+          <p>
+            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          </p>
+        </div>
+      </article>
+    </div>
   </section>
 </template>
