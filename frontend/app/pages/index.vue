@@ -10,101 +10,92 @@ useHead({
 </script>
 
 <template>
-  <section class="home-hero">
-    <div class="hero-copy reveal">
-      <p class="eyebrow">Established in Ethiopia, 2025</p>
-      <h1>Evidence-led advocacy for every child’s right to be safe, heard, and able to thrive.</h1>
-      <p>
-        ECRAN is an independent not-for-profit organization bringing partners, members, donors, and public stakeholders around a clear child-rights agenda for Ethiopia.
-      </p>
-      <div class="hero-signals" aria-label="ECRAN focus areas">
-        <span>Policy evidence</span>
-        <span>Child protection</span>
-        <span>Participation</span>
+  <div class="above-fold">
+    <section class="home-hero">
+      <div class="hero-nodes" aria-hidden="true">
+        <div class="node-line line-1"></div>
+        <div class="node-line line-2"></div>
+        <div class="node-line line-3"></div>
+        <div class="node-dot dot-1"></div>
+        <div class="node-dot dot-2"></div>
+        <div class="node-dot dot-3"></div>
+        <div class="node-dot dot-4"></div>
+        <div class="node-dot dot-5"></div>
+        <div class="node-dot dot-6"></div>
       </div>
-      <div class="hero-actions">
-        <NuxtLink to="/get-involved" class="button primary">Partner with ECRAN</NuxtLink>
-        <NuxtLink to="/programs" class="button secondary">Explore programs</NuxtLink>
-      </div>
-    </div>
-    <div class="hero-panel reveal delay-1" aria-label="ECRAN advocacy priorities">
-      <div class="panel-header">
-        <div class="panel-mark" aria-hidden="true">ECRAN</div>
-        <div>
-          <span>National platform</span>
-          <strong>Child-rights advocacy network</strong>
+      <div class="hero-container">
+        <div class="hero-copy reveal">
+          <div class="hero-signals" aria-label="ECRAN focus areas">
+            <span>Policy evidence</span>
+            <span>Child protection</span>
+            <span>Participation</span>
+          </div>
+          <h1>Evidence-led advocacy for every child in Ethiopia.</h1>
+          <p>
+            ECRAN brings partners, communities, and decision-makers together to turn evidence into action for children's rights.
+          </p>
+          <div class="hero-actions">
+            <NuxtLink to="/get-involved" class="button primary">Partner with ECRAN</NuxtLink>
+            <NuxtLink to="/programs" class="button secondary">Explore programs</NuxtLink>
+          </div>
+        </div>
+        <div class="hero-visual reveal delay-1" aria-label="Ethiopian children standing together outdoors">
+          <img src="/brand/ecran-children-header.png" alt="Ethiopian children standing together outdoors in school uniforms" />
         </div>
       </div>
-      <img class="hero-asset" src="/brand/advocacy-field.svg" alt="Abstract child-rights advocacy field notes and evidence pathways" />
-      <div class="rights-compass">
-        <span>Survival</span>
-        <span>Development</span>
-        <span>Protection</span>
-        <span>Participation</span>
-      </div>
-      <div class="panel-note">
-        <span>ACSO No. 7750</span>
-        <p>Registered local organization under Civil Societies Proclamation No. 1113/2019.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="impact-strip" aria-label="Impact statistics">
-    <div>
-      <strong>2025</strong>
-      <span>Founded and registered</span>
-    </div>
-    <div>
-      <strong>7750</strong>
-      <span>ACSO registration number</span>
-    </div>
-    <div>
-      <strong>4</strong>
-      <span>Core child-rights commitments</span>
-    </div>
-    <div>
-      <strong>1</strong>
-      <span>National advocacy platform</span>
-    </div>
-  </section>
-
-  <section class="story-section">
-    <div class="section-heading">
-      <p class="eyebrow">What ECRAN makes possible</p>
-      <h2>A stronger public platform for child-rights evidence, partnership, and accountability.</h2>
-    </div>
-    <div class="story-grid">
-      <article class="feature-block wide">
-        <p>Mission</p>
-        <h3>Promote evidence-based advocacy for child rights in Ethiopia.</h3>
-        <NuxtLink to="/who-we-are">Read about ECRAN</NuxtLink>
-      </article>
-      <article class="feature-block accent">
-        <p>Vision</p>
-        <h3>A country where all children enjoy survival, development, protection, and participation rights.</h3>
-      </article>
-      <article class="feature-block dark">
-        <p>Legal status</p>
-        <h3>Registered as a local organization under Proclamation No. 1113/2019.</h3>
-      </article>
-    </div>
-  </section>
-
-  <section class="program-preview">
-    <div class="section-heading compact">
-      <p class="eyebrow">Programs</p>
-      <h2>Four practical lanes for advocacy work.</h2>
-    </div>
-    <div class="program-list">
-      <article v-for="program in programs" :key="program.title">
-        <img :src="program.image" :alt="`${program.title} visual`" />
-        <div>
-          <h3>{{ program.title }}</h3>
-          <p>{{ program.text }}</p>
+    <section class="partners-section">
+      <div class="partners-container">
+        <h3>Our partners</h3>
+        <div class="partners-marquee">
+          <div class="partner-placeholder"></div>
+          <div class="partner-placeholder"></div>
+          <div class="partner-placeholder"></div>
+          <div class="partner-placeholder"></div>
+          <div class="partner-placeholder"></div>
+          <div class="partner-placeholder"></div>
+          <div class="partner-placeholder"></div>
+          <div class="partner-placeholder"></div>
         </div>
-      </article>
-    </div>
-  </section>
+      </div>
+    </section>
+  </div>
+
+  <div class="section-dark">
+    <section class="story-section">
+      <div class="section-heading">
+        <p class="eyebrow">What ECRAN makes possible</p>
+        <h2>A stronger public platform for child-rights evidence, partnership, and accountability.</h2>
+      </div>
+      <div class="manifesto-list">
+        <article class="manifesto-item">
+          <span>01</span>
+          <div class="content">
+            <p>Mission</p>
+            <h3>Promote evidence-based advocacy for child rights in Ethiopia.</h3>
+            <NuxtLink to="/who-we-are">Read about ECRAN</NuxtLink>
+          </div>
+        </article>
+        <article class="manifesto-item">
+          <span>02</span>
+          <div class="content">
+            <p>Vision</p>
+            <h3>A country where all children enjoy survival, development, protection, and participation rights.</h3>
+          </div>
+        </article>
+        <article class="manifesto-item">
+          <span>03</span>
+          <div class="content">
+            <p>Legal status</p>
+            <h3>Registered as a local organization under Proclamation No. 1113/2019.</h3>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+
 
   <section class="news-band">
     <div>
@@ -120,16 +111,18 @@ useHead({
     </div>
   </section>
 
-  <section class="resource-callout">
-    <div>
-      <p class="eyebrow">Library</p>
-      <h2>Reports, briefs, and tools will live in one accessible resource center.</h2>
-    </div>
-    <ul>
-      <li v-for="resource in resources.slice(0, 3)" :key="resource.title">
-        <span>{{ resource.type }}</span>
-        <strong>{{ resource.title }}</strong>
-      </li>
-    </ul>
-  </section>
+  <div class="section-dark">
+    <section class="resource-callout">
+      <div>
+        <p class="eyebrow">Library</p>
+        <h2>Reports, briefs, and tools will live in one accessible resource center.</h2>
+      </div>
+      <ul>
+        <li v-for="resource in resources.slice(0, 3)" :key="resource.title">
+          <span>{{ resource.type }}</span>
+          <strong>{{ resource.title }}</strong>
+        </li>
+      </ul>
+    </section>
+  </div>
 </template>
