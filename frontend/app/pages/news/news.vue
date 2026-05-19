@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const announcements = [
+const articles = [
   {
     date: 'May 15, 2026',
     tag: 'Summit',
@@ -22,27 +22,23 @@ const announcements = [
 </script>
 
 <template>
-  <div class="news-category-page" style="padding-top: clamp(6rem, 10vw, 10rem);">
-    <section class="news-category-header">
-      <p class="eyebrow">News & Updates</p>
-      <h1>Announcements</h1>
-      <p class="intro-text">
-        Stay up to date with ECRAN's latest announcements, public events, advocacy campaigns, and capacity building opportunities.
-      </p>
-    </section>
+  <PageHero
+    eyebrow="News & Portal"
+    title="News & Updates"
+    text="Stay up to date with ECRAN's latest public announcements, press releases, events, advocacy campaigns, and workshops."
+  />
 
-    <section class="announcements-list-section">
-      <div class="announcements-grid">
-        <article v-for="announcement in announcements" :key="announcement.title" class="announcement-item">
-          <div class="announcement-meta">
-            <span class="announcement-date">{{ announcement.date }}</span>
-            <span class="announcement-badge">{{ announcement.tag }}</span>
-          </div>
-          <h2>{{ announcement.title }}</h2>
-          <p>{{ announcement.text }}</p>
-          <span class="read-more-link">Read full announcement &rarr;</span>
-        </article>
-      </div>
-    </section>
-  </div>
+  <section class="announcements-list-section">
+    <div class="announcements-grid">
+      <article v-for="article in articles" :key="article.title" class="announcement-item">
+        <div class="announcement-meta">
+          <span class="announcement-date">{{ article.date }}</span>
+          <span class="announcement-badge">{{ article.tag }}</span>
+        </div>
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.text }}</p>
+        <span class="read-more-link">Read full story &rarr;</span>
+      </article>
+    </div>
+  </section>
 </template>

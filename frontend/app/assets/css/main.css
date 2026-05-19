@@ -103,7 +103,7 @@ textarea {
 .primary-nav {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: clamp(0.9rem, 1.5vw, 1.35rem);
   margin-left: auto;
 }
 
@@ -141,6 +141,7 @@ textarea {
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-left: clamp(1.25rem, 2.4vw, 2.75rem);
 }
 
 .header-cta {
@@ -153,6 +154,7 @@ textarea {
   display: inline-flex;
   align-items: center;
   font-weight: 600;
+  white-space: nowrap;
   transition: background-color 180ms ease;
 }
 
@@ -628,7 +630,12 @@ h1 {
 .story-timeline,
 .library-list,
 .form-layout,
-.contact-grid {
+.contact-grid,
+.news-index-grid-section,
+.announcements-list-section,
+.vacancies-list-section,
+.bids-list-section,
+.media-center-section {
   max-width: 1400px;
   margin: 0 auto;
   padding: clamp(4rem, 8vw, 7rem) var(--gutter);
@@ -1846,6 +1853,10 @@ h1 {
     margin-left: 0;
   }
 
+  .header-actions-wrapper {
+    margin-left: 0;
+  }
+
   .primary-nav.is-open {
     display: flex;
   }
@@ -2078,258 +2089,289 @@ h1 {
 }
 
 /* News & Portal Styling */
-.news-category-page,
-.news-index-page {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 var(--gutter) 6rem;
+.news-index-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 0.85fr 0.85fr;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
 }
 
-.news-category-header {
-  margin-bottom: 4rem;
+.news-index-card {
+  position: relative;
+  display: grid;
+  align-content: start;
+  min-height: 18rem;
+  padding: clamp(1.4rem, 3vw, 2.4rem);
+  background: rgba(255, 255, 255, 0.82);
+  overflow: hidden;
+  transition: background-color 180ms ease, transform 180ms ease;
 }
 
-.news-category-header h1 {
-  font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  font-weight: 750;
+.news-index-card:first-child {
+  grid-row: span 2;
+  min-height: 36rem;
+  color: #fff;
+  background:
+    linear-gradient(145deg, rgba(36, 48, 111, 0.98), rgba(6, 23, 47, 0.94)),
+    linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: auto, 2rem 2rem;
+}
+
+.news-index-card:hover {
+  background-color: #fff;
+  transform: translateY(-2px);
+}
+
+.news-index-card:first-child:hover {
+  background:
+    linear-gradient(145deg, rgba(36, 48, 111, 0.98), rgba(6, 23, 47, 0.94)),
+    linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+  background-size: auto, 2rem 2rem;
+}
+
+.card-icon {
+  display: grid;
+  place-items: center;
+  width: 3.45rem;
+  height: 3.45rem;
+  margin-bottom: clamp(1.8rem, 4vw, 3.2rem);
   color: var(--brand-dark);
-  line-height: 1.1;
-  margin: 0.5rem 0 1.5rem;
+  background: var(--brand-soft);
+  border: 1px solid rgba(11, 143, 167, 0.2);
+  border-radius: 0.45rem;
 }
 
-.news-category-header .intro-text {
-  max-width: 720px;
-  font-size: 1.25rem;
-  line-height: 1.5;
+.news-index-card:first-child .card-icon {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.news-index-card h2,
+.announcement-item h2,
+.media-card h2,
+.vacancy-card h2,
+.bid-card h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(1.45rem, 2.4vw, 2.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.035em;
+}
+
+.news-index-card:first-child h2 {
+  color: #fff;
+  font-size: clamp(2.1rem, 4vw, 3.7rem);
+}
+
+.news-index-card p,
+.announcement-item p,
+.media-card p,
+.vacancy-card p,
+.bid-card p {
+  margin: 0.9rem 0 0;
   color: var(--muted);
+  line-height: 1.65;
+}
+
+.news-index-card:first-child p {
+  color: rgba(255, 255, 255, 0.76);
+}
+
+.news-index-card .button {
+  width: fit-content;
+  margin-top: 2rem;
+}
+
+.announcements-grid,
+.media-grid,
+.vacancies-grid,
+.bids-grid {
+  display: grid;
+  gap: 1px;
+  background: var(--line);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
 }
 
 .announcements-grid {
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+}
+
+.announcement-item,
+.media-card,
+.vacancy-card,
+.bid-card {
   display: grid;
-  gap: 2.5rem;
-  max-width: 800px;
+  align-content: start;
+  min-height: 20rem;
+  padding: clamp(1.45rem, 3vw, 2.45rem);
+  background: var(--paper);
+  transition: background-color 180ms ease, transform 180ms ease;
 }
 
-.announcement-item {
+.announcement-item:first-child {
+  grid-row: span 2;
+  min-height: 30rem;
   background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 2.5rem;
-  transition: transform 200ms ease, box-shadow 200ms ease;
 }
 
-.announcement-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
+.announcement-item:hover,
+.media-card:hover,
+.vacancy-card:hover,
+.bid-card:hover {
+  background: #fff;
+  transform: translateY(-2px);
 }
 
-.announcement-meta {
+.announcement-meta,
+.media-meta,
+.vacancy-meta,
+.bid-meta {
   display: flex;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.65rem;
   align-items: center;
-  margin-bottom: 1rem;
+  justify-content: space-between;
+  margin-bottom: clamp(1.4rem, 3vw, 2.25rem);
 }
 
-.announcement-date {
-  font-size: 0.85rem;
+.announcement-date,
+.media-meta time,
+.bid-ref {
   color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 650;
 }
 
-.announcement-badge {
-  background: var(--bg);
-  color: var(--brand-dark);
-  padding: 0.25rem 0.75rem;
-  border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 600;
+.announcement-badge,
+.media-meta span,
+.vacancy-dept,
+.vacancy-type,
+.bid-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.9rem;
+  padding: 0 0.75rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-.announcement-item h2 {
-  font-size: 1.75rem;
-  margin-bottom: 1rem;
-  color: var(--ink);
-}
-
-.announcement-item p {
-  color: var(--muted);
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-}
-
-.read-more-link {
+.announcement-badge,
+.media-meta span,
+.vacancy-dept {
   color: var(--brand-dark);
-  font-weight: 600;
-  font-size: 0.95rem;
-  display: inline-block;
-  transition: color 150ms ease;
+  background: rgba(223, 244, 246, 0.82);
+  border: 1px solid rgba(11, 143, 167, 0.18);
 }
 
-.read-more-link:hover {
-  color: var(--accent);
+.vacancy-type,
+.bid-status.open {
+  color: #18745c;
+  background: rgba(24, 116, 92, 0.1);
+  border: 1px solid rgba(24, 116, 92, 0.18);
+}
+
+.bid-status.closed {
+  color: #8a4949;
+  background: rgba(138, 73, 73, 0.1);
+  border: 1px solid rgba(138, 73, 73, 0.18);
+}
+
+.read-more-link,
+.text-action {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 1.5rem;
+  padding: 0;
+  color: var(--brand-dark);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font-weight: 850;
+  transition: transform 180ms ease, color 180ms ease;
+}
+
+.read-more-link:hover,
+.text-action:hover {
+  color: var(--brand);
+  transform: translateX(0.2rem);
+}
+
+.media-grid {
+  grid-template-columns: 0.95fr 1.05fr;
+}
+
+.media-card:first-child {
+  grid-column: span 2;
+  min-height: 22rem;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(223, 244, 246, 0.54)),
+    var(--paper);
 }
 
 .vacancies-grid,
 .bids-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
-  gap: 2rem;
-}
-
-@media (max-width: 768px) {
-  .vacancies-grid,
-  .bids-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-.vacancy-card,
-.bid-card {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  transition: transform 200ms ease, box-shadow 200ms ease;
-}
-
-.vacancy-card:hover,
-.bid-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04);
-}
-
-.vacancy-meta,
-.bid-meta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.vacancy-dept,
-.bid-ref {
-  font-size: 0.8rem;
-  color: var(--brand-dark);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.vacancy-type,
-.bid-status {
-  padding: 0.25rem 0.75rem;
-  border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.vacancy-type {
-  background: #e8f5e9;
-  color: #2e7d32;
-}
-
-.bid-status.open {
-  background: #e3f2fd;
-  color: #1565c0;
-}
-
-.bid-status.closed {
-  background: #ffebee;
-  color: #c62828;
-}
-
-.bid-card.is-closed {
-  opacity: 0.65;
-}
-
-.vacancy-card h2,
-.bid-card h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  color: var(--ink);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .vacancy-details,
 .bid-dates {
-  display: flex;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
-  font-size: 0.85rem;
-  color: var(--muted);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-top: 1.2rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  padding-bottom: 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
 }
 
-.vacancy-card p,
-.bid-card p {
-  color: var(--muted);
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  flex-grow: 1;
+.vacancy-details strong,
+.bid-dates strong {
+  color: var(--ink);
 }
 
 .vacancy-actions,
 .bid-actions {
-  margin-top: auto;
+  margin-top: 1.65rem;
 }
 
-.news-index-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
+.vacancy-actions .button,
+.bid-actions .button {
+  width: fit-content;
+}
+
+.bid-card.is-closed {
+  opacity: 0.72;
 }
 
 @media (max-width: 960px) {
-  .news-index-grid {
+  .news-index-grid,
+  .announcements-grid,
+  .media-grid,
+  .vacancies-grid,
+  .bids-grid {
     grid-template-columns: 1fr;
+  }
+
+  .news-index-card:first-child,
+  .announcement-item:first-child,
+  .media-card:first-child {
+    grid-column: auto;
+    grid-row: auto;
+    min-height: 22rem;
   }
 }
 
-.news-index-card {
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 3rem 2.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  transition: transform 220ms ease, box-shadow 220ms ease;
-}
-
-.news-index-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 40px rgba(39, 48, 131, 0.05);
-  border-color: rgba(39, 48, 131, 0.15);
-}
-
-.card-icon {
-  background: var(--bg);
-  color: var(--brand-dark);
-  padding: 1rem;
-  border-radius: 12px;
-  margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.news-index-card h2 {
-  font-size: 1.75rem;
-  margin-bottom: 1rem;
-  color: var(--ink);
-}
-
-.news-index-card p {
-  color: var(--muted);
-  line-height: 1.6;
-  margin-bottom: 2.5rem;
-  flex-grow: 1;
-}
-
-.news-index-card .button {
-  align-self: stretch;
+@media (max-width: 640px) {
+  .vacancy-details,
+  .bid-dates {
+    grid-template-columns: 1fr;
+  }
 }

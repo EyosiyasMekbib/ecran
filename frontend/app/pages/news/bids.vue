@@ -20,33 +20,29 @@ const bids = [
 </script>
 
 <template>
-  <div class="news-category-page" style="padding-top: clamp(6rem, 10vw, 10rem);">
-    <section class="news-category-header">
-      <p class="eyebrow">News & Procurement</p>
-      <h1>Bids & Tenders</h1>
-      <p class="intro-text">
-        View open procurement bids, requests for proposals (RFPs), and consultancy opportunities with ECRAN.
-      </p>
-    </section>
+  <PageHero
+    eyebrow="News & Procurement"
+    title="Bids & Tenders"
+    text="View open procurement bids, requests for proposals (RFPs), and consultancy opportunities with ECRAN."
+  />
 
-    <section class="bids-list-section">
-      <div class="bids-grid">
-        <article v-for="bid in bids" :key="bid.title" class="bid-card" :class="{ 'is-closed': bid.status === 'Closed' }">
-          <div class="bid-meta">
-            <span class="bid-ref">Ref: {{ bid.reference }}</span>
-            <span class="bid-status" :class="bid.status.toLowerCase()">{{ bid.status }}</span>
-          </div>
-          <h2>{{ bid.title }}</h2>
-          <div class="bid-dates">
-            <span><strong>Published:</strong> {{ bid.published }}</span>
-            <span><strong>Deadline:</strong> {{ bid.deadline }}</span>
-          </div>
-          <p>{{ bid.description }}</p>
-          <div class="bid-actions" v-if="bid.status === 'Open'">
-            <NuxtLink to="/contact" class="button secondary">Request tender documents</NuxtLink>
-          </div>
-        </article>
-      </div>
-    </section>
-  </div>
+  <section class="bids-list-section">
+    <div class="bids-grid">
+      <article v-for="bid in bids" :key="bid.title" class="bid-card" :class="{ 'is-closed': bid.status === 'Closed' }">
+        <div class="bid-meta">
+          <span class="bid-ref">Ref: {{ bid.reference }}</span>
+          <span class="bid-status" :class="bid.status.toLowerCase()">{{ bid.status }}</span>
+        </div>
+        <h2>{{ bid.title }}</h2>
+        <div class="bid-dates">
+          <span><strong>Published:</strong> {{ bid.published }}</span>
+          <span><strong>Deadline:</strong> {{ bid.deadline }}</span>
+        </div>
+        <p>{{ bid.description }}</p>
+        <div class="bid-actions" v-if="bid.status === 'Open'">
+          <NuxtLink to="/contact" class="button secondary">Request tender documents</NuxtLink>
+        </div>
+      </article>
+    </div>
+  </section>
 </template>

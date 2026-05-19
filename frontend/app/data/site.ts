@@ -13,7 +13,8 @@ export const navItems = [
     label: 'News',
     to: '/news',
     children: [
-      { label: 'Announcements', to: '/news/announcements' },
+      { label: 'News', to: '/news/news' },
+      { label: 'Media Center', to: '/news/media-center' },
       { label: 'Vacancies', to: '/news/vacancies' },
       { label: 'Bids', to: '/news/bids' }
     ]
