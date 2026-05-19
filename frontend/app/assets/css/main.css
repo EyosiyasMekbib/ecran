@@ -135,8 +135,8 @@ textarea {
 
 .primary-nav a.active,
 .nav-trigger.active {
-  color: var(--accent);
-  box-shadow: inset 0 -2px 0 0 var(--accent);
+  color: var(--brand-dark);
+  box-shadow: inset 0 -2px 0 0 var(--brand-dark);
 }
 
 .header-actions-wrapper {
