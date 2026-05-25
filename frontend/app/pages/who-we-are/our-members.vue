@@ -15,6 +15,7 @@ const memberCommitments = [
       <p>
         ECRAN is designed for organizations and practitioners committed to child protection, participation, development, and evidence-led policy engagement. The network helps members move from isolated learning to coordinated advocacy.
       </p>
+      <NuxtLink to="/get-involved" class="button primary member-brief-cta">Get involved</NuxtLink>
     </div>
     <aside class="member-signal-panel" aria-label="Membership commitments">
       <span>Member commitments</span>

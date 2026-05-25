@@ -1,7 +1,7 @@
 export const navItems = [
   { label: 'Home', to: '/' },
   {
-    label: 'Who We Are',
+    label: 'About Us',
     to: '/who-we-are',
     children: [
       { label: 'About Us', to: '/who-we-are/about-us' },
