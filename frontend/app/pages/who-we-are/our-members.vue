@@ -5,10 +5,37 @@ const memberCommitments = [
   'Respectful coordination across civil society',
   'Practical learning that can be shared'
 ]
+
+const memberProfiles = [
+  {
+    label: 'Member profile 01',
+    focus: 'Child protection',
+    region: 'National coordination',
+    description: 'Supports prevention, response, and referral work for children affected by abuse, neglect, exploitation, and family separation.'
+  },
+  {
+    label: 'Member profile 02',
+    focus: 'Participation',
+    region: 'Community engagement',
+    description: 'Strengthens child and youth participation so lived experience can inform advocacy priorities, public dialogue, and program design.'
+  },
+  {
+    label: 'Member profile 03',
+    focus: 'Evidence and research',
+    region: 'Policy learning',
+    description: 'Contributes field evidence, analysis, and learning products that help the network prepare stronger policy positions and reports.'
+  },
+  {
+    label: 'Member profile 04',
+    focus: 'Systems strengthening',
+    region: 'Service networks',
+    description: 'Works with local structures, duty bearers, and civil society partners to improve coordination around children’s rights commitments.'
+  }
+]
 </script>
 
 <template>
-  <section class="member-brief" style="padding-top: clamp(6rem, 10vw, 10rem);">
+  <section class="member-brief member-hero">
     <div class="member-brief-copy">
       <p class="eyebrow">Membership platform</p>
       <h2>Members make the work credible because they stay close to children, families, and local systems.</h2>
@@ -27,24 +54,28 @@ const memberCommitments = [
 
   <section class="member-directory">
     <div class="directory-header">
-      <p class="eyebrow">Network Members</p>
-      <h2>ECRAN coalition partners</h2>
+      <div>
+        <p class="eyebrow">Network Members</p>
+        <h2>ECRAN coalition partners</h2>
+      </div>
       <p class="directory-intro">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        Member profiles are structured around contribution, geography, and child-rights focus areas so visitors can understand how the network works in practice.
       </p>
     </div>
     
     <div class="members-grid">
-      <article v-for="n in 6" :key="n" class="member-card">
+      <article v-for="member in memberProfiles" :key="member.label" class="member-card">
         <div class="member-meta">
-          <span class="member-region">Region {{ n }}</span>
-          <span class="member-tag">Child Rights</span>
+          <span class="member-region">{{ member.region }}</span>
+          <span class="member-tag">{{ member.focus }}</span>
         </div>
-        <h3>Lorem Ipsum Organization {{ n }}</h3>
-        <p>
-          Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
-        </p>
-        <span class="member-link">View Profile &rarr;</span>
+        <div>
+          <h3>{{ member.label }}</h3>
+          <p>
+            {{ member.description }}
+          </p>
+        </div>
+        <span class="member-link">Profile details in progress</span>
       </article>
     </div>
   </section>
