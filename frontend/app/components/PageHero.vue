@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  eyebrow: string
+  eyebrow?: string
   title: string
   text: string
 }>()
@@ -8,8 +8,9 @@ defineProps<{
 
 <template>
   <section class="page-hero">
-    <p class="eyebrow">{{ eyebrow }}</p>
+    <p v-if="eyebrow" class="eyebrow">{{ eyebrow }}</p>
     <h1>{{ title }}</h1>
     <p>{{ text }}</p>
+    <slot name="visual" />
   </section>
 </template>
