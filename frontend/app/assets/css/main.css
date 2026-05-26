@@ -1503,7 +1503,8 @@ h1 {
 
 .about-hero,
 .news-hero,
-.resources-hero {
+.resources-hero,
+.contact-hero {
   position: relative;
   max-width: none;
   margin: 0;
@@ -1531,14 +1532,18 @@ h1 {
 .news-hero > p,
 .resources-hero .eyebrow,
 .resources-hero h1,
-.resources-hero > p {
+.resources-hero > p,
+.contact-hero .eyebrow,
+.contact-hero h1,
+.contact-hero > p {
   position: relative;
   z-index: 1;
 }
 
 .about-hero .eyebrow,
 .news-hero .eyebrow,
-.resources-hero .eyebrow {
+.resources-hero .eyebrow,
+.contact-hero .eyebrow {
   grid-column: 2 / 4;
   color: var(--brand-soft);
   margin-bottom: 0;
@@ -1546,7 +1551,8 @@ h1 {
 
 .about-hero h1,
 .news-hero h1,
-.resources-hero h1 {
+.resources-hero h1,
+.contact-hero h1 {
   grid-column: 2;
   max-width: 17ch;
   color: #fff;
@@ -1556,7 +1562,8 @@ h1 {
 
 .about-hero > p:not(.eyebrow),
 .news-hero > p:not(.eyebrow),
-.resources-hero > p:not(.eyebrow) {
+.resources-hero > p:not(.eyebrow),
+.contact-hero > p:not(.eyebrow) {
   grid-column: 3;
   align-self: start;
   color: rgba(255, 255, 255, 0.82);
@@ -2525,6 +2532,7 @@ h1 {
   .about-hero,
   .news-hero,
   .resources-hero,
+  .contact-hero,
   .about-purpose,
   .about-governance,
   .about-objectives-list {
@@ -2534,6 +2542,7 @@ h1 {
   .about-hero,
   .news-hero,
   .resources-hero,
+  .contact-hero,
   .about-purpose,
   .about-objectives-heading,
   .about-objectives-list li {
@@ -2546,7 +2555,8 @@ h1 {
 
   .about-hero,
   .news-hero,
-  .resources-hero {
+  .resources-hero,
+  .contact-hero {
     padding-left: 1rem;
     padding-right: 1rem;
   }
@@ -2559,7 +2569,10 @@ h1 {
   .news-hero > p:not(.eyebrow),
   .resources-hero .eyebrow,
   .resources-hero h1,
-  .resources-hero > p:not(.eyebrow) {
+  .resources-hero > p:not(.eyebrow),
+  .contact-hero .eyebrow,
+  .contact-hero h1,
+  .contact-hero > p:not(.eyebrow) {
     grid-column: 1;
   }
 
@@ -3242,4 +3255,16 @@ h1 {
   .no-results {
     grid-column: span 1;
   }
+}
+
+.contact-page-layout {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(3rem, 6vw, 5rem) var(--gutter);
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
