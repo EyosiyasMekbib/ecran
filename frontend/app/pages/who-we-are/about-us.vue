@@ -12,9 +12,16 @@
         <p class="eyebrow">Purpose</p>
         <h2>Connecting field realities with the advocacy decisions that shape children’s lives.</h2>
       </div>
-      <p>
-        Established in 2025, ECRAN strengthens visibility, communication, partnership engagement, and resource mobilization for child-rights work in Ethiopia. The network helps turn fragmented concern into coordinated, evidence-led advocacy.
-      </p>
+      <div class="about-purpose-copy">
+        <p>
+          Established in 2025, ECRAN strengthens visibility, communication, partnership engagement, and resource mobilization for child-rights work in Ethiopia. The network helps turn fragmented concern into coordinated, evidence-led advocacy.
+        </p>
+        <ul aria-label="Purpose focus areas">
+          <li>Evidence</li>
+          <li>Coordination</li>
+          <li>Accountability</li>
+        </ul>
+      </div>
     </section>
 
     <section class="governance-grid about-governance">

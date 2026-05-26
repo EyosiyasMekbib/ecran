@@ -20,7 +20,7 @@ const hideSubnav = (to: string) => {
       openSubnav.value = null
     }
     closeSubnavTimer = null
-  }, 180)
+  }, 260)
 }
 const closeSubnavAfterFocusLeaves = (event: FocusEvent, to: string) => {
   const currentTarget = event.currentTarget
@@ -78,7 +78,13 @@ onBeforeUnmount(() => {
           <NuxtLink v-else :to="item.to" :class="{ active: isActive(item.to) }">
             {{ item.label }}
           </NuxtLink>
-          <div v-if="item.children?.length" class="subnav" :class="{ 'is-open': openSubnav === item.to }">
+          <div
+            v-if="item.children?.length"
+            class="subnav"
+            :class="{ 'is-open': openSubnav === item.to }"
+            @mouseenter="showSubnav(item.to)"
+            @mouseleave="hideSubnav(item.to)"
+          >
             <NuxtLink v-for="child in item.children" :key="child.to" :to="child.to" :class="{ active: route.path === child.to }">
               {{ child.label }}
             </NuxtLink>
