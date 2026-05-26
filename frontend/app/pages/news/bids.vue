@@ -22,7 +22,6 @@ const bids = [
 <template>
   <PageHero
     class="news-hero"
-    eyebrow="News & Procurement"
     title="Bids & Tenders"
     text="View open procurement bids, requests for proposals (RFPs), and consultancy opportunities with ECRAN."
   />

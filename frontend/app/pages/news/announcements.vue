@@ -24,7 +24,6 @@ const articles = [
 <template>
   <PageHero
     class="news-hero"
-    eyebrow="News & Portal"
     title="News & Announcements"
     text="Stay up to date with ECRAN's latest public announcements, press releases, events, advocacy campaigns, and workshops."
   />
