@@ -23,6 +23,7 @@ const items = [
 
 <template>
   <PageHero
+    class="news-hero"
     eyebrow="News & Portal"
     title="Media Center"
     text="Access press releases, official statements, event photo galleries, and institutional video resources."

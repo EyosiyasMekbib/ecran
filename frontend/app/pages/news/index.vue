@@ -1,5 +1,6 @@
 <template>
   <PageHero
+    class="news-hero"
     eyebrow="News & Portal"
     title="ECRAN news hub"
     text="Follow ECRAN's progress, explore career opportunities, browse media releases, and view active procurement notices."

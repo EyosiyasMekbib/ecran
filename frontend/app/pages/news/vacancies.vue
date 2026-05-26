@@ -21,6 +21,7 @@ const vacancies = [
 
 <template>
   <PageHero
+    class="news-hero"
     eyebrow="News & Careers"
     title="Vacancies"
     text="Join ECRAN and help us shape policy, build community capacity, and protect children's rights across Ethiopia."
