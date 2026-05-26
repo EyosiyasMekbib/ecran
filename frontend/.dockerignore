@@ -1,7 +1,5 @@
 node_modules
 .nuxt
 .output
-.env
-.env.*
-Dockerfile
-*.log
+dist
+.netlify

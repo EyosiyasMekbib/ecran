@@ -62,10 +62,14 @@ useHead({
   </div>
 
   <div class="section-dark">
-    <section class="story-section">
-      <div class="section-heading">
+    <section class="story-section story-showcase">
+      <div class="story-anchor">
         <p class="eyebrow">What ECRAN makes possible</p>
         <h2>A stronger public platform for child-rights evidence, partnership, and accountability.</h2>
+        <p>
+          ECRAN connects field experience, civil society coordination, and policy dialogue so advocacy work can move with a shared public mandate.
+        </p>
+        <NuxtLink to="/who-we-are/about-us" class="story-link">Read about ECRAN</NuxtLink>
       </div>
       <div class="manifesto-list">
         <article class="manifesto-item">
@@ -73,7 +77,6 @@ useHead({
           <div class="content">
             <p>Mission</p>
             <h3>Promote evidence-based advocacy for child rights in Ethiopia.</h3>
-            <NuxtLink to="/who-we-are">Read about ECRAN</NuxtLink>
           </div>
         </article>
         <article class="manifesto-item">

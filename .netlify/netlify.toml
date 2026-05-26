@@ -7,11 +7,11 @@ redirects = []
 [functions."*"]
 
 [build]
-publish = "/Users/eyosiyasmekbib/Documents/Projects/ecran/frontend/.output/public"
+publish = "/Users/eyosiyasmekbib/Documents/Projects/ecran/.output/public"
 publishOrigin = "config"
 commandOrigin = "config"
-base = "/Users/eyosiyasmekbib/Documents/Projects/ecran/frontend"
 command = "pnpm generate"
+base = "/Users/eyosiyasmekbib/Documents/Projects/ecran/frontend"
 
 [build.environment]
 NODE_VERSION = "22"

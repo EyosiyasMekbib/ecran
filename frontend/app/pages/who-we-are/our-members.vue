@@ -42,7 +42,7 @@ const memberProfiles = [
       <p>
         ECRAN is designed for organizations and practitioners committed to child protection, participation, development, and evidence-led policy engagement. The network helps members move from isolated learning to coordinated advocacy.
       </p>
-      <NuxtLink to="/get-involved" class="button primary member-brief-cta">Get involved</NuxtLink>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSefVosbpua5Zkh_CwGoPpwil4VCdnJAUOJhr4fsP0cspBtZ1A/viewform" target="_blank" rel="noopener noreferrer" class="button primary member-brief-cta">Get involved</a>
     </div>
     <aside class="member-signal-panel" aria-label="Membership commitments">
       <span>Member commitments</span>

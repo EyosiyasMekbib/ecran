@@ -15,32 +15,45 @@ const sent = ref(false)
   <main class="contact-page-layout">
     <section class="contact-grid">
       <div class="contact-info">
-        <div class="contact-details">
-          <h2>Contact details</h2>
-          <p><strong>Email:</strong> info@ecran.org</p>
-          <p><strong>Phone:</strong> To be added</p>
-          <p><strong>Registration:</strong> ACSO No. 7750</p>
-        </div>
-        <div class="map-panel">
-          <span>Addis Ababa, Ethiopia</span>
-          <strong>Office location map</strong>
-          <p>Map embed placeholder for ECRAN’s confirmed office pin.</p>
+        <span class="section-label">Connect</span>
+        <h2 class="contact-heading">Get in touch</h2>
+        <p class="contact-desc">
+          Our team is available to discuss collaborations, policy questions, and membership processes. We aim to respond to all inquiries within two business days.
+        </p>
+        
+        <div class="contact-details-list">
+          <div class="detail-row">
+            <span class="detail-label">Email</span>
+            <a href="mailto:info@ecran-et.org" class="detail-value">info@ecran-et.org</a>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Location</span>
+            <span class="detail-value">Addis Ababa, Ethiopia</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">ACSO Registration</span>
+            <span class="detail-value">No. 7750</span>
+          </div>
         </div>
       </div>
 
-      <form class="contact-form compact-form" @submit.prevent="sent = true">
-        <h2>Send an inquiry</h2>
-        <label>
-          <span>Your email</span>
-          <input type="email" placeholder="name@example.org" required />
-        </label>
-        <label>
-          <span>Inquiry</span>
-          <textarea rows="4" placeholder="How can ECRAN help?" required />
-        </label>
-        <p v-if="sent" class="success-message">Message captured in the demo flow.</p>
-        <button class="button primary" type="submit">Send message</button>
-      </form>
+      <div class="contact-form-container">
+        <span class="section-label">Inquiry Portal</span>
+        <h2 class="contact-heading">Send a message</h2>
+        
+        <form class="contact-modern-form" @submit.prevent="sent = true">
+          <div class="form-field">
+            <input type="email" id="email" placeholder="Your email address" required />
+          </div>
+          <div class="form-field">
+            <textarea id="message" rows="5" placeholder="How can we help you?" required></textarea>
+          </div>
+          <p v-if="sent" class="success-message">Message sent successfully!</p>
+          <button class="button primary submit-button" type="submit">
+            Send message
+          </button>
+        </form>
+      </div>
     </section>
   </main>
 </template>

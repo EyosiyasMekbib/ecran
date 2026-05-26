@@ -1514,8 +1514,8 @@ h1 {
     minmax(0, 46rem)
     minmax(var(--gutter), 1fr);
   align-items: center;
-  gap: clamp(1.5rem, 5vw, 5rem);
-  padding: clamp(2.35rem, 4vw, 3.6rem) 0;
+  gap: clamp(0.75rem, 2vw, 2rem);
+  padding: clamp(1rem, 2vw, 2rem) 0;
   color: #fff;
   background:
     var(--gradient-brand-deep),
@@ -1556,7 +1556,7 @@ h1 {
   grid-column: 2;
   max-width: 17ch;
   color: #fff;
-  font-size: clamp(2rem, 3.6vw, 4rem);
+  font-size: clamp(1.75rem, 3vw, 3rem);
   line-height: 1;
 }
 
@@ -1883,100 +1883,129 @@ h1 {
   border-radius: 999px;
 }
 
-.form-layout,
 .contact-grid {
   display: grid;
   grid-template-columns: 0.85fr 1.15fr;
-  gap: clamp(1.5rem, 6vw, 6rem);
+  gap: clamp(2rem, 8vw, 7rem);
   align-items: start;
 }
 
-.involvement-panel,
-.map-panel,
-.contact-details {
-  padding: 1.5rem;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 0.45rem;
+.section-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--brand);
+  margin-bottom: 0.5rem;
 }
 
-.involvement-panel ul {
-  margin: 1.4rem 0 0;
-  padding-left: 1.1rem;
+.contact-heading {
+  font-family: var(--font-heading);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  color: var(--brand-dark);
+  margin: 0 0 1.5rem;
+  line-height: 1.1;
 }
 
-.contact-form {
-  display: grid;
-  gap: 1rem;
-  padding: 1.5rem;
-  background: #fff;
-  border: 1px solid var(--line);
-  border-radius: 0.45rem;
-  box-shadow: var(--shadow);
+.contact-desc {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
 }
 
-.contact-form label {
-  display: grid;
-  gap: 0.45rem;
+.contact-details-list {
+  display: flex;
+  flex-direction: column;
 }
 
-.contact-form span {
-  font-weight: 750;
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--line);
+  gap: 1.5rem;
 }
 
-.contact-form input,
-.contact-form select,
-.contact-form textarea {
-  width: 100%;
-  border: 1px solid #cddce4;
-  border-radius: 0.35rem;
-  padding: 0.85rem 0.95rem;
+.detail-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.detail-label {
+  font-weight: 600;
+  font-size: 0.95rem;
   color: var(--ink);
-  background: #fbfdfe;
+}
+
+.detail-value {
+  color: var(--muted);
+  font-size: 1.05rem;
+  text-align: right;
+  transition: color 150ms ease;
+}
+
+a.detail-value:hover {
+  color: var(--brand);
+}
+
+.contact-modern-form {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-modern-form input,
+.contact-modern-form textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0.25rem;
+  padding: 1rem 1.15rem;
+  color: var(--ink);
+  background: var(--surface);
   outline: none;
-  transition: border-color 180ms ease, box-shadow 180ms ease;
+  font-family: var(--font-text);
+  font-size: 1rem;
+  transition: all 180ms ease;
 }
 
-.contact-form input:focus,
-.contact-form select:focus,
-.contact-form textarea:focus {
-  border-color: var(--brand);
-  box-shadow: 0 0 0 4px rgba(16, 150, 180, 0.13);
+.contact-modern-form input:focus,
+.contact-modern-form textarea:focus {
+  border-color: var(--brand-dark);
+  box-shadow: 0 0 0 3px rgba(36, 48, 111, 0.08);
 }
 
-.contact-form small {
-  color: #a64040;
+.contact-modern-form input::placeholder,
+.contact-modern-form textarea::placeholder {
+  color: var(--muted);
+  opacity: 0.65;
+}
+
+.submit-button {
+  justify-self: start;
+  margin-top: 0.5rem;
+}
+
+.contact-hero h1 {
+  max-width: 32ch;
+}
+
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
 }
 
 .success-message {
   margin: 0;
-  color: var(--success);
-  font-weight: 750;
-}
-
-.map-panel {
-  display: grid;
-  min-height: 20rem;
-  align-content: end;
-  background:
-    var(--gradient-brand),
-    repeating-linear-gradient(0deg, rgba(255,255,255,0.15) 0 1px, transparent 1px 30px),
-    repeating-linear-gradient(90deg, rgba(255,255,255,0.15) 0 1px, transparent 1px 30px);
-  color: #fff;
-}
-
-.map-panel span,
-.map-panel p {
-  color: rgba(255,255,255,0.78);
-}
-
-.map-panel strong {
-  font-size: clamp(2rem, 4vw, 3.6rem);
-  letter-spacing: -0.04em;
-}
-
-.compact-form {
-  grid-column: 2;
+  color: var(--brand-dark);
+  font-weight: 700;
 }
 
 .site-footer {

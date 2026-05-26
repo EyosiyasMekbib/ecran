@@ -17,7 +17,7 @@
             <NuxtLink to="/who-we-are/about-us">Who We Are</NuxtLink>
             <NuxtLink to="/news/announcements">News & Announcements</NuxtLink>
             <NuxtLink to="/resources">Resources</NuxtLink>
-            <a href="https://forms.google.com" target="_blank" rel="noopener noreferrer">Get Involved</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSefVosbpua5Zkh_CwGoPpwil4VCdnJAUOJhr4fsP0cspBtZ1A/viewform" target="_blank" rel="noopener noreferrer">Get Involved</a>
           </nav>
         </section>
         <section>
