@@ -2,7 +2,7 @@
 useHead({
   title: 'Our Works | ECRAN',
   meta: [
-    { name: 'description', content: 'ECRAN's programs and initiatives advancing child rights in Ethiopia through evidence-based advocacy and coordinated action.' }
+    { name: 'description', content: "ECRAN's programs and initiatives advancing child rights in Ethiopia through evidence-based advocacy and coordinated action." }
   ]
 })
 </script>
