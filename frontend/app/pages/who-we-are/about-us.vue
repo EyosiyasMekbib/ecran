@@ -162,7 +162,7 @@
         <p>Join the network, share evidence, or partner with ECRAN to build a stronger public mandate for every child.</p>
         <div class="au-cta-actions">
           <NuxtLink to="/get-involved" class="button primary">Partner with ECRAN</NuxtLink>
-          <NuxtLink to="/who-we-are/network-members" class="button secondary">View network members</NuxtLink>
+          <NuxtLink to="/who-we-are/our-members" class="button secondary">View network members</NuxtLink>
         </div>
       </div>
     </section>
