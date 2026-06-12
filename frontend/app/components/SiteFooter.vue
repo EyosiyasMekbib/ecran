@@ -3,7 +3,7 @@
     <div class="footer-main">
       <div class="footer-brand">
         <img src="/ecran-logo.jpg" alt="ECRAN logo" class="footer-logo" />
-        <p>Ethiopian Child Rights Advocacy Network works for evidence-based advocacy so every child in Ethiopia can survive, develop, be protected, and participate.</p>
+        <p>Evidence-based advocacy for every Ethiopian child to survive, develop, be protected, and participate</p>
       </div>
       <div class="footer-grid">
         <section>
@@ -32,8 +32,8 @@
     <div class="footer-bottom">
       <p>&copy; {{ new Date().getFullYear() }} ECRAN. All rights reserved.</p>
       <div class="footer-legal">
-        <NuxtLink to="/">Privacy Policy</NuxtLink>
-        <NuxtLink to="/">Terms of Service</NuxtLink>
+        <NuxtLink to="/privacy-policy">Privacy Policy</NuxtLink>
+        <NuxtLink to="/terms-of-service">Terms of Service</NuxtLink>
       </div>
     </div>
   </footer>
