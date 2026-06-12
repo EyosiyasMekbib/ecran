@@ -50,7 +50,7 @@
         <section class="legal-section legal-contact">
           <h2>Contact Us</h2>
           <p>
-            Email: <a href="mailto:info@ecranethiopia.org">info@ecranethiopia.org</a>
+            Email: <a href="mailto:info@ecran-et.org">info@ecran-et.org</a>
           </p>
         </section>
       </div>
