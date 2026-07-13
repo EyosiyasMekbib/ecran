@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { impactStories } from '~/data/site'
+// Sourced from the Strapi CMS at build/SSR time, with static fallback (see composables/useStrapi.ts).
+const { data: impactStories } = await useAsyncData('impact-stories', () => getImpactStories())
 </script>
 
 <template>

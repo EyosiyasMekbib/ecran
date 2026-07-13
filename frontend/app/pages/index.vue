@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { impactStories, resources } from '~/data/site'
-
 useHead({
   title: 'ECRAN | Ethiopian Child Rights Advocacy Network',
   meta: [
     { name: 'description', content: 'ECRAN is an Ethiopian child rights advocacy network promoting evidence-based advocacy, partnership, and child participation.' }
   ]
 })
+
+// Sourced from the Strapi CMS at build/SSR time, with static fallback (see composables/useStrapi.ts).
+const { data: impactStories } = await useAsyncData('home-impact-stories', () => getImpactStories())
+const { data: resources } = await useAsyncData('home-resources', () => getResourceCards())
 </script>
 
 <template>
