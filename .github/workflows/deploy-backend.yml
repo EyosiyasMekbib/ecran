@@ -1,0 +1,58 @@
+name: Deploy Strapi backend to cPanel
+
+on:
+  push:
+    branches: [main]
+    paths: ['backend/**']
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-backend
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          cache-dependency-path: backend/pnpm-lock.yaml
+
+      - name: Install and build Strapi (admin bundle)
+        working-directory: backend
+        env:
+          STRAPI_ADMIN_BACKEND_URL: https://cms.ecran-et.com
+          PUBLIC_URL: https://cms.ecran-et.com
+        run: |
+          pnpm install --frozen-lockfile
+          pnpm build
+
+      - name: Stage deployable files
+        run: |
+          mkdir -p deploy
+          cp -r backend/dist backend/src backend/config backend/database backend/public backend/scripts deploy/
+          cp backend/package.json backend/server.js backend/tsconfig.json deploy/
+          # Passenger restart marker — uploading this restarts the Node app
+          mkdir -p deploy/tmp && touch deploy/tmp/restart.txt
+
+      - name: Upload to cPanel via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.CPANEL_FTP_HOST }}
+          username: ${{ secrets.CPANEL_FTP_USER }}
+          password: ${{ secrets.CPANEL_FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: deploy/
+          server-dir: ${{ secrets.CPANEL_BACKEND_DIR }} # e.g. /home/ecranetc/cms-backend/
+          state-name: .ftp-deploy-state.json
+
+      # NOTE: if package.json dependencies changed, run "NPM Install" once in
+      # cPanel → Setup Node.js App. File sync + restart is fully automatic.
