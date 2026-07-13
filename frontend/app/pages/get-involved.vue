@@ -1,34 +1,51 @@
+<script setup lang="ts">
+// Baked-in fallback — used only when the CMS has no `get-involved` page entry.
+const fallbackCards = [
+  {
+    title: 'Become a member',
+    text: 'Join a coordinated network of organizations committed to child survival, development, protection, and participation.',
+    linkLabel: 'Start a membership inquiry',
+    linkTo: '/contact'
+  },
+  {
+    title: 'Partner on advocacy',
+    text: 'Collaborate on evidence briefs, policy dialogue, public campaigns, and shared accountability moments.',
+    linkLabel: 'Explore current resources',
+    linkTo: '/resources'
+  },
+  {
+    title: 'Support capacity building',
+    text: 'Help member organizations strengthen safeguarding practice, data use, child participation, and advocacy planning.',
+    linkLabel: 'View member network',
+    linkTo: '/who-we-are/our-members'
+  },
+  {
+    title: 'Share opportunities',
+    text: 'Send consultancies, events, procurement notices, and coalition opportunities that can serve ECRAN’s members.',
+    linkLabel: 'Contact the coordination team',
+    linkTo: '/contact'
+  }
+]
+
+const { data: page } = await useAsyncData('page-get-involved', () => getPage('get-involved'))
+const cards = computed(() =>
+  Array.isArray(page.value?.sections?.cards) ? page.value.sections.cards : fallbackCards
+)
+</script>
+
 <template>
   <PageHero
     eyebrow="Get involved"
-    title="Partner with ECRAN to strengthen child-rights advocacy in Ethiopia."
-    text="ECRAN works with civil society organizations, public institutions, donors, researchers, and community actors who want evidence to move into coordinated action."
+    :title="page?.heroTitle || 'Partner with ECRAN to strengthen child-rights advocacy in Ethiopia.'"
+    :text="page?.heroText || 'ECRAN works with civil society organizations, public institutions, donors, researchers, and community actors who want evidence to move into coordinated action.'"
   />
 
   <section class="governance-grid">
-    <article>
-      <span>01</span>
-      <h2>Become a member</h2>
-      <p>Join a coordinated network of organizations committed to child survival, development, protection, and participation.</p>
-      <NuxtLink to="/contact">Start a membership inquiry</NuxtLink>
-    </article>
-    <article>
-      <span>02</span>
-      <h2>Partner on advocacy</h2>
-      <p>Collaborate on evidence briefs, policy dialogue, public campaigns, and shared accountability moments.</p>
-      <NuxtLink to="/resources">Explore current resources</NuxtLink>
-    </article>
-    <article>
-      <span>03</span>
-      <h2>Support capacity building</h2>
-      <p>Help member organizations strengthen safeguarding practice, data use, child participation, and advocacy planning.</p>
-      <NuxtLink to="/who-we-are/our-members">View member network</NuxtLink>
-    </article>
-    <article>
-      <span>04</span>
-      <h2>Share opportunities</h2>
-      <p>Send consultancies, events, procurement notices, and coalition opportunities that can serve ECRAN’s members.</p>
-      <NuxtLink to="/contact">Contact the coordination team</NuxtLink>
+    <article v-for="(card, i) in cards" :key="card.title">
+      <span>{{ String(i + 1).padStart(2, '0') }}</span>
+      <h2>{{ card.title }}</h2>
+      <p>{{ card.text }}</p>
+      <NuxtLink :to="card.linkTo">{{ card.linkLabel }}</NuxtLink>
     </article>
   </section>
 </template>

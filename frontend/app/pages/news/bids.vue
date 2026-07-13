@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const bids = [
+// Baked-in fallback — used only when the CMS has no published bid posts.
+const fallback = [
   {
     title: 'Consultancy Service: Midterm Review of ECRAN Strategic Plan',
     reference: 'ECRAN/RFP/2026/04',
@@ -17,13 +18,30 @@ const bids = [
     description: 'Bids are invited from eligible vendors for the supply of laptops, desktops, server infrastructure, and network configurations to support our new regional coordination nodes.'
   }
 ]
+
+const { data: cmsPosts } = await useAsyncData('posts-bid', () => getPosts('bid'))
+const { data: page } = await useAsyncData('page-bids', () => getPage('bids'))
+
+// A bid is "Open" while its deadline is in the future (or when no deadline is set).
+const bids = computed(() =>
+  cmsPosts.value?.length
+    ? cmsPosts.value.map((p) => ({
+        title: p.title,
+        reference: p.location || 'ECRAN',
+        status: !p.deadline || new Date(p.deadline) >= new Date() ? 'Open' : 'Closed',
+        published: p.date,
+        deadline: p.deadline,
+        description: p.excerpt
+      }))
+    : fallback
+)
 </script>
 
 <template>
   <PageHero
     class="news-hero"
-    title="Bids & Tenders"
-    text="View open procurement bids, requests for proposals (RFPs), and consultancy opportunities with ECRAN."
+    :title="page?.heroTitle || 'Bids & Tenders'"
+    :text="page?.heroText || 'View open procurement bids, requests for proposals (RFPs), and consultancy opportunities with ECRAN.'"
   />
 
   <section class="bids-list-section">

@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "posts",
+  "info": {
+    "singularName": "post",
+    "pluralName": "posts",
+    "displayName": "Post",
+    "description": "News, vacancies, bids, announcements, and media items"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
+    },
+    "category": {
+      "type": "enumeration",
+      "enum": ["news", "vacancy", "bid", "announcement", "media"],
+      "required": true,
+      "default": "news"
+    },
+    "excerpt": {
+      "type": "text"
+    },
+    "body": {
+      "type": "richtext"
+    },
+    "publishDate": {
+      "type": "date"
+    },
+    "deadline": {
+      "type": "date"
+    },
+    "location": {
+      "type": "string"
+    },
+    "featuredImage": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "attachment": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["files", "images"]
+    },
+    "externalUrl": {
+      "type": "string"
+    }
+  }
+}

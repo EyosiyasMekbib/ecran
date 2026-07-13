@@ -75,6 +75,41 @@ const resourcesData: Resource[] = [
   }
 ]
 
+// CMS resources (Strapi `resource` collection) — falls back to the static list above.
+const typeMap: Record<string, string> = {
+  'Annual report': 'Report',
+  'Policy brief': 'Policy Brief',
+  Publication: 'Publication',
+  Toolkit: 'Toolkit',
+  Other: 'Publication'
+}
+
+const { data: cmsResources } = await useAsyncData('resources-all', async () => {
+  try {
+    const res = await $fetch<{ data: any[] }>(`${useStrapiUrl()}/api/resources`, {
+      query: { 'pagination[pageSize]': 100, populate: '*', sort: 'publishedOn:desc' }
+    })
+    return Array.isArray(res?.data) ? res.data : []
+  } catch {
+    return []
+  }
+})
+
+const allResources = computed<Resource[]>(() =>
+  cmsResources.value?.length
+    ? cmsResources.value.map((e: any) => ({
+        title: e.title,
+        type: typeMap[e.resourceType] || 'Publication',
+        topic: e.topic || 'Advocacy',
+        date: e.publishedOn || '',
+        fileSize: e.document?.size ? `${(e.document.size / 1024).toFixed(1)} MB` : '—',
+        pages: 0,
+        description: e.summary || '',
+        downloadUrl: e.document?.url ? (strapiMedia(e.document.url) as string) : '#'
+      }))
+    : resourcesData
+)
+
 const searchQuery = ref('')
 const selectedType = ref('All')
 const selectedTopic = ref('All')
@@ -84,27 +119,27 @@ const types = ['All', 'Report', 'Policy Brief', 'Publication', 'Toolkit']
 const topics = ['All', 'Child Protection', 'Participation', 'Advocacy', 'Capacity Building']
 
 const typeCounts = computed(() => {
-  const counts: Record<string, number> = { All: resourcesData.length }
+  const counts: Record<string, number> = { All: allResources.value.length }
   types.forEach(t => {
     if (t !== 'All') {
-      counts[t] = resourcesData.filter(r => r.type === t).length
+      counts[t] = allResources.value.filter(r => r.type === t).length
     }
   })
   return counts
 })
 
 const topicCounts = computed(() => {
-  const counts: Record<string, number> = { All: resourcesData.length }
+  const counts: Record<string, number> = { All: allResources.value.length }
   topics.forEach(t => {
     if (t !== 'All') {
-      counts[t] = resourcesData.filter(r => r.topic === t).length
+      counts[t] = allResources.value.filter(r => r.topic === t).length
     }
   })
   return counts
 })
 
 const filteredResources = computed(() => {
-  let result = [...resourcesData]
+  let result = [...allResources.value]
 
   if (searchQuery.value.trim() !== '') {
     const q = searchQuery.value.toLowerCase()
@@ -255,8 +290,10 @@ const formatDate = (dateString: string) => {
             <h3>{{ resource.title }}</h3>
             <div class="resource-card-specs">
               <time :datetime="resource.date">{{ formatDate(resource.date) }}</time>
-              <span>&bull;</span>
-              <span>{{ resource.pages }} pages</span>
+              <template v-if="resource.pages">
+                <span>&bull;</span>
+                <span>{{ resource.pages }} pages</span>
+              </template>
               <span>&bull;</span>
               <span>{{ resource.fileSize }}</span>
             </div>

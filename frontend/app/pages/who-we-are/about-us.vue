@@ -1,3 +1,25 @@
+<script setup lang="ts">
+// CMS-managed copy with baked-in fallbacks (page slug: about-us + site profile).
+const { data: page } = await useAsyncData('page-about-us', () => getPage('about-us'))
+const { data: profile } = await useAsyncData('site-profile', () => getSiteProfile())
+
+const mission = computed(
+  () =>
+    profile.value?.mission ||
+    'Promote evidence-based advocacy for child rights in Ethiopia through practical coordination and public dialogue.'
+)
+const vision = computed(
+  () =>
+    profile.value?.vision ||
+    'A country where all children enjoy survival, development, protection, and participation rights.'
+)
+const legalStatus = computed(
+  () =>
+    profile.value?.legalStatus ||
+    'Registered as a local organization under Civil Societies Proclamation No. 1113/2019 with ACSO registration number 7750.'
+)
+</script>
+
 <template>
   <main class="about-page">
 
@@ -5,8 +27,8 @@
     <section class="au-hero">
       <div class="au-hero-inner">
         <p class="au-eyebrow">About ECRAN</p>
-        <h1>An Ethiopian child-rights advocacy network built around evidence, coordination, and accountability.</h1>
-        <p class="au-hero-sub">ECRAN brings civil society actors, technical partners, and public stakeholders around a shared agenda for children's survival, development, protection, and participation.</p>
+        <h1>{{ page?.heroTitle || 'An Ethiopian child-rights advocacy network built around evidence, coordination, and accountability.' }}</h1>
+        <p class="au-hero-sub">{{ page?.heroText || `ECRAN brings civil society actors, technical partners, and public stakeholders around a shared agenda for children's survival, development, protection, and participation.` }}</p>
         <div class="au-hero-meta">
           <span><strong>Est.</strong> 2025</span>
           <span class="au-meta-divider">·</span>
@@ -27,7 +49,7 @@
         <h2>Connecting field realities with the advocacy decisions that shape children's lives.</h2>
       </div>
       <div class="au-purpose-body">
-        <p class="au-purpose-lede">Established in 2025, ECRAN strengthens visibility, communication, partnership engagement, and resource mobilization for child-rights work in Ethiopia. The network helps turn fragmented concern into coordinated, evidence-led advocacy.</p>
+        <p class="au-purpose-lede">{{ page?.body || 'Established in 2025, ECRAN strengthens visibility, communication, partnership engagement, and resource mobilization for child-rights work in Ethiopia. The network helps turn fragmented concern into coordinated, evidence-led advocacy.' }}</p>
         <div class="au-pillars">
           <div class="au-pillar">
             <span class="au-pillar-index">01</span>
@@ -55,21 +77,21 @@
           <span class="au-gov-num">01</span>
           <div class="au-gov-body">
             <h3>Mission</h3>
-            <p>Promote evidence-based advocacy for child rights in Ethiopia through practical coordination and public dialogue.</p>
+            <p>{{ mission }}</p>
           </div>
         </article>
         <article class="au-gov-card">
           <span class="au-gov-num">02</span>
           <div class="au-gov-body">
             <h3>Vision</h3>
-            <p>A country where all children enjoy survival, development, protection, and participation rights.</p>
+            <p>{{ vision }}</p>
           </div>
         </article>
         <article class="au-gov-card">
           <span class="au-gov-num">03</span>
           <div class="au-gov-body">
             <h3>Legal Status</h3>
-            <p>Registered as a local organization under Civil Societies Proclamation No. 1113/2019 with ACSO registration number 7750.</p>
+            <p>{{ legalStatus }}</p>
           </div>
         </article>
         <article class="au-gov-card au-gov-card--accent">

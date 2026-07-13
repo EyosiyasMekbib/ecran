@@ -1,56 +1,75 @@
+<script setup lang="ts">
+// Baked-in fallback — used only when the CMS has no `privacy-policy` page entry.
+const fallbackBlocks = [
+  {
+    lead: 'ECRAN is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you visit our website or interact with our organization.'
+  },
+  {
+    title: 'Information We Collect',
+    paragraphs: [
+      "We collect personal information — such as your name and email address — only when you voluntarily contact us or subscribe to our updates. We also gather non-personal data through cookies to improve our website's performance and user experience."
+    ]
+  },
+  {
+    title: 'How We Use Your Information',
+    paragraphs: ['We use your information to:'],
+    list: [
+      'Respond to your inquiries and messages',
+      'Send advocacy updates and relevant communications',
+      'Enhance and improve our services'
+    ]
+  },
+  {
+    title: "Children's Privacy",
+    paragraphs: [
+      "We take children's privacy seriously. ECRAN does not knowingly collect data from children under 18 without verifiable parental consent. If you believe we have inadvertently collected such information, please contact us immediately."
+    ]
+  },
+  {
+    title: 'Your Rights',
+    paragraphs: [
+      'You have the right to access, correct, or request deletion of your personal data at any time. To exercise these rights or for any privacy-related questions, please contact us.'
+    ]
+  }
+]
+
+const { data: page } = await useAsyncData('page-privacy-policy', () => getPage('privacy-policy'))
+const { data: profile } = await useAsyncData('site-profile', () => getSiteProfile())
+
+const blocks = computed(() =>
+  Array.isArray(page.value?.sections?.blocks) ? page.value.sections.blocks : fallbackBlocks
+)
+const lastUpdated = computed(
+  () => page.value?.sections?.lastUpdated || 'June 2026'
+)
+const email = computed(() => profile.value?.email || 'info@ecran-et.org')
+</script>
+
 <template>
   <main class="legal-page">
     <div class="legal-hero">
       <div class="legal-hero-inner">
         <span class="legal-eyebrow">Legal</span>
-        <h1>Privacy Policy</h1>
-        <p class="legal-meta">Ethiopian Child Rights Advocacy Network (ECRAN) &mdash; Last Updated: June 2026</p>
+        <h1>{{ page?.heroTitle || 'Privacy Policy' }}</h1>
+        <p class="legal-meta">Ethiopian Child Rights Advocacy Network (ECRAN) &mdash; Last Updated: {{ lastUpdated }}</p>
       </div>
     </div>
 
     <div class="legal-content">
       <div class="legal-body">
-        <section class="legal-section">
-          <p class="legal-lead">
-            ECRAN is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you visit our website or interact with our organization.
-          </p>
-        </section>
-
-        <section class="legal-section">
-          <h2>Information We Collect</h2>
-          <p>
-            We collect personal information — such as your name and email address — only when you voluntarily contact us or subscribe to our updates. We also gather non-personal data through cookies to improve our website's performance and user experience.
-          </p>
-        </section>
-
-        <section class="legal-section">
-          <h2>How We Use Your Information</h2>
-          <p>We use your information to:</p>
-          <ul>
-            <li>Respond to your inquiries and messages</li>
-            <li>Send advocacy updates and relevant communications</li>
-            <li>Enhance and improve our services</li>
+        <section v-for="(block, i) in blocks" :key="i" class="legal-section">
+          <p v-if="block.lead" class="legal-lead">{{ block.lead }}</p>
+          <h2 v-if="block.title">{{ block.title }}</h2>
+          <p v-for="(p, j) in block.paragraphs || []" :key="j">{{ p }}</p>
+          <ul v-if="block.list?.length">
+            <li v-for="item in block.list" :key="item">{{ item }}</li>
           </ul>
-        </section>
-
-        <section class="legal-section">
-          <h2>Children's Privacy</h2>
-          <p>
-            We take children's privacy seriously. ECRAN does not knowingly collect data from children under 18 without verifiable parental consent. If you believe we have inadvertently collected such information, please contact us immediately.
-          </p>
-        </section>
-
-        <section class="legal-section">
-          <h2>Your Rights</h2>
-          <p>
-            You have the right to access, correct, or request deletion of your personal data at any time. To exercise these rights or for any privacy-related questions, please contact us.
-          </p>
         </section>
 
         <section class="legal-section legal-contact">
           <h2>Contact Us</h2>
           <p>
-            Email: <a href="mailto:info@ecran-et.org">info@ecran-et.org</a>
+            Email: <a :href="`mailto:${email}`">{{ email }}</a>
           </p>
         </section>
       </div>
