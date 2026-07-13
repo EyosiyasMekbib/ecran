@@ -15,6 +15,9 @@
       "required": true,
       "default": "Ethiopian Child Rights Advocacy Network"
     },
+    "tagline": {
+      "type": "text"
+    },
     "mission": {
       "type": "text"
     },

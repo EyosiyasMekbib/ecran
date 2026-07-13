@@ -1,13 +1,14 @@
 <script setup lang="ts">
 // Sourced from the Strapi CMS at build/SSR time, with static fallback (see composables/useStrapi.ts).
 const { data: impactStories } = await useAsyncData('impact-stories', () => getImpactStories())
+const { data: page } = await useAsyncData('page-impact-stories', () => getPage('impact-stories'))
 </script>
 
 <template>
   <PageHero
     eyebrow="Impact stories"
-    title="Stories from ECRAN’s network of child-rights advocates."
-    text="These stories highlight how shared evidence, member coordination, and policy dialogue help child-rights work travel further."
+    :title="page?.heroTitle || 'Stories from ECRAN’s network of child-rights advocates.'"
+    :text="page?.heroText || 'These stories highlight how shared evidence, member coordination, and policy dialogue help child-rights work travel further.'"
   />
 
   <section class="news-section">
