@@ -27,6 +27,11 @@
     "summary": {
       "type": "text"
     },
+    "topic": {
+      "type": "enumeration",
+      "enum": ["Child Protection", "Participation", "Advocacy", "Capacity Building"],
+      "default": "Advocacy"
+    },
     "document": {
       "type": "media",
       "multiple": false,

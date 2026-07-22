@@ -1,0 +1,25 @@
+name: CMS content sync
+
+on:
+  push:
+    branches: [main]
+    paths: ['content/**', 'scripts/cms/**']
+  workflow_dispatch:
+
+concurrency:
+  group: content-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Apply content to Strapi
+        env:
+          STRAPI_URL: https://cms.ecran-et.com
+          STRAPI_API_TOKEN: ${{ secrets.STRAPI_API_TOKEN }}
+        run: node scripts/cms/apply-content.mjs

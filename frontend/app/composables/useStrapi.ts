@@ -53,6 +53,86 @@ export async function getImpactStories() {
   }))
 }
 
+/**
+ * Posts (news / vacancy / bid / announcement / media), newest first.
+ * Returns [] when the CMS has none — callers decide their own fallback.
+ */
+export async function getPosts(category?: 'news' | 'vacancy' | 'bid' | 'announcement' | 'media') {
+  const query: Record<string, unknown> = { sort: 'publishDate:desc' }
+  if (category) query['filters[category][$eq]'] = category
+  const rows = await fetchCollection('posts', query)
+  return rows.map((e: any) => ({
+    title: e.title,
+    slug: e.slug,
+    category: e.category,
+    excerpt: e.excerpt || '',
+    body: e.body || '',
+    date: e.publishDate
+      ? new Date(e.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+      : '',
+    deadline: e.deadline
+      ? new Date(e.deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+      : '',
+    location: e.location || '',
+    image: strapiMedia(e.featuredImage?.url),
+    attachments: (e.attachment || []).map((a: any) => ({ name: a.name, url: strapiMedia(a.url) })),
+    externalUrl: e.externalUrl || ''
+  }))
+}
+
+/** Team members ordered by `order`. Returns [] when CMS has none. */
+export async function getTeamMembers() {
+  const rows = await fetchCollection('team-members', { sort: 'order:asc' })
+  return rows.map((e: any) => ({
+    name: e.name,
+    role: e.role || '',
+    bio: e.bio || '',
+    photo: strapiMedia(e.photo?.url)
+  }))
+}
+
+/** Member organizations ordered by `order`. Returns [] when CMS has none. */
+export async function getMemberOrgs() {
+  const rows = await fetchCollection('member-orgs', { sort: 'order:asc' })
+  return rows.map((e: any) => ({
+    name: e.name,
+    url: e.url || '',
+    logo: strapiMedia(e.logo?.url)
+  }))
+}
+
+/**
+ * A single Page entry by slug (hero + body + arbitrary `sections` JSON).
+ * Returns null when missing so callers keep their baked-in fallback copy.
+ */
+export async function getPage(slug: string) {
+  const rows = await fetchCollection('pages', { 'filters[slug][$eq]': slug })
+  const e = rows[0]
+  if (!e) return null
+  return {
+    title: e.title,
+    heroTitle: e.heroTitle || e.title,
+    heroText: e.heroText || '',
+    body: e.body || '',
+    sections: e.sections || null,
+    heroImage: strapiMedia(e.heroImage?.url),
+    seoTitle: e.seoTitle || e.title,
+    seoDescription: e.seoDescription || ''
+  }
+}
+
+/** Site profile single type (org info, contact details). Returns null when missing. */
+export async function getSiteProfile() {
+  try {
+    const res = await $fetch<{ data: any }>(`${useStrapiUrl()}/api/site-profile`, {
+      query: { populate: '*' }
+    })
+    return res?.data || null
+  } catch {
+    return null
+  }
+}
+
 /** Homepage resource cards: `{ type, title, meta }`. Falls back to static data. */
 export async function getResourceCards() {
   const rows = await fetchCollection('resources', { sort: 'publishedOn:desc' })

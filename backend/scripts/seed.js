@@ -42,12 +42,174 @@ const SITE_PROFILE = {
   legalStatus: 'Registered as a local organization under Proclamation No. 1113/2019.',
   registrationNumber: '7750',
   email: 'info@ecran-et.org',
+  address: 'Addis Ababa, Ethiopia',
+  tagline: 'Evidence-based advocacy for every Ethiopian child to survive, develop, be protected, and participate',
 };
+
+// News-area posts (single collection, category field). Mirrors the copy the
+// frontend ships as fallback so the CMS starts fully populated.
+const POSTS = [
+  { title: 'National Child Rights Advocacy Summit 2026 Announced', category: 'news', publishDate: '2026-05-15', excerpt: 'ECRAN is hosting the annual Child Rights Advocacy Summit next month in Addis Ababa, convening civil society organizations, government officials, and international development partners to align on national child protection policies.' },
+  { title: 'Launch of the CSOs Complimentary Report on Child Rights', category: 'news', publishDate: '2026-04-28', excerpt: 'We are pleased to announce the upcoming launch of our Complimentary Report on the implementation of the UN Convention on the Rights of the Child (UNCRC) in Ethiopia. A stakeholder validation workshop will be held next week.' },
+  { title: 'Advocacy & Child Safeguarding Training for Member CSOs', category: 'news', publishDate: '2026-04-12', excerpt: 'ECRAN will conduct a three-day intensive capacity building workshop focusing on child-led advocacy, ethical participation, and community protection systems for member organizations in the regional states.' },
+  { title: 'Senior Policy Advocacy Officer', category: 'vacancy', publishDate: '2026-05-01', deadline: '2026-06-05', location: 'Addis Ababa, Ethiopia', excerpt: 'ECRAN is looking for an experienced advocate to lead our policy engagement and coordinate research initiatives, translating child-rights field evidence into policy briefs.' },
+  { title: 'Monitoring, Evaluation, & Learning (MEL) Specialist', category: 'vacancy', publishDate: '2026-05-01', deadline: '2026-06-12', location: 'Addis Ababa (with regional travel)', excerpt: 'We are seeking a MEL Specialist to design and implement monitoring systems across network activities, helping to track the implementation of regional and national child-rights advocacy.' },
+  { title: 'Consultancy Service: Midterm Review of ECRAN Strategic Plan', category: 'bid', publishDate: '2026-05-10', deadline: '2026-06-02', location: 'ECRAN/RFP/2026/04', excerpt: 'ECRAN invites qualified national consultants to submit proposals to conduct a comprehensive midterm review of our 5-year strategic plan, evaluating advocacy outcomes, partnership efficacy, and internal operations.' },
+  { title: 'Supply and Delivery of IT Equipment and Networking Hardware', category: 'bid', publishDate: '2026-04-15', deadline: '2026-05-05', location: 'ECRAN/IT/2026/02', excerpt: 'Bids are invited from eligible vendors for the supply of laptops, desktops, server infrastructure, and network configurations to support our new regional coordination nodes.' },
+  { title: 'Joint Statement on Regional Child Rights Compliance in Ethiopia', category: 'media', publishDate: '2026-05-10', location: 'Press Release', excerpt: 'Read the official statement jointly released by ECRAN and member CSOs regarding policy compliance checks across regional child protection structures.' },
+  { title: 'Consultative Assembly on Child Protection Systems', category: 'media', publishDate: '2026-05-02', location: 'Gallery', excerpt: 'Photos and summaries from the multi-stakeholder policy dialogue convening 40+ member network delegates.' },
+  { title: 'ECRAN Announces General Assembly & Executive Council Election Results', category: 'media', publishDate: '2026-04-15', location: 'Press Release', excerpt: 'The network is proud to share updates from its first formal General Assembly, highlighting the appointment of its new Executive board members.' },
+];
+
+// Editable copy for every static page (slug is what the frontend queries).
+const PAGES = [
+  {
+    title: 'Home', slug: 'home',
+    heroTitle: 'Evidence-led advocacy for every child in Ethiopia.',
+    heroText: "ECRAN brings partners, communities, and decision-makers together to turn evidence into action for children's rights.",
+    sections: {
+      showcaseTitle: 'A stronger public platform for child-rights evidence, partnership, and accountability.',
+      showcaseText: 'ECRAN connects field experience, civil society coordination, and policy dialogue so advocacy work can move with a shared public mandate.',
+      objectives: [
+        { range: '01, 09', title: 'Coordinate the network', text: 'Align CSOs, CBOs, members, and national or regional partners around a shared child-rights advocacy agenda.', items: ['Coordinate efforts by CSOs and Community-Based Organizations engaged in advocacy and promotion of the rights of children.', 'Establish and strengthen partnerships and membership with other networks at national, regional and international level.'] },
+        { range: '02, 03, 05', title: 'Influence policy and accountability', text: 'Work with public institutions and development partners to shape policy, monitor commitments, and support reporting.', items: ['Liaise with government departments, line ministries and development partners on policy formulation, implementation and monitoring of child-rights instruments.', "Contribute to CSO complementary reports on Ethiopia's commitments to UN and African child-rights mechanisms.", "Work with duty bearers and stakeholders to monitor national, regional and international frameworks concerning children's rights."] },
+        { range: '04, 06, 10', title: 'Build capacity and dialogue', text: 'Equip members, leaders, and institutions to advocate, share data, and respond to common challenges facing children.', items: ['Build member capacity in advocacy work, data organization, child-rights promotion, and program development across Ethiopia.', 'Organize dialogue platforms for members to deliberate on shared challenges faced by children and practical ways to address them.', 'Organize training and advocacy programs for public, private, and not-for-profit leaders to become competent child-rights advocates.'] },
+        { range: '07, 08', title: 'Generate evidence for action', text: 'Produce research, briefs, reports, and information products that help decision-makers design better interventions for children.', items: ['Undertake basic and action-oriented research, serve as a data clearing house, and produce physical and web-based reports for child-focused programs.', "Prepare evidence-based policy papers and briefs on children's rights for policy makers and practitioners."] },
+      ],
+    },
+  },
+  {
+    title: 'Impact Stories', slug: 'impact-stories',
+    heroTitle: "Stories from ECRAN's network of child-rights advocates.",
+    heroText: 'These stories highlight how shared evidence, member coordination, and policy dialogue help child-rights work travel further.',
+  },
+  {
+    title: 'News Hub', slug: 'news-hub',
+    heroTitle: 'ECRAN news hub',
+    heroText: "Follow ECRAN's progress, explore career opportunities, browse media releases, and view active procurement notices.",
+    sections: {
+      cards: [
+        { title: 'News', text: "Read about ECRAN's latest public updates, child-rights summits, workshops, and network reports.", linkLabel: 'Go to news', linkTo: '/news/news' },
+        { title: 'Media Center', text: "Access ECRAN's press statements, official joint releases, and multi-stakeholder gallery archives.", linkLabel: 'Go to media center', linkTo: '/news/media-center' },
+        { title: 'Vacancies', text: "Join ECRAN's team. Explore professional roles, consultancies, and career paths in child-rights advocacy.", linkLabel: 'Go to vacancies', linkTo: '/news/vacancies' },
+        { title: 'Bids & Tenders', text: 'View open requests for proposals, consultancy services, and procurement notices for ECRAN projects.', linkLabel: 'Go to bids', linkTo: '/news/bids' },
+      ],
+    },
+  },
+  { title: 'News', slug: 'news', heroTitle: 'News & Updates', heroText: "Stay up to date with ECRAN's latest public announcements, press releases, events, advocacy campaigns, and workshops." },
+  { title: 'Vacancies', slug: 'vacancies', heroTitle: 'Vacancies', heroText: "Join ECRAN and help us shape policy, build community capacity, and protect children's rights across Ethiopia." },
+  { title: 'Announcements', slug: 'announcements', heroTitle: 'News & Announcements', heroText: "Stay up to date with ECRAN's latest public announcements, press releases, events, advocacy campaigns, and workshops." },
+  { title: 'Bids', slug: 'bids', heroTitle: 'Bids & Tenders', heroText: 'View open procurement bids, requests for proposals (RFPs), and consultancy opportunities with ECRAN.' },
+  { title: 'Media Center', slug: 'media-center', heroTitle: 'Media Center', heroText: 'Access press releases, official statements, event photo galleries, and institutional video resources.' },
+  { title: 'Contact', slug: 'contact', heroTitle: 'Reach ECRAN for inquiries, partnership conversations, and resource coordination.', heroText: 'Have a question or want to get involved? Use the form below to get in touch with our team or find our office location details.', body: 'Our team is available to discuss collaborations, policy questions, and membership processes. We aim to respond to all inquiries within two business days.' },
+  {
+    title: 'Our Team', slug: 'our-team',
+    heroTitle: 'Small enough to stay focused, connected enough to support a national platform.',
+    heroText: 'The team works with board leadership, members, partners, and stakeholders to coordinate advocacy priorities, manage organizational communication, and support resource mobilization for child-rights work.',
+    body: "Meet the coordination team supporting ECRAN's members, board, and partners.",
+    sections: { principles: ['Evidence before messaging', 'Safeguarding in every engagement', 'Clear accountability to members', 'Practical coordination over visibility for its own sake'] },
+  },
+  {
+    title: 'Our Members', slug: 'our-members',
+    heroTitle: 'Members make the work credible because they stay close to children, families, and local systems.',
+    heroText: 'ECRAN is designed for organizations and practitioners committed to child protection, participation, development, and evidence-led policy engagement. The network helps members move from isolated learning to coordinated advocacy.',
+    body: 'Member profiles are structured around contribution, geography, and child-rights focus areas so visitors can understand how the network works in practice.',
+    sections: { commitments: ['Child safeguarding and ethical participation', 'Evidence-informed public communication', 'Respectful coordination across civil society', 'Practical learning that can be shared'] },
+  },
+  {
+    title: 'Who We Are', slug: 'who-we-are',
+    heroTitle: 'An Ethiopian network built for credible, coordinated child-rights advocacy.',
+    heroText: 'ECRAN is an independent not-for-profit organization established in 2025 and registered by the Agency for Civil Societies Organizations as a local organization.',
+    body: 'The network strengthens visibility, communication, partnership engagement, and resource mobilization for child-rights work in Ethiopia. It exists to help members and partners move from fragmented concern to coordinated advocacy.',
+    sections: { backgroundTitle: 'Designed to connect evidence with the people who can act on it.' },
+  },
+  {
+    title: 'About Us', slug: 'about-us',
+    heroTitle: 'An Ethiopian child-rights advocacy network built around evidence, coordination, and accountability.',
+    heroText: "ECRAN brings civil society actors, technical partners, and public stakeholders around a shared agenda for children's survival, development, protection, and participation.",
+    body: 'Established in 2025, ECRAN strengthens visibility, communication, partnership engagement, and resource mobilization for child-rights work in Ethiopia. The network helps turn fragmented concern into coordinated, evidence-led advocacy.',
+  },
+  {
+    title: 'Get Involved', slug: 'get-involved',
+    heroTitle: 'Partner with ECRAN to strengthen child-rights advocacy in Ethiopia.',
+    heroText: 'ECRAN works with civil society organizations, public institutions, donors, researchers, and community actors who want evidence to move into coordinated action.',
+    sections: {
+      cards: [
+        { title: 'Become a member', text: 'Join a coordinated network of organizations committed to child survival, development, protection, and participation.', linkLabel: 'Start a membership inquiry', linkTo: '/contact' },
+        { title: 'Partner on advocacy', text: 'Collaborate on evidence briefs, policy dialogue, public campaigns, and shared accountability moments.', linkLabel: 'Explore current resources', linkTo: '/resources' },
+        { title: 'Support capacity building', text: 'Help member organizations strengthen safeguarding practice, data use, child participation, and advocacy planning.', linkLabel: 'View member network', linkTo: '/who-we-are/our-members' },
+        { title: 'Share opportunities', text: "Send consultancies, events, procurement notices, and coalition opportunities that can serve ECRAN's members.", linkLabel: 'Contact the coordination team', linkTo: '/contact' },
+      ],
+    },
+  },
+  {
+    title: 'Our Works', slug: 'our-works',
+    heroTitle: 'Programs and initiatives advancing child rights across Ethiopia.',
+    heroText: 'ECRAN coordinates evidence-based programs that strengthen child protection systems, participation, and policy advocacy at national and regional levels.',
+    body: "Our works span research, capacity building, policy dialogue, and direct network coordination — all focused on turning field learning into change for children's rights in Ethiopia.",
+    sections: {
+      approachTitle: 'From evidence to coordinated action for children.',
+      cards: [
+        { title: 'ASFP', text: "Advocacy and Social Frontline Program — coordinating frontline civil society actors for stronger child-rights advocacy across Ethiopia's regions.", linkLabel: 'Learn about ASFP', linkTo: '/our-works/asfp' },
+        { title: 'Evidence & Policy', text: 'Turning research, field learning, and child-rights data into policy asks that decision makers can act on.' },
+        { title: 'Child Protection Systems', text: 'Supporting stronger prevention, reporting, referral, and response pathways for children at risk of violence or neglect.' },
+        { title: 'Child Participation', text: 'Creating safe spaces where children and young people can contribute to decisions that affect their lives.' },
+      ],
+    },
+  },
+  {
+    title: 'ASFP', slug: 'asfp',
+    heroTitle: 'Advocacy and Social Frontline Program',
+    heroText: "ASFP coordinates frontline civil society organizations to strengthen child-rights advocacy, protection systems, and community-level accountability across Ethiopia's regions.",
+    body: 'ASFP builds structured bridges between community-level practitioners, regional networks, and national policy processes — ensuring the realities children face inform the decisions that shape their futures.',
+    sections: {
+      focusTitle: 'Bringing frontline voices into national policy dialogue.',
+      ctaTitle: 'Join the ASFP coalition.',
+      ctaText: 'Organizations working at the frontline of child-rights advocacy in Ethiopia are invited to connect with ECRAN and explore how ASFP can strengthen their work.',
+      cards: [
+        { title: 'Frontline Coordination', text: 'Connecting CSOs and CBOs working directly with children into a structured advocacy coalition with a shared public mandate.' },
+        { title: 'Capacity Building', text: 'Equipping member organizations with evidence tools, advocacy skills, and data practices that strengthen their field work.' },
+        { title: 'Policy Interface', text: 'Translating frontline evidence into concise briefs, reports, and dialogue moments with public institutions and development partners.' },
+        { title: 'Community Accountability', text: "Supporting local-level monitoring of children's rights commitments and creating feedback pathways between communities and decision-makers." },
+      ],
+    },
+  },
+  {
+    title: 'Privacy Policy', slug: 'privacy-policy',
+    heroTitle: 'Privacy Policy',
+    sections: {
+      lastUpdated: 'June 2026',
+      blocks: [
+        { lead: 'ECRAN is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal information when you visit our website or interact with our organization.' },
+        { title: 'Information We Collect', paragraphs: ["We collect personal information — such as your name and email address — only when you voluntarily contact us or subscribe to our updates. We also gather non-personal data through cookies to improve our website's performance and user experience."] },
+        { title: 'How We Use Your Information', paragraphs: ['We use your information to:'], list: ['Respond to your inquiries and messages', 'Send advocacy updates and relevant communications', 'Enhance and improve our services'] },
+        { title: "Children's Privacy", paragraphs: ["We take children's privacy seriously. ECRAN does not knowingly collect data from children under 18 without verifiable parental consent. If you believe we have inadvertently collected such information, please contact us immediately."] },
+        { title: 'Your Rights', paragraphs: ['You have the right to access, correct, or request deletion of your personal data at any time. To exercise these rights or for any privacy-related questions, please contact us.'] },
+      ],
+    },
+  },
+  {
+    title: 'Terms of Service', slug: 'terms-of-service',
+    heroTitle: 'Terms of Service',
+    sections: {
+      lastUpdated: 'June 2026',
+      blocks: [
+        { lead: 'By using the ECRAN website, you agree to these Terms of Service. Please read them carefully before accessing or using our site.' },
+        { title: 'Permitted Use', paragraphs: ['You may use this website for lawful, non-commercial purposes only. Any use of this site for illegal activities or in violation of applicable laws is strictly prohibited.'] },
+        { title: 'Intellectual Property', paragraphs: ['All content on this website — including text, images, and reports — belongs to ECRAN or its partners and is protected by copyright. No reproduction or commercial use of any content is permitted without prior written permission from ECRAN.'] },
+        { title: 'Disclaimer of Warranties', paragraphs: ['We provide information on this website in good faith but make no guarantees regarding its accuracy, completeness, or fitness for any particular purpose. Content may be updated without notice.'] },
+        { title: 'Limitation of Liability', paragraphs: ['ECRAN is not liable for any direct, indirect, incidental, or consequential damages arising from your use of, or inability to use, this website or its content.'] },
+        { title: 'Governing Law', paragraphs: ['These Terms are governed by and construed in accordance with the laws of Ethiopia. Any disputes arising under these Terms shall be subject to the jurisdiction of Ethiopian courts.'] },
+        { title: 'Changes to These Terms', paragraphs: ['We may update these Terms at any time. Continued use of the website after any changes constitutes your acceptance of the revised Terms.'] },
+      ],
+    },
+  },
+];
 
 async function seedCollection(strapi, uid, rows) {
   let created = 0;
   for (const row of rows) {
-    const slug = slugify(row.title);
+    const slug = row.slug || slugify(row.title);
     const existing = await strapi.documents(uid).findMany({ filters: { slug }, status: 'published' });
     if (existing && existing.length) {
       console.log(`  skip (exists): ${uid} "${row.title}"`);
@@ -80,6 +242,8 @@ async function seedSingle(strapi, uid, data) {
     await seedCollection(strapi, 'api::program.program', PROGRAMS);
     await seedCollection(strapi, 'api::impact-story.impact-story', IMPACT_STORIES);
     await seedCollection(strapi, 'api::resource.resource', RESOURCES);
+    await seedCollection(strapi, 'api::post.post', POSTS);
+    await seedCollection(strapi, 'api::page.page', PAGES);
     await seedSingle(strapi, 'api::site-profile.site-profile', SITE_PROFILE);
     console.log('Seed complete.');
   } catch (err) {

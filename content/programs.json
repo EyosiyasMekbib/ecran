@@ -1,0 +1,26 @@
+[
+  {
+    "title": "Evidence and Policy Advocacy",
+    "slug": "evidence-and-policy-advocacy",
+    "summary": "Turning research, field learning, and child-rights data into policy asks that decision makers can act on.",
+    "order": 1
+  },
+  {
+    "title": "Child Protection Systems",
+    "slug": "child-protection-systems",
+    "summary": "Supporting stronger prevention, reporting, referral, and response pathways for children at risk of violence or neglect.",
+    "order": 2
+  },
+  {
+    "title": "Child Participation",
+    "slug": "child-participation",
+    "summary": "Creating safe spaces where children and young people can contribute to decisions that affect their lives.",
+    "order": 3
+  },
+  {
+    "title": "Network Coordination",
+    "slug": "network-coordination",
+    "summary": "Bringing civil society members, technical partners, and community actors together around shared advocacy priorities.",
+    "order": 4
+  }
+]

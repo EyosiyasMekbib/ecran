@@ -1,5 +1,6 @@
 <script setup lang="ts">
-const items = [
+// Baked-in fallback — used only when the CMS has no published media posts.
+const fallback = [
   {
     type: 'Press Release',
     title: 'Joint Statement on Regional Child Rights Compliance in Ethiopia',
@@ -19,13 +20,26 @@ const items = [
     desc: 'The network is proud to share updates from its first formal General Assembly, highlighting the appointment of its new Executive board members.'
   }
 ]
+
+const { data: cmsPosts } = await useAsyncData('posts-media', () => getPosts('media'))
+const { data: page } = await useAsyncData('page-media-center', () => getPage('media-center'))
+const items = computed(() =>
+  cmsPosts.value?.length
+    ? cmsPosts.value.map((p) => ({
+        type: p.location || 'Press Release',
+        title: p.title,
+        date: p.date,
+        desc: p.excerpt
+      }))
+    : fallback
+)
 </script>
 
 <template>
   <PageHero
     class="news-hero"
-    title="Media Center"
-    text="Access press releases, official statements, event photo galleries, and institutional video resources."
+    :title="page?.heroTitle || 'Media Center'"
+    :text="page?.heroText || 'Access press releases, official statements, event photo galleries, and institutional video resources.'"
   />
 
   <section class="media-center-section">

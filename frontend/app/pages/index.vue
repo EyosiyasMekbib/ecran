@@ -9,6 +9,58 @@ useHead({
 // Sourced from the Strapi CMS at build/SSR time, with static fallback (see composables/useStrapi.ts).
 const { data: impactStories } = await useAsyncData('home-impact-stories', () => getImpactStories())
 const { data: resources } = await useAsyncData('home-resources', () => getResourceCards())
+const { data: page } = await useAsyncData('page-home', () => getPage('home'))
+const { data: profile } = await useAsyncData('site-profile', () => getSiteProfile())
+
+const mission = computed(() => profile.value?.mission || 'Promote evidence-based advocacy for child rights in Ethiopia.')
+const vision = computed(() => profile.value?.vision || 'A country where all children enjoy survival, development, protection, and participation rights.')
+const legalStatus = computed(() => profile.value?.legalStatus || 'Registered as a local organization under Proclamation No. 1113/2019.')
+
+// Objectives block (10 objectives → 4 workstreams) — CMS-managed via page `home`
+// sections.objectives; the current copy stays as fallback.
+const fallbackObjectives = [
+  {
+    range: '01, 09',
+    title: 'Coordinate the network',
+    text: 'Align CSOs, CBOs, members, and national or regional partners around a shared child-rights advocacy agenda.',
+    items: [
+      'Coordinate efforts by CSOs and Community-Based Organizations engaged in advocacy and promotion of the rights of children.',
+      'Establish and strengthen partnerships and membership with other networks at national, regional and international level.'
+    ]
+  },
+  {
+    range: '02, 03, 05',
+    title: 'Influence policy and accountability',
+    text: 'Work with public institutions and development partners to shape policy, monitor commitments, and support reporting.',
+    items: [
+      'Liaise with government departments, line ministries and development partners on policy formulation, implementation and monitoring of child-rights instruments.',
+      'Contribute to CSO complementary reports on Ethiopia’s commitments to UN and African child-rights mechanisms.',
+      'Work with duty bearers and stakeholders to monitor national, regional and international frameworks concerning children’s rights.'
+    ]
+  },
+  {
+    range: '04, 06, 10',
+    title: 'Build capacity and dialogue',
+    text: 'Equip members, leaders, and institutions to advocate, share data, and respond to common challenges facing children.',
+    items: [
+      'Build member capacity in advocacy work, data organization, child-rights promotion, and program development across Ethiopia.',
+      'Organize dialogue platforms for members to deliberate on shared challenges faced by children and practical ways to address them.',
+      'Organize training and advocacy programs for public, private, and not-for-profit leaders to become competent child-rights advocates.'
+    ]
+  },
+  {
+    range: '07, 08',
+    title: 'Generate evidence for action',
+    text: 'Produce research, briefs, reports, and information products that help decision-makers design better interventions for children.',
+    items: [
+      'Undertake basic and action-oriented research, serve as a data clearing house, and produce physical and web-based reports for child-focused programs.',
+      'Prepare evidence-based policy papers and briefs on children’s rights for policy makers and practitioners.'
+    ]
+  }
+]
+const objectives = computed(() =>
+  Array.isArray(page.value?.sections?.objectives) ? page.value.sections.objectives : fallbackObjectives
+)
 </script>
 
 <template>
@@ -26,9 +78,9 @@ const { data: resources } = await useAsyncData('home-resources', () => getResour
             <span>Child protection</span>
             <span>Participation</span>
           </div>
-          <h1>Evidence-led advocacy for every child in Ethiopia.</h1>
+          <h1>{{ page?.heroTitle || 'Evidence-led advocacy for every child in Ethiopia.' }}</h1>
           <p>
-            ECRAN brings partners, communities, and decision-makers together to turn evidence into action for children's rights.
+            {{ page?.heroText || `ECRAN brings partners, communities, and decision-makers together to turn evidence into action for children's rights.` }}
           </p>
           <div class="hero-actions">
             <NuxtLink to="/get-involved" class="button primary">Partner with ECRAN</NuxtLink>
@@ -62,9 +114,9 @@ const { data: resources } = await useAsyncData('home-resources', () => getResour
     <section class="story-section story-showcase">
       <div class="story-anchor">
         <p class="eyebrow">What ECRAN makes possible</p>
-        <h2>A stronger public platform for child-rights evidence, partnership, and accountability.</h2>
+        <h2>{{ page?.sections?.showcaseTitle || 'A stronger public platform for child-rights evidence, partnership, and accountability.' }}</h2>
         <p>
-          ECRAN connects field experience, civil society coordination, and policy dialogue so advocacy work can move with a shared public mandate.
+          {{ page?.sections?.showcaseText || 'ECRAN connects field experience, civil society coordination, and policy dialogue so advocacy work can move with a shared public mandate.' }}
         </p>
         <NuxtLink to="/who-we-are/about-us" class="story-link">Read about ECRAN</NuxtLink>
       </div>
@@ -73,21 +125,21 @@ const { data: resources } = await useAsyncData('home-resources', () => getResour
           <span>01</span>
           <div class="content">
             <p>Mission</p>
-            <h3>Promote evidence-based advocacy for child rights in Ethiopia.</h3>
+            <h3>{{ mission }}</h3>
           </div>
         </article>
         <article class="manifesto-item">
           <span>02</span>
           <div class="content">
             <p>Vision</p>
-            <h3>A country where all children enjoy survival, development, protection, and participation rights.</h3>
+            <h3>{{ vision }}</h3>
           </div>
         </article>
         <article class="manifesto-item">
           <span>03</span>
           <div class="content">
             <p>Legal status</p>
-            <h3>Registered as a local organization under Proclamation No. 1113/2019.</h3>
+            <h3>{{ legalStatus }}</h3>
           </div>
         </article>
       </div>
@@ -114,63 +166,15 @@ const { data: resources } = await useAsyncData('home-resources', () => getResour
       </aside>
 
       <div class="objective-themes">
-        <article class="objective-theme">
-          <span class="objective-range">01, 09</span>
+        <article v-for="theme in objectives" :key="theme.title" class="objective-theme">
+          <span class="objective-range">{{ theme.range }}</span>
           <div>
-            <h3>Coordinate the network</h3>
-            <p>Align CSOs, CBOs, members, and national or regional partners around a shared child-rights advocacy agenda.</p>
+            <h3>{{ theme.title }}</h3>
+            <p>{{ theme.text }}</p>
             <details>
               <summary>Read formal objectives</summary>
               <ul>
-                <li>Coordinate efforts by CSOs and Community-Based Organizations engaged in advocacy and promotion of the rights of children.</li>
-                <li>Establish and strengthen partnerships and membership with other networks at national, regional and international level.</li>
-              </ul>
-            </details>
-          </div>
-        </article>
-
-        <article class="objective-theme">
-          <span class="objective-range">02, 03, 05</span>
-          <div>
-            <h3>Influence policy and accountability</h3>
-            <p>Work with public institutions and development partners to shape policy, monitor commitments, and support reporting.</p>
-            <details>
-              <summary>Read formal objectives</summary>
-              <ul>
-                <li>Liaise with government departments, line ministries and development partners on policy formulation, implementation and monitoring of child-rights instruments.</li>
-                <li>Contribute to CSO complementary reports on Ethiopia’s commitments to UN and African child-rights mechanisms.</li>
-                <li>Work with duty bearers and stakeholders to monitor national, regional and international frameworks concerning children’s rights.</li>
-              </ul>
-            </details>
-          </div>
-        </article>
-
-        <article class="objective-theme">
-          <span class="objective-range">04, 06, 10</span>
-          <div>
-            <h3>Build capacity and dialogue</h3>
-            <p>Equip members, leaders, and institutions to advocate, share data, and respond to common challenges facing children.</p>
-            <details>
-              <summary>Read formal objectives</summary>
-              <ul>
-                <li>Build member capacity in advocacy work, data organization, child-rights promotion, and program development across Ethiopia.</li>
-                <li>Organize dialogue platforms for members to deliberate on shared challenges faced by children and practical ways to address them.</li>
-                <li>Organize training and advocacy programs for public, private, and not-for-profit leaders to become competent child-rights advocates.</li>
-              </ul>
-            </details>
-          </div>
-        </article>
-
-        <article class="objective-theme">
-          <span class="objective-range">07, 08</span>
-          <div>
-            <h3>Generate evidence for action</h3>
-            <p>Produce research, briefs, reports, and information products that help decision-makers design better interventions for children.</p>
-            <details>
-              <summary>Read formal objectives</summary>
-              <ul>
-                <li>Undertake basic and action-oriented research, serve as a data clearing house, and produce physical and web-based reports for child-focused programs.</li>
-                <li>Prepare evidence-based policy papers and briefs on children’s rights for policy makers and practitioners.</li>
+                <li v-for="item in theme.items" :key="item">{{ item }}</li>
               </ul>
             </details>
           </div>
