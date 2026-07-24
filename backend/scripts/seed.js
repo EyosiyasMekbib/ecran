@@ -29,10 +29,12 @@ const IMPACT_STORIES = [
 ];
 
 const RESOURCES = [
-  { title: 'ECRAN organizational profile 2025', resourceType: 'Annual report', summary: 'PDF, coming soon' },
-  { title: 'Child participation in local decision making', resourceType: 'Policy brief', summary: 'Brief, coming soon' },
-  { title: 'Evidence standards for child-rights advocacy', resourceType: 'Publication', summary: 'Guide, coming soon' },
-  { title: 'Partner inquiry and membership pack', resourceType: 'Toolkit', summary: 'Download, coming soon' },
+  { title: 'ECRAN organizational profile 2025', resourceType: 'Annual report', topic: 'Capacity Building', publishedOn: '2025-12-15', summary: "A comprehensive review of ECRAN's network achievements, financial statements, member directory, and strategic milestones reached throughout 2025." },
+  { title: 'Child participation in local decision making', resourceType: 'Policy brief', topic: 'Participation', publishedOn: '2026-03-10', summary: 'Frameworks and practical recommendations to enhance meaningful child and youth participation in sub-city governance and community committees.' },
+  { title: 'Evidence standards for child-rights advocacy', resourceType: 'Publication', topic: 'Advocacy', publishedOn: '2026-01-20', summary: 'Guidelines for civil society organizations on collecting, validating, and presenting field evidence to support policy advocacy with government ministries.' },
+  { title: 'Partner inquiry and membership pack', resourceType: 'Toolkit', topic: 'Capacity Building', publishedOn: '2026-04-05', summary: 'Information package and registration toolkit for organizations and community-based groups seeking formal ECRAN membership.' },
+  { title: 'Ethiopia child protection systems mapping report', resourceType: 'Annual report', topic: 'Child Protection', publishedOn: '2025-09-30', summary: 'An in-depth mapping of prevention, response, and referral systems for child safeguarding across formal government structures and local communities.' },
+  { title: 'Safeguarding and ethical engagement toolkit', resourceType: 'Toolkit', topic: 'Child Protection', publishedOn: '2026-02-14', summary: "Practical tools, consent forms, and protocol checklists to ensure children's safety and ethical participation during advocacy campaigns and public dialogue." },
 ];
 
 const SITE_PROFILE = {
@@ -181,6 +183,33 @@ const PAGES = [
     heroTitle: 'An Ethiopian child-rights advocacy network built around evidence, coordination, and accountability.',
     heroText: "ECRAN brings civil society actors, technical partners, and public stakeholders around a shared agenda for children's survival, development, protection, and participation.",
     body: 'Established in 2025, ECRAN strengthens visibility, communication, partnership engagement, and resource mobilization for child-rights work in Ethiopia. The network helps turn fragmented concern into coordinated, evidence-led advocacy.',
+    sections: {
+      heroEyebrow: 'About ECRAN',
+      purposeEyebrow: 'Purpose',
+      purposeTitle: "Connecting field realities with the advocacy decisions that shape children's lives.",
+      objectivesEyebrow: 'Network Objectives',
+      objectivesTitle: 'Ten commitments turned into four workstreams.',
+      objectivesSub: 'Each cluster organises the formal objectives into a working logic: network coordination, policy influence, capacity building, and evidence generation.',
+      heroMeta: [
+        { strong: 'Est.', text: '2025' },
+        { strong: 'Reg.', text: 'ACSO No. 7750' },
+        { strong: '10', text: 'objectives' },
+        { strong: '4', text: 'focus areas' },
+      ],
+      pillars: [
+        { index: '01', name: 'Evidence', desc: 'Grounding every position in field data and documented realities.' },
+        { index: '02', name: 'Coordination', desc: 'Aligning CSOs, partners, and communities around a shared agenda.' },
+        { index: '03', name: 'Accountability', desc: 'Holding duty-bearers to national and international child-rights commitments.' },
+      ],
+      howWeWork: { title: 'How We Work', text: 'Listen to communities, document evidence, convene partners, and advocate for policy and practice changes children can feel.' },
+      objectives: [
+        { range: '01, 09', title: 'Coordinate the Network', open: true, summary: 'Align CSOs, CBOs, members, and national or regional partners around a shared child-rights advocacy agenda.', items: ['Coordinate efforts by CSOs and Community-Based Organizations engaged in advocacy and promotion of the rights of children.', 'Establish and strengthen partnerships and membership with other networks at national, regional, and international levels.'] },
+        { range: '02, 03, 05', title: 'Influence Policy & Accountability', summary: 'Work with public institutions and development partners to shape policy, monitor commitments, and support reporting.', items: ['Liaise with government departments, line ministries, and development partners on policy formulation, implementation, and monitoring of child-rights instruments.', "Contribute to CSO complementary reports on Ethiopia's commitments to UN and African child-rights mechanisms.", "Work with duty-bearers and stakeholders to monitor national, regional, and international frameworks concerning children's rights."] },
+        { range: '04, 06, 10', title: 'Build Capacity & Dialogue', summary: 'Equip members, leaders, and institutions to advocate, share data, and respond to common challenges facing children.', items: ['Build member capacity in advocacy work, data organisation, child-rights promotion, and program development across Ethiopia.', 'Organise dialogue platforms for members to deliberate on shared challenges faced by children and practical ways to address them.', 'Organise training and advocacy programs for public, private, and not-for-profit leaders to become competent child-rights advocates.'] },
+        { range: '07, 08', title: 'Generate Evidence for Action', summary: 'Produce research, briefs, reports, and information products that help decision-makers design better interventions for children.', items: ['Undertake basic and action-oriented research, serve as a data clearing house, and produce physical and web-based reports for child-focused programs.', "Prepare evidence-based policy papers and briefs on children's rights for policy makers and practitioners."] },
+      ],
+      cta: { title: 'Ready to advance child rights in Ethiopia?', text: 'Join the network, share evidence, or partner with ECRAN to build a stronger public mandate for every child.', primaryLabel: 'Partner with ECRAN', primaryTo: '/get-involved', secondaryLabel: 'View network members', secondaryTo: '/who-we-are/our-members' },
+    },
   },
   {
     title: 'Get Involved', slug: 'get-involved',
@@ -257,15 +286,30 @@ const PAGES = [
       ],
     },
   },
+  {
+    title: 'Resources', slug: 'resources',
+    heroTitle: 'Resource Repository',
+    heroText: 'Browse ECRAN reports, policy briefs, publications, and toolkits — filter by type and topic to find what you need.',
+    sections: {
+      filterTypes: ['All', 'Report', 'Policy Brief', 'Publication', 'Toolkit'],
+      filterTopics: ['All', 'Child Protection', 'Participation', 'Advocacy', 'Capacity Building'],
+    },
+  },
 ];
 
-async function seedCollection(strapi, uid, rows) {
+async function seedCollection(strapi, uid, rows, upsert = false) {
   let created = 0;
   for (const row of rows) {
     const slug = row.slug || slugify(row.title);
     const existing = await strapi.documents(uid).findMany({ filters: { slug }, status: 'published' });
     if (existing && existing.length) {
-      console.log(`  skip (exists): ${uid} "${row.title}"`);
+      if (upsert) {
+        await strapi.documents(uid).update({ documentId: existing[0].documentId, data: { ...row, slug } });
+        await strapi.documents(uid).publish({ documentId: existing[0].documentId });
+        console.log(`  updated: ${uid} "${row.title}"`);
+      } else {
+        console.log(`  skip (exists): ${uid} "${row.title}"`);
+      }
       continue;
     }
     const doc = await strapi.documents(uid).create({ data: { ...row, slug } });
@@ -276,10 +320,16 @@ async function seedCollection(strapi, uid, rows) {
   return created;
 }
 
-async function seedSingle(strapi, uid, data) {
+async function seedSingle(strapi, uid, data, upsert = false) {
   const current = await strapi.documents(uid).findFirst({ status: 'published' });
   if (current && current.organizationName) {
-    console.log(`  skip (exists): ${uid}`);
+    if (upsert) {
+      await strapi.documents(uid).update({ documentId: current.documentId, data });
+      await strapi.documents(uid).publish({ documentId: current.documentId });
+      console.log(`  updated: ${uid}`);
+    } else {
+      console.log(`  skip (exists): ${uid}`);
+    }
     return 0;
   }
   const doc = await strapi.documents(uid).create({ data });
@@ -289,10 +339,16 @@ async function seedSingle(strapi, uid, data) {
 }
 
 // Generic single-type seeder: create + publish if none exists yet.
-async function seedSingleGeneric(strapi, uid, data) {
+async function seedSingleGeneric(strapi, uid, data, upsert = false) {
   const current = await strapi.documents(uid).findFirst({ status: 'published' });
   if (current) {
-    console.log(`  skip (exists): ${uid}`);
+    if (upsert) {
+      await strapi.documents(uid).update({ documentId: current.documentId, data });
+      await strapi.documents(uid).publish({ documentId: current.documentId });
+      console.log(`  updated: ${uid}`);
+    } else {
+      console.log(`  skip (exists): ${uid}`);
+    }
     return 0;
   }
   const doc = await strapi.documents(uid).create({ data });
@@ -306,17 +362,18 @@ async function seedSingleGeneric(strapi, uid, data) {
  * (skips entries whose slug already exists). Called both by the CLI wrapper
  * below and by the app bootstrap (src/index.ts) on a fresh/empty database.
  */
-async function runSeed(strapi) {
+async function runSeed(strapi, opts = {}) {
+  const upsert = !!opts.upsert;
   const log = (strapi && strapi.log) || console;
-  log.info('Seeding ECRAN content...');
-  await seedCollection(strapi, 'api::program.program', PROGRAMS);
-  await seedCollection(strapi, 'api::impact-story.impact-story', IMPACT_STORIES);
-  await seedCollection(strapi, 'api::resource.resource', RESOURCES);
-  await seedCollection(strapi, 'api::post.post', POSTS);
-  await seedCollection(strapi, 'api::page.page', PAGES);
-  await seedSingle(strapi, 'api::site-profile.site-profile', SITE_PROFILE);
-  await seedSingleGeneric(strapi, 'api::global.global', GLOBAL);
-  await seedSingleGeneric(strapi, 'api::navigation.navigation', NAVIGATION);
+  log.info(`Seeding ECRAN content${upsert ? ' (upsert)' : ''}...`);
+  await seedCollection(strapi, 'api::program.program', PROGRAMS, upsert);
+  await seedCollection(strapi, 'api::impact-story.impact-story', IMPACT_STORIES, upsert);
+  await seedCollection(strapi, 'api::resource.resource', RESOURCES, upsert);
+  await seedCollection(strapi, 'api::post.post', POSTS, upsert);
+  await seedCollection(strapi, 'api::page.page', PAGES, upsert);
+  await seedSingle(strapi, 'api::site-profile.site-profile', SITE_PROFILE, upsert);
+  await seedSingleGeneric(strapi, 'api::global.global', GLOBAL, upsert);
+  await seedSingleGeneric(strapi, 'api::navigation.navigation', NAVIGATION, upsert);
   log.info('Seed complete.');
 }
 

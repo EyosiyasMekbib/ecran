@@ -75,13 +75,16 @@ export default {
     try {
       const hasPrograms = await strapi.documents('api::program.program').findFirst({});
       const hasGlobal = await strapi.documents('api::global.global').findFirst({});
-      if (!hasPrograms || !hasGlobal) {
-        strapi.log.info('Seeding starter content (missing content detected)...');
+      // RESEED=1 forces an idempotent UPSERT of all seed content onto an existing
+      // DB (e.g. to push newly-added page sections). Unset it after the one-off run.
+      const reseed = process.env.RESEED === '1';
+      if (!hasPrograms || !hasGlobal || reseed) {
+        strapi.log.info(reseed ? 'RESEED=1 — upserting all seed content...' : 'Seeding starter content (missing content detected)...');
         // Loaded via a runtime path so the bundler doesn't resolve scripts/
         // (outside src/) at build time. __dirname === dist/src at runtime.
         const seedPath = require('path').join(__dirname, '..', '..', 'scripts', 'seed.js');
         const { runSeed } = require(seedPath);
-        await runSeed(strapi);
+        await runSeed(strapi, { upsert: reseed });
       }
     } catch (err: any) {
       strapi.log.error(`Auto-seed failed: ${err?.message ?? err}`);
