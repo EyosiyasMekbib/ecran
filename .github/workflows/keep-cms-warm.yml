@@ -1,0 +1,54 @@
+name: Keep CMS warm
+
+# Pings the Strapi CMS on a schedule so it never sits idle long enough to spin
+# down under cPanel/Passenger (cold boot = 7-10s = admin views stuck loading).
+#
+# Targets a DB-touching API route (site-profile), NOT /_health — /_health is
+# Strapi's built-in 204 and never hits Postgres, so it would keep Node warm but
+# leave the DB/query path cold (the exact reason admin content views still hang).
+# Hitting a real content route warms Node AND the Postgres pool + query path.
+#
+# NOTES:
+#  - Scheduled workflows only run from the DEFAULT branch (main). This file must
+#    be on main to fire on its own; elsewhere use the "Run workflow" button.
+#  - GitHub's scheduler is best-effort and often late, so each run pings several
+#    times to bridge the gap to the next run. Repo is public -> Actions are free.
+#  - This is a BACKUP. A cPanel cron every 2 min is more reliable (see below).
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'   # every 5 min — GitHub Actions minimum granularity
+  workflow_dispatch:
+
+concurrency:
+  group: keep-cms-warm
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Warm Strapi (Node + Postgres)
+        env:
+          CMS_URL: 'https://cms.ecran-et.com/api/site-profile?populate=*'
+          PINGS: '5'          # pings per run
+          GAP_SECONDS: '60'   # spacing — 5 pings x 60s bridges the ~5-min window
+        run: |
+          ok=0
+          for i in $(seq 1 "$PINGS"); do
+            result=$(curl -sS -m 70 --retry 2 --retry-delay 5 --retry-all-errors \
+                       -o /dev/null -w '%{http_code} %{time_total}s' "$CMS_URL" 2>&1) \
+                     || result="network-error"
+            code=${result%% *}
+            echo "ping $i/$PINGS -> $result"
+            if [ "$code" = "200" ]; then ok=$((ok + 1)); fi
+            if [ "$i" -lt "$PINGS" ]; then sleep "$GAP_SECONDS"; fi
+          done
+          echo "warm pings succeeded: $ok/$PINGS"
+          if [ "$ok" -eq 0 ]; then
+            echo "::error::CMS returned no 200 to any warm ping — it may be down or hard-throttled."
+            exit 1
+          fi
