@@ -1,23 +1,21 @@
 name: Keep CMS warm
 
-# Pings the Strapi CMS on a schedule so it never sits idle long enough to spin
-# down under cPanel/Passenger (cold boot = 7-10s = admin views stuck loading).
-#
-# Targets a DB-touching API route (site-profile), NOT /_health — /_health is
-# Strapi's built-in 204 and never hits Postgres, so it would keep Node warm but
-# leave the DB/query path cold (the exact reason admin content views still hang).
-# Hitting a real content route warms Node AND the Postgres pool + query path.
+# Pings the Strapi CMS (now on Render) so it never sits idle long enough to spin
+# down. Render free web services sleep after ~15 min of no traffic; any request
+# resets that timer. We target a DB-touching route (global), not /_health, so the
+# ping wakes Node AND the Postgres query path. curl uses a long timeout so that
+# even if the service had already slept, the ping wakes it (~50s) and still passes.
 #
 # NOTES:
-#  - Scheduled workflows only run from the DEFAULT branch (main). This file must
-#    be on main to fire on its own; elsewhere use the "Run workflow" button.
-#  - GitHub's scheduler is best-effort and often late, so each run pings several
-#    times to bridge the gap to the next run. Repo is public -> Actions are free.
-#  - This is a BACKUP. A cPanel cron every 2 min is more reliable (see below).
+#  - Scheduled workflows only run from the DEFAULT branch (main).
+#  - GitHub's scheduler is best-effort and often late; each run pings a few times
+#    to bridge the gap. Repo is public -> Actions are free.
+#  - For tighter timing, a precise external pinger (cron-job.org) is more reliable
+#    than GitHub's scheduler — see the notes the assistant gave.
 
 on:
   schedule:
-    - cron: '*/5 * * * *'   # every 5 min — GitHub Actions minimum granularity
+    - cron: '*/5 * * * *'   # every 5 min — extra margin under Render's 15-min idle
   workflow_dispatch:
 
 concurrency:
@@ -33,13 +31,13 @@ jobs:
     steps:
       - name: Warm Strapi (Node + Postgres)
         env:
-          CMS_URL: 'https://cms.ecran-et.com/api/site-profile?populate=*'
-          PINGS: '5'          # pings per run
-          GAP_SECONDS: '60'   # spacing — 5 pings x 60s bridges the ~5-min window
+          CMS_URL: 'https://ecran-cms.onrender.com/api/global?populate=*'
+          PINGS: '4'          # pings per run
+          GAP_SECONDS: '60'   # spacing between pings
         run: |
           ok=0
           for i in $(seq 1 "$PINGS"); do
-            result=$(curl -sS -m 70 --retry 2 --retry-delay 5 --retry-all-errors \
+            result=$(curl -sS -m 90 --retry 2 --retry-delay 10 --retry-all-errors \
                        -o /dev/null -w '%{http_code} %{time_total}s' "$CMS_URL" 2>&1) \
                      || result="network-error"
             code=${result%% *}
@@ -49,6 +47,6 @@ jobs:
           done
           echo "warm pings succeeded: $ok/$PINGS"
           if [ "$ok" -eq 0 ]; then
-            echo "::error::CMS returned no 200 to any warm ping — it may be down or hard-throttled."
+            echo "::error::CMS returned no 200 to any warm ping — it may be down."
             exit 1
           fi
