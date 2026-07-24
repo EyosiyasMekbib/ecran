@@ -1,5 +1,9 @@
+# pnpm 11 approves dependency build scripts here. The auto-generated placeholder
+# left these unset ("set this to true or false"), so the builds were never
+# approved and `strapi build`'s dependency check failed (ERR_PNPM_IGNORED_BUILDS),
+# which would also break the Render/Docker build. `true` = allow the build script.
 allowBuilds:
-  '@swc/core': set this to true or false
-  core-js-pure: set this to true or false
-  esbuild: set this to true or false
-  sharp: set this to true or false
+  '@swc/core': true
+  core-js-pure: true
+  esbuild: true
+  sharp: true
