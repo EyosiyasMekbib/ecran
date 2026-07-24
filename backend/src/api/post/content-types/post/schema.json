@@ -53,6 +53,15 @@
     },
     "externalUrl": {
       "type": "string"
+    },
+    "department": {
+      "type": "string"
+    },
+    "employmentType": {
+      "type": "string"
+    },
+    "ctaLabel": {
+      "type": "string"
     }
   }
 }

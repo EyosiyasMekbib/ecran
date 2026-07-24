@@ -11,6 +11,8 @@ const WATCHED_UIDS = [
   'api::page.page',
   'api::team-member.team-member',
   'api::member-org.member-org',
+  'api::global.global',
+  'api::navigation.navigation',
 ];
 
 // Document-service actions that change what the published site shows.
@@ -37,6 +39,9 @@ async function ensurePublicReadPermissions(strapi: Core.Strapi) {
     const ct = strapi.contentTypes[uid as keyof typeof strapi.contentTypes] as any;
     if (ct?.kind !== 'singleType') wanted.push(`${uid}.findOne`);
   }
+  // Public visitors submit the contact form (create only; reading submissions
+  // stays admin-only, so it is deliberately NOT in WATCHED_UIDS).
+  wanted.push('api::contact-submission.contact-submission.create');
 
   for (const action of wanted) {
     const existing = await strapi.db
@@ -64,12 +69,14 @@ export default {
       strapi.log.error(`ensurePublicReadPermissions failed: ${err?.message ?? err}`)
     );
 
-    // First boot on an empty DB (e.g. a fresh Render/Neon deploy): seed starter
-    // content. Idempotent — a no-op once content exists.
+    // Seed starter content when the DB is missing it. Runs on a fresh deploy AND
+    // when new seedable types ship to an already-seeded DB (e.g. global added
+    // after programs). runSeed is fully idempotent, so this is safe to re-run.
     try {
-      const existing = await strapi.documents('api::program.program').findFirst({});
-      if (!existing) {
-        strapi.log.info('Empty database detected — seeding starter content...');
+      const hasPrograms = await strapi.documents('api::program.program').findFirst({});
+      const hasGlobal = await strapi.documents('api::global.global').findFirst({});
+      if (!hasPrograms || !hasGlobal) {
+        strapi.log.info('Seeding starter content (missing content detected)...');
         // Loaded via a runtime path so the bundler doesn't resolve scripts/
         // (outside src/) at build time. __dirname === dist/src at runtime.
         const seedPath = require('path').join(__dirname, '..', '..', 'scripts', 'seed.js');

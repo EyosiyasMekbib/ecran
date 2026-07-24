@@ -46,6 +46,59 @@ const SITE_PROFILE = {
   tagline: 'Evidence-based advocacy for every Ethiopian child to survive, develop, be protected, and participate',
 };
 
+const GET_INVOLVED_URL =
+  'https://docs.google.com/forms/d/e/1FAIpQLSefVosbpua5Zkh_CwGoPpwil4VCdnJAUOJhr4fsP0cspBtZ1A/viewform';
+
+// Header navigation menu (tree). Mirrors the shape the frontend already expects.
+const NAVIGATION = {
+  items: [
+    { label: 'Home', to: '/' },
+    {
+      label: 'About Us',
+      to: '/who-we-are',
+      children: [
+        { label: 'About Us', to: '/who-we-are/about-us' },
+        { label: 'Our Members', to: '/who-we-are/our-members' },
+        { label: 'Our Team', to: '/who-we-are/our-team' },
+      ],
+    },
+    {
+      label: 'News',
+      to: '/news',
+      children: [
+        { label: 'News', to: '/news/news' },
+        { label: 'Media Center', to: '/news/media-center' },
+        { label: 'Vacancies', to: '/news/vacancies' },
+        { label: 'Bids', to: '/news/bids' },
+      ],
+    },
+    { label: 'Resources', to: '/resources' },
+    { label: 'Contact', to: '/contact' },
+  ],
+};
+
+// Site-wide branding, SEO defaults, and footer content.
+const GLOBAL = {
+  siteName: 'ECRAN',
+  getInvolvedUrl: GET_INVOLVED_URL,
+  defaultSeoTitle: 'ECRAN — Ethiopian Child Rights Advocacy Network',
+  defaultSeoDescription:
+    "ECRAN brings partners, communities, and decision-makers together to turn evidence into action for children's rights in Ethiopia.",
+  social: {},
+  footerTagline:
+    'Evidence-based advocacy for every Ethiopian child to survive, develop, be protected, and participate',
+  footerQuickLinks: [
+    { label: 'Who We Are', to: '/who-we-are/about-us' },
+    { label: 'News & Announcements', to: '/news/announcements' },
+    { label: 'Resources', to: '/resources' },
+    { label: 'Contact', to: '/contact' },
+  ],
+  footerLegalLinks: [
+    { label: 'Privacy Policy', to: '/privacy-policy' },
+    { label: 'Terms of Service', to: '/terms-of-service' },
+  ],
+};
+
 // News-area posts (single collection, category field). Mirrors the copy the
 // frontend ships as fallback so the CMS starts fully populated.
 const POSTS = [
@@ -235,6 +288,19 @@ async function seedSingle(strapi, uid, data) {
   return 1;
 }
 
+// Generic single-type seeder: create + publish if none exists yet.
+async function seedSingleGeneric(strapi, uid, data) {
+  const current = await strapi.documents(uid).findFirst({ status: 'published' });
+  if (current) {
+    console.log(`  skip (exists): ${uid}`);
+    return 0;
+  }
+  const doc = await strapi.documents(uid).create({ data });
+  await strapi.documents(uid).publish({ documentId: doc.documentId });
+  console.log(`  created + published: ${uid}`);
+  return 1;
+}
+
 /**
  * Seed all starter content using an EXISTING Strapi instance. Idempotent
  * (skips entries whose slug already exists). Called both by the CLI wrapper
@@ -249,6 +315,8 @@ async function runSeed(strapi) {
   await seedCollection(strapi, 'api::post.post', POSTS);
   await seedCollection(strapi, 'api::page.page', PAGES);
   await seedSingle(strapi, 'api::site-profile.site-profile', SITE_PROFILE);
+  await seedSingleGeneric(strapi, 'api::global.global', GLOBAL);
+  await seedSingleGeneric(strapi, 'api::navigation.navigation', NAVIGATION);
   log.info('Seed complete.');
 }
 

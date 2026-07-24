@@ -1,0 +1,14 @@
+{
+  "kind": "singleType",
+  "collectionName": "navigations",
+  "info": {
+    "singularName": "navigation",
+    "pluralName": "navigations",
+    "displayName": "Navigation",
+    "description": "Header navigation menu (tree of { label, to, children[] })"
+  },
+  "options": { "draftAndPublish": true },
+  "attributes": {
+    "items": { "type": "json" }
+  }
+}
