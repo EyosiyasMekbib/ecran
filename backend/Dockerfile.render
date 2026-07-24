@@ -1,0 +1,21 @@
+# Standalone image for deploying the Strapi CMS to Render (or any Docker host).
+# Uses a PUBLIC base — unlike ./Dockerfile which needs the private ratson-nuxt image.
+# The build stage runs in Render's Docker builder (more RAM than the free runtime),
+# so the admin-panel build doesn't OOM the way a native free-tier build does.
+FROM node:20-slim AS build
+WORKDIR /app
+RUN corepack enable
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+COPY . .
+RUN pnpm build && pnpm prune --prod
+
+FROM node:20-slim AS runtime
+ENV NODE_ENV=production \
+    HOST=0.0.0.0 \
+    PORT=1337
+WORKDIR /app
+COPY --from=build /app ./
+EXPOSE 1337
+# `npm run start` (= `strapi start`) — avoids needing corepack/pnpm in the runtime layer.
+CMD ["npm", "run", "start"]
