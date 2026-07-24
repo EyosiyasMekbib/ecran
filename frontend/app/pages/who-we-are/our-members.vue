@@ -7,33 +7,6 @@ const fallbackCommitments = [
   'Practical learning that can be shared'
 ]
 
-const fallbackProfiles = [
-  {
-    label: 'Member profile 01',
-    focus: 'Child protection',
-    region: 'National coordination',
-    description: 'Supports prevention, response, and referral work for children affected by abuse, neglect, exploitation, and family separation.'
-  },
-  {
-    label: 'Member profile 02',
-    focus: 'Participation',
-    region: 'Community engagement',
-    description: 'Strengthens child and youth participation so lived experience can inform advocacy priorities, public dialogue, and program design.'
-  },
-  {
-    label: 'Member profile 03',
-    focus: 'Evidence and research',
-    region: 'Policy learning',
-    description: 'Contributes field evidence, analysis, and learning products that help the network prepare stronger policy positions and reports.'
-  },
-  {
-    label: 'Member profile 04',
-    focus: 'Systems strengthening',
-    region: 'Service networks',
-    description: 'Works with local structures, duty bearers, and civil society partners to improve coordination around children’s rights commitments.'
-  }
-]
-
 const { data: cmsMembers } = await useAsyncData('member-orgs', () => getMemberOrgs())
 const { data: page } = await useAsyncData('page-our-members', () => getPage('our-members'))
 const { data: site } = await useAsyncData('global', () => getGlobal())
@@ -44,16 +17,7 @@ const getInvolvedUrl = computed(
 )
 
 const members = computed(() =>
-  cmsMembers.value?.length
-    ? cmsMembers.value.map((m) => ({
-        label: m.name,
-        focus: 'Network member',
-        region: 'ECRAN coalition',
-        description: '',
-        url: m.url,
-        logo: m.logo
-      }))
-    : fallbackProfiles.map((p) => ({ ...p, url: '', logo: null as string | null }))
+  (cmsMembers.value || []).map((m) => ({ label: m.name, url: m.url, logo: m.logo }))
 )
 const commitments = computed(() =>
   Array.isArray(page.value?.sections?.commitments) ? page.value.sections.commitments : fallbackCommitments
@@ -98,20 +62,15 @@ const directoryTitle = computed(() => page.value?.sections?.directoryTitle || 'E
       </p>
     </div>
 
-    <div class="members-grid">
+    <div v-if="members.length" class="members-grid">
       <article v-for="member in members" :key="member.label" class="member-card">
-        <div class="member-meta">
-          <span class="member-region">{{ member.region }}</span>
-          <span class="member-tag">{{ member.focus }}</span>
-        </div>
         <div>
           <img v-if="member.logo" :src="member.logo" :alt="member.label" style="max-height: 48px; margin-bottom: 0.75rem;" />
           <h3>{{ member.label }}</h3>
-          <p v-if="member.description">{{ member.description }}</p>
         </div>
         <a v-if="member.url" :href="member.url" target="_blank" rel="noopener noreferrer" class="member-link">Visit website</a>
-        <span v-else class="member-link">Profile details in progress</span>
       </article>
     </div>
+    <p v-else class="directory-intro" style="text-align:center;opacity:.7;">Member organizations are published here once added in the CMS.</p>
   </section>
 </template>

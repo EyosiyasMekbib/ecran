@@ -7,18 +7,11 @@ const fallbackPrinciples = [
   'Practical coordination over visibility for its own sake'
 ]
 
-const fallbackTeam = [1, 2, 3, 4].map((n) => ({
-  name: `Lorem Ipsum Member ${n}`,
-  role: 'Role Designation',
-  bio: 'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
-  photo: null as string | null
-}))
-
 const { data: cmsTeam } = await useAsyncData('team-members', () => getTeamMembers())
 const { data: page } = await useAsyncData('page-our-team', () => getPage('our-team'))
 await useSeo(page.value)
 
-const team = computed(() => (cmsTeam.value?.length ? cmsTeam.value : fallbackTeam))
+const team = computed(() => cmsTeam.value || [])
 const principles = computed(() =>
   Array.isArray(page.value?.sections?.principles) ? page.value.sections.principles : fallbackPrinciples
 )
@@ -63,7 +56,7 @@ const initials = (name: string) =>
       </p>
     </div>
 
-    <div class="team-grid">
+    <div v-if="team.length" class="team-grid">
       <article v-for="member in team" :key="member.name" class="team-card">
         <img v-if="member.photo" :src="member.photo" :alt="member.name" class="team-avatar-placeholder" style="object-fit: cover;" />
         <div v-else class="team-avatar-placeholder">
@@ -76,5 +69,6 @@ const initials = (name: string) =>
         </div>
       </article>
     </div>
+    <p v-else class="directory-intro" style="text-align:center;opacity:.7;">Team profiles are published here once added in the CMS.</p>
   </section>
 </template>
