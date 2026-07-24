@@ -3,6 +3,8 @@
 const { data: page } = await useAsyncData('page-about-us', () => getPage('about-us'))
 const { data: profile } = await useAsyncData('site-profile', () => getSiteProfile())
 
+await useSeo(page.value)
+
 const mission = computed(
   () =>
     profile.value?.mission ||
@@ -18,6 +20,119 @@ const legalStatus = computed(
     profile.value?.legalStatus ||
     'Registered as a local organization under Civil Societies Proclamation No. 1113/2019 with ACSO registration number 7750.'
 )
+
+// ── Section eyebrows & headings (CMS-editable via page.sections.*, current copy as fallback) ──
+const heroEyebrow = computed(() => page.value?.sections?.heroEyebrow || 'About ECRAN')
+const purposeEyebrow = computed(() => page.value?.sections?.purposeEyebrow || 'Purpose')
+const purposeTitle = computed(
+  () =>
+    page.value?.sections?.purposeTitle ||
+    "Connecting field realities with the advocacy decisions that shape children's lives."
+)
+const objectivesEyebrow = computed(() => page.value?.sections?.objectivesEyebrow || 'Network Objectives')
+const objectivesTitle = computed(
+  () => page.value?.sections?.objectivesTitle || 'Ten commitments turned into four workstreams.'
+)
+const objectivesSub = computed(
+  () =>
+    page.value?.sections?.objectivesSub ||
+    'Each cluster organises the formal objectives into a working logic: network coordination, policy influence, capacity building, and evidence generation.'
+)
+
+// ── Hero meta stats ──
+const fallbackHeroMeta = [
+  { strong: 'Est.', text: '2025' },
+  { strong: 'Reg.', text: 'ACSO No. 7750' },
+  { strong: '10', text: 'objectives' },
+  { strong: '4', text: 'focus areas' }
+]
+const heroMeta = computed(() =>
+  Array.isArray(page.value?.sections?.heroMeta) ? page.value.sections.heroMeta : fallbackHeroMeta
+)
+
+// ── Purpose pillars ──
+const fallbackPillars = [
+  { index: '01', name: 'Evidence', desc: 'Grounding every position in field data and documented realities.' },
+  { index: '02', name: 'Coordination', desc: 'Aligning CSOs, partners, and communities around a shared agenda.' },
+  {
+    index: '03',
+    name: 'Accountability',
+    desc: 'Holding duty-bearers to national and international child-rights commitments.'
+  }
+]
+const pillars = computed(() =>
+  Array.isArray(page.value?.sections?.pillars) ? page.value.sections.pillars : fallbackPillars
+)
+
+// ── "How We Work" governance card ──
+const howWeWork = computed(() => ({
+  title: page.value?.sections?.howWeWork?.title || 'How We Work',
+  text:
+    page.value?.sections?.howWeWork?.text ||
+    'Listen to communities, document evidence, convene partners, and advocate for policy and practice changes children can feel.'
+}))
+
+// ── Objectives accordion (4 thematic workstreams) ──
+const fallbackObjectives = [
+  {
+    range: '01, 09',
+    title: 'Coordinate the Network',
+    summary:
+      'Align CSOs, CBOs, members, and national or regional partners around a shared child-rights advocacy agenda.',
+    open: true,
+    items: [
+      'Coordinate efforts by CSOs and Community-Based Organizations engaged in advocacy and promotion of the rights of children.',
+      'Establish and strengthen partnerships and membership with other networks at national, regional, and international levels.'
+    ]
+  },
+  {
+    range: '02, 03, 05',
+    title: 'Influence Policy & Accountability',
+    summary:
+      'Work with public institutions and development partners to shape policy, monitor commitments, and support reporting.',
+    items: [
+      'Liaise with government departments, line ministries, and development partners on policy formulation, implementation, and monitoring of child-rights instruments.',
+      "Contribute to CSO complementary reports on Ethiopia's commitments to UN and African child-rights mechanisms.",
+      "Work with duty-bearers and stakeholders to monitor national, regional, and international frameworks concerning children's rights."
+    ]
+  },
+  {
+    range: '04, 06, 10',
+    title: 'Build Capacity & Dialogue',
+    summary:
+      'Equip members, leaders, and institutions to advocate, share data, and respond to common challenges facing children.',
+    items: [
+      'Build member capacity in advocacy work, data organisation, child-rights promotion, and program development across Ethiopia.',
+      'Organise dialogue platforms for members to deliberate on shared challenges faced by children and practical ways to address them.',
+      'Organise training and advocacy programs for public, private, and not-for-profit leaders to become competent child-rights advocates.'
+    ]
+  },
+  {
+    range: '07, 08',
+    title: 'Generate Evidence for Action',
+    summary:
+      'Produce research, briefs, reports, and information products that help decision-makers design better interventions for children.',
+    items: [
+      'Undertake basic and action-oriented research, serve as a data clearing house, and produce physical and web-based reports for child-focused programs.',
+      "Prepare evidence-based policy papers and briefs on children's rights for policy makers and practitioners."
+    ]
+  }
+]
+const objectives = computed(() =>
+  Array.isArray(page.value?.sections?.objectives) ? page.value.sections.objectives : fallbackObjectives
+)
+
+// ── CTA block ──
+const cta = computed(() => ({
+  title: page.value?.sections?.cta?.title || 'Ready to advance child rights in Ethiopia?',
+  text:
+    page.value?.sections?.cta?.text ||
+    'Join the network, share evidence, or partner with ECRAN to build a stronger public mandate for every child.',
+  primaryLabel: page.value?.sections?.cta?.primaryLabel || 'Partner with ECRAN',
+  primaryTo: page.value?.sections?.cta?.primaryTo || '/get-involved',
+  secondaryLabel: page.value?.sections?.cta?.secondaryLabel || 'View network members',
+  secondaryTo: page.value?.sections?.cta?.secondaryTo || '/who-we-are/our-members'
+}))
 </script>
 
 <template>
@@ -26,17 +141,14 @@ const legalStatus = computed(
     <!-- Hero -->
     <section class="au-hero">
       <div class="au-hero-inner">
-        <p class="au-eyebrow">About ECRAN</p>
+        <p class="au-eyebrow">{{ heroEyebrow }}</p>
         <h1>{{ page?.heroTitle || 'An Ethiopian child-rights advocacy network built around evidence, coordination, and accountability.' }}</h1>
         <p class="au-hero-sub">{{ page?.heroText || `ECRAN brings civil society actors, technical partners, and public stakeholders around a shared agenda for children's survival, development, protection, and participation.` }}</p>
         <div class="au-hero-meta">
-          <span><strong>Est.</strong> 2025</span>
-          <span class="au-meta-divider">·</span>
-          <span><strong>Reg.</strong> ACSO No. 7750</span>
-          <span class="au-meta-divider">·</span>
-          <span><strong>10</strong> objectives</span>
-          <span class="au-meta-divider">·</span>
-          <span><strong>4</strong> focus areas</span>
+          <template v-for="(stat, i) in heroMeta" :key="i">
+            <span v-if="i > 0" class="au-meta-divider">·</span>
+            <span><strong>{{ stat.strong }}</strong> {{ stat.text }}</span>
+          </template>
         </div>
       </div>
       <div class="au-hero-rule" aria-hidden="true"></div>
@@ -45,26 +157,16 @@ const legalStatus = computed(
     <!-- Purpose pillars -->
     <section class="au-purpose">
       <div class="au-purpose-label">
-        <p class="au-eyebrow">Purpose</p>
-        <h2>Connecting field realities with the advocacy decisions that shape children's lives.</h2>
+        <p class="au-eyebrow">{{ purposeEyebrow }}</p>
+        <h2>{{ purposeTitle }}</h2>
       </div>
       <div class="au-purpose-body">
         <p class="au-purpose-lede">{{ page?.body || 'Established in 2025, ECRAN strengthens visibility, communication, partnership engagement, and resource mobilization for child-rights work in Ethiopia. The network helps turn fragmented concern into coordinated, evidence-led advocacy.' }}</p>
         <div class="au-pillars">
-          <div class="au-pillar">
-            <span class="au-pillar-index">01</span>
-            <p class="au-pillar-name">Evidence</p>
-            <p class="au-pillar-desc">Grounding every position in field data and documented realities.</p>
-          </div>
-          <div class="au-pillar">
-            <span class="au-pillar-index">02</span>
-            <p class="au-pillar-name">Coordination</p>
-            <p class="au-pillar-desc">Aligning CSOs, partners, and communities around a shared agenda.</p>
-          </div>
-          <div class="au-pillar">
-            <span class="au-pillar-index">03</span>
-            <p class="au-pillar-name">Accountability</p>
-            <p class="au-pillar-desc">Holding duty-bearers to national and international child-rights commitments.</p>
+          <div v-for="pillar in pillars" :key="pillar.name" class="au-pillar">
+            <span class="au-pillar-index">{{ pillar.index }}</span>
+            <p class="au-pillar-name">{{ pillar.name }}</p>
+            <p class="au-pillar-desc">{{ pillar.desc }}</p>
           </div>
         </div>
       </div>
@@ -97,8 +199,8 @@ const legalStatus = computed(
         <article class="au-gov-card au-gov-card--accent">
           <span class="au-gov-num">04</span>
           <div class="au-gov-body">
-            <h3>How We Work</h3>
-            <p>Listen to communities, document evidence, convene partners, and advocate for policy and practice changes children can feel.</p>
+            <h3>{{ howWeWork.title }}</h3>
+            <p>{{ howWeWork.text }}</p>
           </div>
         </article>
       </div>
@@ -107,71 +209,23 @@ const legalStatus = computed(
     <!-- Objectives — 4 thematic groups with accordion -->
     <section class="au-objectives">
       <div class="au-objectives-header">
-        <p class="au-eyebrow">Network Objectives</p>
-        <h2>Ten commitments turned into four workstreams.</h2>
-        <p class="au-objectives-sub">Each cluster organises the formal objectives into a working logic: network coordination, policy influence, capacity building, and evidence generation.</p>
+        <p class="au-eyebrow">{{ objectivesEyebrow }}</p>
+        <h2>{{ objectivesTitle }}</h2>
+        <p class="au-objectives-sub">{{ objectivesSub }}</p>
       </div>
 
       <div class="au-themes">
-        <details class="au-theme" open>
+        <details v-for="theme in objectives" :key="theme.title" class="au-theme" :open="theme.open">
           <summary class="au-theme-summary">
             <div class="au-theme-meta">
-              <span class="au-theme-range">01, 09</span>
-              <h3>Coordinate the Network</h3>
-              <p>Align CSOs, CBOs, members, and national or regional partners around a shared child-rights advocacy agenda.</p>
+              <span class="au-theme-range">{{ theme.range }}</span>
+              <h3>{{ theme.title }}</h3>
+              <p>{{ theme.summary }}</p>
             </div>
             <span class="au-theme-toggle" aria-hidden="true"></span>
           </summary>
           <ul class="au-theme-list">
-            <li>Coordinate efforts by CSOs and Community-Based Organizations engaged in advocacy and promotion of the rights of children.</li>
-            <li>Establish and strengthen partnerships and membership with other networks at national, regional, and international levels.</li>
-          </ul>
-        </details>
-
-        <details class="au-theme">
-          <summary class="au-theme-summary">
-            <div class="au-theme-meta">
-              <span class="au-theme-range">02, 03, 05</span>
-              <h3>Influence Policy &amp; Accountability</h3>
-              <p>Work with public institutions and development partners to shape policy, monitor commitments, and support reporting.</p>
-            </div>
-            <span class="au-theme-toggle" aria-hidden="true"></span>
-          </summary>
-          <ul class="au-theme-list">
-            <li>Liaise with government departments, line ministries, and development partners on policy formulation, implementation, and monitoring of child-rights instruments.</li>
-            <li>Contribute to CSO complementary reports on Ethiopia's commitments to UN and African child-rights mechanisms.</li>
-            <li>Work with duty-bearers and stakeholders to monitor national, regional, and international frameworks concerning children's rights.</li>
-          </ul>
-        </details>
-
-        <details class="au-theme">
-          <summary class="au-theme-summary">
-            <div class="au-theme-meta">
-              <span class="au-theme-range">04, 06, 10</span>
-              <h3>Build Capacity &amp; Dialogue</h3>
-              <p>Equip members, leaders, and institutions to advocate, share data, and respond to common challenges facing children.</p>
-            </div>
-            <span class="au-theme-toggle" aria-hidden="true"></span>
-          </summary>
-          <ul class="au-theme-list">
-            <li>Build member capacity in advocacy work, data organisation, child-rights promotion, and program development across Ethiopia.</li>
-            <li>Organise dialogue platforms for members to deliberate on shared challenges faced by children and practical ways to address them.</li>
-            <li>Organise training and advocacy programs for public, private, and not-for-profit leaders to become competent child-rights advocates.</li>
-          </ul>
-        </details>
-
-        <details class="au-theme">
-          <summary class="au-theme-summary">
-            <div class="au-theme-meta">
-              <span class="au-theme-range">07, 08</span>
-              <h3>Generate Evidence for Action</h3>
-              <p>Produce research, briefs, reports, and information products that help decision-makers design better interventions for children.</p>
-            </div>
-            <span class="au-theme-toggle" aria-hidden="true"></span>
-          </summary>
-          <ul class="au-theme-list">
-            <li>Undertake basic and action-oriented research, serve as a data clearing house, and produce physical and web-based reports for child-focused programs.</li>
-            <li>Prepare evidence-based policy papers and briefs on children's rights for policy makers and practitioners.</li>
+            <li v-for="(item, i) in theme.items" :key="i">{{ item }}</li>
           </ul>
         </details>
       </div>
@@ -180,11 +234,11 @@ const legalStatus = computed(
     <!-- CTA -->
     <section class="au-cta">
       <div class="au-cta-inner">
-        <h2>Ready to advance child rights in Ethiopia?</h2>
-        <p>Join the network, share evidence, or partner with ECRAN to build a stronger public mandate for every child.</p>
+        <h2>{{ cta.title }}</h2>
+        <p>{{ cta.text }}</p>
         <div class="au-cta-actions">
-          <NuxtLink to="/get-involved" class="button primary">Partner with ECRAN</NuxtLink>
-          <NuxtLink to="/who-we-are/our-members" class="button secondary">View network members</NuxtLink>
+          <NuxtLink :to="cta.primaryTo" class="button primary">{{ cta.primaryLabel }}</NuxtLink>
+          <NuxtLink :to="cta.secondaryTo" class="button secondary">{{ cta.secondaryLabel }}</NuxtLink>
         </div>
       </div>
     </section>

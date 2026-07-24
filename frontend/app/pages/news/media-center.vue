@@ -23,13 +23,19 @@ const fallback = [
 
 const { data: cmsPosts } = await useAsyncData('posts-media', () => getPosts('media'))
 const { data: page } = await useAsyncData('page-media-center', () => getPage('media-center'))
+await useSeo(page.value)
+
+const defaultTypeLabel = computed(() => page.value?.sections?.typeLabel || 'Press Release')
+const defaultCtaLabel = computed(() => page.value?.sections?.ctaLabel || 'View details')
 const items = computed(() =>
   cmsPosts.value?.length
     ? cmsPosts.value.map((p) => ({
-        type: p.location || 'Press Release',
+        slug: p.slug,
+        type: p.location || defaultTypeLabel.value,
         title: p.title,
         date: p.date,
-        desc: p.excerpt
+        desc: p.excerpt,
+        ctaLabel: p.ctaLabel || defaultCtaLabel.value
       }))
     : fallback
 )
@@ -51,7 +57,8 @@ const items = computed(() =>
         </div>
         <h2>{{ item.title }}</h2>
         <p>{{ item.desc }}</p>
-        <button class="text-action" type="button">View details &rarr;</button>
+        <NuxtLink v-if="item.slug" :to="`/news/${item.slug}`" class="text-action">{{ item.ctaLabel || defaultCtaLabel }} &rarr;</NuxtLink>
+        <span v-else class="text-action">{{ item.ctaLabel || defaultCtaLabel }} &rarr;</span>
       </article>
     </div>
   </section>

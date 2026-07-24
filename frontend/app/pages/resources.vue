@@ -110,17 +110,29 @@ const allResources = computed<Resource[]>(() =>
     : resourcesData
 )
 
+const { data: page } = await useAsyncData('page-resources', () => getPage('resources'))
+await useSeo(page.value)
+
 const searchQuery = ref('')
 const selectedType = ref('All')
 const selectedTopic = ref('All')
 const sortBy = ref('latest')
 
-const types = ['All', 'Report', 'Policy Brief', 'Publication', 'Toolkit']
-const topics = ['All', 'Child Protection', 'Participation', 'Advocacy', 'Capacity Building']
+// Filter taxonomy — editable via page.sections.filterTypes / filterTopics; current arrays as fallback.
+const types = computed<string[]>(() =>
+  Array.isArray(page.value?.sections?.filterTypes) && page.value?.sections?.filterTypes.length
+    ? page.value.sections.filterTypes
+    : ['All', 'Report', 'Policy Brief', 'Publication', 'Toolkit']
+)
+const topics = computed<string[]>(() =>
+  Array.isArray(page.value?.sections?.filterTopics) && page.value?.sections?.filterTopics.length
+    ? page.value.sections.filterTopics
+    : ['All', 'Child Protection', 'Participation', 'Advocacy', 'Capacity Building']
+)
 
 const typeCounts = computed(() => {
   const counts: Record<string, number> = { All: allResources.value.length }
-  types.forEach(t => {
+  types.value.forEach(t => {
     if (t !== 'All') {
       counts[t] = allResources.value.filter(r => r.type === t).length
     }
@@ -130,7 +142,7 @@ const typeCounts = computed(() => {
 
 const topicCounts = computed(() => {
   const counts: Record<string, number> = { All: allResources.value.length }
-  topics.forEach(t => {
+  topics.value.forEach(t => {
     if (t !== 'All') {
       counts[t] = allResources.value.filter(r => r.topic === t).length
     }
@@ -188,8 +200,8 @@ const formatDate = (dateString: string) => {
 <template>
   <PageHero
     class="resources-hero"
-    title="Resource Repository"
-    text="Explore and download ECRAN's research publications, policy briefs, toolkit guidelines, and annual reports detailing child-rights progress in Ethiopia."
+    :title="page?.heroTitle || 'Resource Repository'"
+    :text="page?.heroText || 'Explore and download ECRAN\'s research publications, policy briefs, toolkit guidelines, and annual reports detailing child-rights progress in Ethiopia.'"
   />
 
   <main class="resources-layout">

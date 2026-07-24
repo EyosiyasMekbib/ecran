@@ -1,17 +1,7 @@
 <script setup lang="ts">
 const { data: page } = await useAsyncData('page-our-works', () => getPage('our-works'))
 
-useHead({
-  title: 'Our Works | ECRAN',
-  meta: [
-    {
-      name: 'description',
-      content:
-        page.value?.seoDescription ||
-        "ECRAN's programs and initiatives advancing child rights in Ethiopia through evidence-based advocacy and coordinated action."
-    }
-  ]
-})
+await useSeo(page.value)
 
 // Baked-in fallback cards — used only when the CMS page has no `sections.cards`.
 const fallbackCards = [
@@ -42,14 +32,14 @@ const cards = computed(() =>
 
 <template>
   <PageHero
-    eyebrow="Our Works / ሥራዎቻችን"
+    :eyebrow="page?.sections?.heroEyebrow || 'Our Works / ሥራዎቻችን'"
     :title="page?.heroTitle || 'Programs and initiatives advancing child rights across Ethiopia.'"
     :text="page?.heroText || 'ECRAN coordinates evidence-based programs that strengthen child protection systems, participation, and policy advocacy at national and regional levels.'"
   />
 
   <section class="split-section">
     <div>
-      <p class="eyebrow">Our approach</p>
+      <p class="eyebrow">{{ page?.sections?.approachEyebrow || 'Our approach' }}</p>
       <h2>{{ page?.sections?.approachTitle || 'From evidence to coordinated action for children.' }}</h2>
     </div>
     <p>

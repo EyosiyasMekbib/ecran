@@ -16,11 +16,18 @@ const fallbackTeam = [1, 2, 3, 4].map((n) => ({
 
 const { data: cmsTeam } = await useAsyncData('team-members', () => getTeamMembers())
 const { data: page } = await useAsyncData('page-our-team', () => getPage('our-team'))
+await useSeo(page.value)
 
 const team = computed(() => (cmsTeam.value?.length ? cmsTeam.value : fallbackTeam))
 const principles = computed(() =>
   Array.isArray(page.value?.sections?.principles) ? page.value.sections.principles : fallbackPrinciples
 )
+
+// Section eyebrows & titles (CMS-editable via page.sections.*, current copy as fallback).
+const roleEyebrow = computed(() => page.value?.sections?.roleEyebrow || 'Team role')
+const principlesLabel = computed(() => page.value?.sections?.principlesLabel || 'Working principles')
+const directoryEyebrow = computed(() => page.value?.sections?.directoryEyebrow || 'Our Team')
+const directoryTitle = computed(() => page.value?.sections?.directoryTitle || 'Staff & leadership')
 const initials = (name: string) =>
   name
     .split(/\s+/)
@@ -33,14 +40,14 @@ const initials = (name: string) =>
 <template>
   <section class="team-overview" style="padding-top: clamp(6rem, 10vw, 10rem);">
     <div class="team-overview-copy">
-      <p class="eyebrow">Team role</p>
+      <p class="eyebrow">{{ roleEyebrow }}</p>
       <h2>{{ page?.heroTitle || 'Small enough to stay focused, connected enough to support a national platform.' }}</h2>
       <p>
         {{ page?.heroText || 'The team works with board leadership, members, partners, and stakeholders to coordinate advocacy priorities, manage organizational communication, and support resource mobilization for child-rights work.' }}
       </p>
     </div>
     <div class="team-principles" aria-label="Team working principles">
-      <span>Working principles</span>
+      <span>{{ principlesLabel }}</span>
       <ol>
         <li v-for="principle in principles" :key="principle">{{ principle }}</li>
       </ol>
@@ -49,8 +56,8 @@ const initials = (name: string) =>
 
   <section class="team-directory">
     <div class="directory-header">
-      <p class="eyebrow">Our Team</p>
-      <h2>Staff & leadership</h2>
+      <p class="eyebrow">{{ directoryEyebrow }}</p>
+      <h2>{{ directoryTitle }}</h2>
       <p class="directory-intro">
         {{ page?.body || 'Meet the coordination team supporting ECRAN\'s members, board, and partners.' }}
       </p>

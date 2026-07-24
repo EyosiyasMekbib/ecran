@@ -76,7 +76,10 @@ export async function getPosts(category?: 'news' | 'vacancy' | 'bid' | 'announce
     location: e.location || '',
     image: strapiMedia(e.featuredImage?.url),
     attachments: (e.attachment || []).map((a: any) => ({ name: a.name, url: strapiMedia(a.url) })),
-    externalUrl: e.externalUrl || ''
+    externalUrl: e.externalUrl || '',
+    department: e.department || '',
+    employmentType: e.employmentType || '',
+    ctaLabel: e.ctaLabel || ''
   }))
 }
 
@@ -146,4 +149,84 @@ export async function getResourceCards() {
         ? new Date(e.publishedOn).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })
         : 'Available')
   }))
+}
+
+/** Global settings single type: branding, SEO defaults, social, footer. Null on error. */
+export async function getGlobal() {
+  try {
+    const res = await $fetch<{ data: any }>(`${useStrapiUrl()}/api/global`, {
+      query: { populate: '*' }
+    })
+    return res?.data || null
+  } catch {
+    return null
+  }
+}
+
+/** Header navigation tree (`[{ label, to, children? }]`). Null on error so callers fall back. */
+export async function getNavigation() {
+  try {
+    const res = await $fetch<{ data: any }>(`${useStrapiUrl()}/api/navigation`)
+    const items = res?.data?.items
+    return Array.isArray(items) ? items : null
+  } catch {
+    return null
+  }
+}
+
+/** Partner cards: `{ name, url, logo }`. Empty array when the CMS has none. */
+export async function getPartners() {
+  const rows = await fetchCollection('partners', { sort: 'order:asc' })
+  return rows.map((e: any) => ({
+    name: e.name,
+    url: e.website || '',
+    logo: strapiMedia(e.logo?.url)
+  }))
+}
+
+/** A single post by slug, for /news/[slug] detail pages. Null when missing. */
+export async function getPostBySlug(slug: string) {
+  const rows = await fetchCollection('posts', { 'filters[slug][$eq]': slug })
+  const e = rows[0]
+  if (!e) return null
+  return {
+    title: e.title,
+    slug: e.slug,
+    category: e.category,
+    excerpt: e.excerpt || '',
+    body: e.body || '',
+    date: e.publishDate
+      ? new Date(e.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+      : '',
+    deadline: e.deadline
+      ? new Date(e.deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+      : '',
+    location: e.location || '',
+    image: strapiMedia(e.featuredImage?.url),
+    attachments: (e.attachment || []).map((a: any) => ({ name: a.name, url: strapiMedia(a.url) })),
+    externalUrl: e.externalUrl || '',
+    department: e.department || '',
+    employmentType: e.employmentType || '',
+    ctaLabel: e.ctaLabel || ''
+  }
+}
+
+/** Submit the contact form to the CMS (public create). Returns true on success. */
+export async function submitContact(payload: {
+  name: string
+  email: string
+  subject?: string
+  message: string
+  phone?: string
+  organization?: string
+}) {
+  try {
+    await $fetch(`${useStrapiUrl()}/api/contact-submissions`, {
+      method: 'POST',
+      body: { data: payload }
+    })
+    return true
+  } catch {
+    return false
+  }
 }

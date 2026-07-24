@@ -1,5 +1,10 @@
 <script setup lang="ts">
 const { data: page } = await useAsyncData('page-who-we-are', () => getPage('who-we-are'))
+await useSeo(page.value)
+
+// Section eyebrows (CMS-editable via page.sections.*, current copy as fallback).
+const heroEyebrow = computed(() => page.value?.sections?.heroEyebrow || 'Who we are')
+const backgroundEyebrow = computed(() => page.value?.sections?.backgroundEyebrow || 'Background')
 
 // Baked-in fallback cards — used only when the CMS page has no `sections.cards`.
 const fallbackCards = [
@@ -34,14 +39,14 @@ const cards = computed(() =>
 
 <template>
   <PageHero
-    eyebrow="Who we are"
+    :eyebrow="heroEyebrow"
     :title="page?.heroTitle || 'An Ethiopian network built for credible, coordinated child-rights advocacy.'"
     :text="page?.heroText || 'ECRAN is an independent not-for-profit organization established in 2025 and registered by the Agency for Civil Societies Organizations as a local organization.'"
   />
 
   <section class="split-section">
     <div>
-      <p class="eyebrow">Background</p>
+      <p class="eyebrow">{{ backgroundEyebrow }}</p>
       <h2>{{ page?.sections?.backgroundTitle || 'Designed to connect evidence with the people who can act on it.' }}</h2>
     </div>
     <p>

@@ -21,17 +21,23 @@ const fallback = [
 
 const { data: cmsPosts } = await useAsyncData('posts-bid', () => getPosts('bid'))
 const { data: page } = await useAsyncData('page-bids', () => getPage('bids'))
+await useSeo(page.value)
+
+const defaultRef = computed(() => page.value?.sections?.refFallback || 'ECRAN')
+const defaultCtaLabel = computed(() => page.value?.sections?.ctaLabel || 'Request tender documents')
 
 // A bid is "Open" while its deadline is in the future (or when no deadline is set).
 const bids = computed(() =>
   cmsPosts.value?.length
     ? cmsPosts.value.map((p) => ({
+        slug: p.slug,
         title: p.title,
-        reference: p.location || 'ECRAN',
+        reference: p.location || defaultRef.value,
         status: !p.deadline || new Date(p.deadline) >= new Date() ? 'Open' : 'Closed',
         published: p.date,
         deadline: p.deadline,
-        description: p.excerpt
+        description: p.excerpt,
+        ctaLabel: p.ctaLabel || defaultCtaLabel.value
       }))
     : fallback
 )
@@ -58,7 +64,8 @@ const bids = computed(() =>
         </div>
         <p>{{ bid.description }}</p>
         <div class="bid-actions" v-if="bid.status === 'Open'">
-          <NuxtLink to="/contact" class="button secondary">Request tender documents</NuxtLink>
+          <NuxtLink v-if="bid.slug" :to="`/news/${bid.slug}`" class="button secondary">{{ bid.ctaLabel || defaultCtaLabel }}</NuxtLink>
+          <span v-else class="button secondary">{{ bid.ctaLabel || defaultCtaLabel }}</span>
         </div>
       </article>
     </div>

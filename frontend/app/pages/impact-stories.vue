@@ -2,11 +2,17 @@
 // Sourced from the Strapi CMS at build/SSR time, with static fallback (see composables/useStrapi.ts).
 const { data: impactStories } = await useAsyncData('impact-stories', () => getImpactStories())
 const { data: page } = await useAsyncData('page-impact-stories', () => getPage('impact-stories'))
+
+await useSeo(page.value)
+
+// Editable section copy — CMS-managed via page `impact-stories` sections.*, current copy as fallback.
+const heroEyebrow = computed(() => page.value?.sections?.heroEyebrow || 'Impact stories')
+const connectCtaLabel = computed(() => page.value?.sections?.connectCtaLabel || 'Connect with ECRAN')
 </script>
 
 <template>
   <PageHero
-    eyebrow="Impact stories"
+    :eyebrow="heroEyebrow"
     :title="page?.heroTitle || 'Stories from ECRAN’s network of child-rights advocates.'"
     :text="page?.heroText || 'These stories highlight how shared evidence, member coordination, and policy dialogue help child-rights work travel further.'"
   />
@@ -23,7 +29,7 @@ const { data: page } = await useAsyncData('page-impact-stories', () => getPage('
         </div>
         <div class="news-card-footer">
           <NuxtLink to="/contact" class="news-link">
-            Connect with ECRAN <span class="arrow">&rarr;</span>
+            {{ connectCtaLabel }} <span class="arrow">&rarr;</span>
           </NuxtLink>
         </div>
       </article>

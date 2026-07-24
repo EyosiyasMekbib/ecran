@@ -28,6 +28,7 @@ const fallbackCards = [
 ]
 
 const { data: page } = await useAsyncData('page-get-involved', () => getPage('get-involved'))
+await useSeo(page.value)
 const cards = computed(() =>
   Array.isArray(page.value?.sections?.cards) ? page.value.sections.cards : fallbackCards
 )
@@ -35,7 +36,7 @@ const cards = computed(() =>
 
 <template>
   <PageHero
-    eyebrow="Get involved"
+    :eyebrow="page?.sections?.heroEyebrow || 'Get involved'"
     :title="page?.heroTitle || 'Partner with ECRAN to strengthen child-rights advocacy in Ethiopia.'"
     :text="page?.heroText || 'ECRAN works with civil society organizations, public institutions, donors, researchers, and community actors who want evidence to move into coordinated action.'"
   />

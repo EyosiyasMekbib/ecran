@@ -36,6 +36,8 @@ const fallbackBlocks = [
 const { data: page } = await useAsyncData('page-privacy-policy', () => getPage('privacy-policy'))
 const { data: profile } = await useAsyncData('site-profile', () => getSiteProfile())
 
+await useSeo(page.value)
+
 const blocks = computed(() =>
   Array.isArray(page.value?.sections?.blocks) ? page.value.sections.blocks : fallbackBlocks
 )
@@ -43,13 +45,17 @@ const lastUpdated = computed(
   () => page.value?.sections?.lastUpdated || 'June 2026'
 )
 const email = computed(() => profile.value?.email || 'info@ecran-et.org')
+
+// Editable labels/headings (page.sections.* with current copy as fallback).
+const legalEyebrow = computed(() => page.value?.sections?.eyebrow || 'Legal')
+const contactHeading = computed(() => page.value?.sections?.contactHeading || 'Contact Us')
 </script>
 
 <template>
   <main class="legal-page">
     <div class="legal-hero">
       <div class="legal-hero-inner">
-        <span class="legal-eyebrow">Legal</span>
+        <span class="legal-eyebrow">{{ legalEyebrow }}</span>
         <h1>{{ page?.heroTitle || 'Privacy Policy' }}</h1>
         <p class="legal-meta">Ethiopian Child Rights Advocacy Network (ECRAN) &mdash; Last Updated: {{ lastUpdated }}</p>
       </div>
@@ -67,7 +73,7 @@ const email = computed(() => profile.value?.email || 'info@ecran-et.org')
         </section>
 
         <section class="legal-section legal-contact">
-          <h2>Contact Us</h2>
+          <h2>{{ contactHeading }}</h2>
           <p>
             Email: <a :href="`mailto:${email}`">{{ email }}</a>
           </p>

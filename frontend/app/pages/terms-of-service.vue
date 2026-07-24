@@ -44,17 +44,22 @@ const fallbackBlocks = [
 
 const { data: page } = await useAsyncData('page-terms-of-service', () => getPage('terms-of-service'))
 
+await useSeo(page.value)
+
 const blocks = computed(() =>
   Array.isArray(page.value?.sections?.blocks) ? page.value.sections.blocks : fallbackBlocks
 )
 const lastUpdated = computed(() => page.value?.sections?.lastUpdated || 'June 2026')
+
+// Editable eyebrow label (page.sections.eyebrow with current copy as fallback).
+const legalEyebrow = computed(() => page.value?.sections?.eyebrow || 'Legal')
 </script>
 
 <template>
   <main class="legal-page">
     <div class="legal-hero">
       <div class="legal-hero-inner">
-        <span class="legal-eyebrow">Legal</span>
+        <span class="legal-eyebrow">{{ legalEyebrow }}</span>
         <h1>{{ page?.heroTitle || 'Terms of Service' }}</h1>
         <p class="legal-meta">Ethiopian Child Rights Advocacy Network (ECRAN) &mdash; Last Updated: {{ lastUpdated }}</p>
       </div>

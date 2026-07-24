@@ -1,17 +1,13 @@
 <script setup lang="ts">
 const { data: page } = await useAsyncData('page-asfp', () => getPage('asfp'))
+const { data: site } = await useAsyncData('global', () => getGlobal())
+const getInvolvedUrl = computed(
+  () =>
+    (site.value as any)?.getInvolvedUrl ||
+    'https://docs.google.com/forms/d/e/1FAIpQLSefVosbpua5Zkh_CwGoPpwil4VCdnJAUOJhr4fsP0cspBtZ1A/viewform'
+)
 
-useHead({
-  title: 'ASFP | Our Works | ECRAN',
-  meta: [
-    {
-      name: 'description',
-      content:
-        page.value?.seoDescription ||
-        'ASFP — Advocacy and Social Frontline Program. ECRAN coordinates frontline civil society actors for stronger child-rights advocacy across Ethiopia.'
-    }
-  ]
-})
+await useSeo(page.value)
 
 // Baked-in fallback cards — used only when the CMS page has no `sections.cards`.
 const fallbackCards = [
@@ -41,14 +37,14 @@ const cards = computed(() =>
 <template>
   <main class="asfp-page">
     <PageHero
-      eyebrow="Our Works — ASFP"
+      :eyebrow="page?.sections?.heroEyebrow || 'Our Works — ASFP'"
       :title="page?.heroTitle || 'Advocacy and Social Frontline Program'"
       :text="page?.heroText || `ASFP coordinates frontline civil society organizations to strengthen child-rights advocacy, protection systems, and community-level accountability across Ethiopia's regions.`"
     />
 
     <section class="split-section">
       <div>
-        <p class="eyebrow">Program focus</p>
+        <p class="eyebrow">{{ page?.sections?.focusEyebrow || 'Program focus' }}</p>
         <h2>{{ page?.sections?.focusTitle || 'Bringing frontline voices into national policy dialogue.' }}</h2>
       </div>
       <p>
@@ -68,12 +64,12 @@ const cards = computed(() =>
 
     <section class="split-section asfp-cta-section">
       <div>
-        <p class="eyebrow">Get involved</p>
+        <p class="eyebrow">{{ page?.sections?.ctaEyebrow || 'Get involved' }}</p>
         <h2>{{ page?.sections?.ctaTitle || 'Join the ASFP coalition.' }}</h2>
       </div>
       <div>
         <p>{{ page?.sections?.ctaText || 'Organizations working at the frontline of child-rights advocacy in Ethiopia are invited to connect with ECRAN and explore how ASFP can strengthen their work.' }}</p>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSefVosbpua5Zkh_CwGoPpwil4VCdnJAUOJhr4fsP0cspBtZ1A/viewform" target="_blank" rel="noopener noreferrer" class="button primary">Express interest</a>
+        <a :href="getInvolvedUrl" target="_blank" rel="noopener noreferrer" class="button primary">{{ page?.sections?.ctaLabel || 'Express interest' }}</a>
       </div>
     </section>
   </main>

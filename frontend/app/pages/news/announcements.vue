@@ -20,7 +20,11 @@ const fallback = [
 
 const { data: cmsPosts } = await useAsyncData('posts-announcement', () => getPosts('announcement'))
 const { data: page } = await useAsyncData('page-announcements', () => getPage('announcements'))
+await useSeo(page.value)
+
 const articles = computed(() => (cmsPosts.value?.length ? cmsPosts.value : fallback))
+const badgeLabel = computed(() => page.value?.sections?.badgeLabel || 'Announcement')
+const readMoreLabel = computed(() => page.value?.sections?.readMoreLabel || 'Read full story')
 </script>
 
 <template>
@@ -35,11 +39,12 @@ const articles = computed(() => (cmsPosts.value?.length ? cmsPosts.value : fallb
       <article v-for="article in articles" :key="article.title" class="announcement-item">
         <div class="announcement-meta">
           <span class="announcement-date">{{ article.date }}</span>
-          <span class="announcement-badge">Announcement</span>
+          <span class="announcement-badge">{{ badgeLabel }}</span>
         </div>
         <h2>{{ article.title }}</h2>
         <p>{{ article.excerpt }}</p>
-        <span class="read-more-link">Read full story &rarr;</span>
+        <NuxtLink v-if="article.slug" :to="`/news/${article.slug}`" class="read-more-link">{{ readMoreLabel }} &rarr;</NuxtLink>
+        <span v-else class="read-more-link">{{ readMoreLabel }} &rarr;</span>
       </article>
     </div>
   </section>
