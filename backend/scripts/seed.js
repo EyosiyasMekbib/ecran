@@ -235,22 +235,37 @@ async function seedSingle(strapi, uid, data) {
   return 1;
 }
 
-(async () => {
-  const strapi = await createStrapi({ distDir: './dist' }).load();
-  try {
-    console.log('Seeding ECRAN content...');
-    await seedCollection(strapi, 'api::program.program', PROGRAMS);
-    await seedCollection(strapi, 'api::impact-story.impact-story', IMPACT_STORIES);
-    await seedCollection(strapi, 'api::resource.resource', RESOURCES);
-    await seedCollection(strapi, 'api::post.post', POSTS);
-    await seedCollection(strapi, 'api::page.page', PAGES);
-    await seedSingle(strapi, 'api::site-profile.site-profile', SITE_PROFILE);
-    console.log('Seed complete.');
-  } catch (err) {
-    console.error('Seed failed:', err);
-    process.exitCode = 1;
-  } finally {
-    await strapi.destroy();
-    process.exit(process.exitCode || 0);
-  }
-})();
+/**
+ * Seed all starter content using an EXISTING Strapi instance. Idempotent
+ * (skips entries whose slug already exists). Called both by the CLI wrapper
+ * below and by the app bootstrap (src/index.ts) on a fresh/empty database.
+ */
+async function runSeed(strapi) {
+  const log = (strapi && strapi.log) || console;
+  log.info('Seeding ECRAN content...');
+  await seedCollection(strapi, 'api::program.program', PROGRAMS);
+  await seedCollection(strapi, 'api::impact-story.impact-story', IMPACT_STORIES);
+  await seedCollection(strapi, 'api::resource.resource', RESOURCES);
+  await seedCollection(strapi, 'api::post.post', POSTS);
+  await seedCollection(strapi, 'api::page.page', PAGES);
+  await seedSingle(strapi, 'api::site-profile.site-profile', SITE_PROFILE);
+  log.info('Seed complete.');
+}
+
+module.exports = { runSeed };
+
+// Direct invocation: `node scripts/seed.js` — boots the built app, seeds, exits.
+if (require.main === module) {
+  (async () => {
+    const strapi = await createStrapi({ distDir: './dist' }).load();
+    try {
+      await runSeed(strapi);
+    } catch (err) {
+      console.error('Seed failed:', err);
+      process.exitCode = 1;
+    } finally {
+      await strapi.destroy();
+      process.exit(process.exitCode || 0);
+    }
+  })();
+}

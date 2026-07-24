@@ -64,6 +64,22 @@ export default {
       strapi.log.error(`ensurePublicReadPermissions failed: ${err?.message ?? err}`)
     );
 
+    // First boot on an empty DB (e.g. a fresh Render/Neon deploy): seed starter
+    // content. Idempotent — a no-op once content exists.
+    try {
+      const existing = await strapi.documents('api::program.program').findFirst({});
+      if (!existing) {
+        strapi.log.info('Empty database detected — seeding starter content...');
+        // Loaded via a runtime path so the bundler doesn't resolve scripts/
+        // (outside src/) at build time. __dirname === dist/src at runtime.
+        const seedPath = require('path').join(__dirname, '..', '..', 'scripts', 'seed.js');
+        const { runSeed } = require(seedPath);
+        await runSeed(strapi);
+      }
+    } catch (err: any) {
+      strapi.log.error(`Auto-seed failed: ${err?.message ?? err}`);
+    }
+
     const buildHook = process.env.NETLIFY_BUILD_HOOK;
     if (!buildHook) {
       strapi.log.info('NETLIFY_BUILD_HOOK not set — frontend auto-rebuild disabled.');
