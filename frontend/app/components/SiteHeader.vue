@@ -1,5 +1,18 @@
 <script setup lang="ts">
-import { navItems } from '~/data/site'
+import { navItems as staticNavItems } from '~/data/site'
+
+// Navigation + branding come from the CMS (fallback to static data when empty/down).
+const { data: nav } = await useAsyncData('navigation', () => getNavigation())
+const { data: site } = await useAsyncData('global', () => getGlobal())
+
+const navItems = computed(() => (nav.value && nav.value.length ? nav.value : staticNavItems))
+const logoUrl = computed(() => strapiMedia((site.value as any)?.logo?.url) || '/ecran-logo.jpg')
+const getInvolvedUrl = computed(
+  () =>
+    (site.value as any)?.getInvolvedUrl ||
+    'https://docs.google.com/forms/d/e/1FAIpQLSefVosbpua5Zkh_CwGoPpwil4VCdnJAUOJhr4fsP0cspBtZ1A/viewform'
+)
+const getInvolvedLabel = computed(() => (site.value as any)?.ui?.getInvolvedLabel || 'Get Involved')
 
 const route = useRoute()
 const open = ref(false)
@@ -47,7 +60,7 @@ onBeforeUnmount(() => {
   <header class="site-header">
     <div class="header-container">
       <NuxtLink to="/" class="brand-link" aria-label="ECRAN home">
-        <img src="/ecran-logo.jpg" alt="ECRAN logo" class="brand-logo" />
+        <img :src="logoUrl" alt="ECRAN logo" class="brand-logo" />
       </NuxtLink>
 
       <nav id="primary-navigation" class="primary-nav" :class="{ 'is-open': open }" aria-label="Primary navigation">
@@ -89,7 +102,7 @@ onBeforeUnmount(() => {
       </nav>
 
       <div class="header-actions-wrapper">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSefVosbpua5Zkh_CwGoPpwil4VCdnJAUOJhr4fsP0cspBtZ1A/viewform" target="_blank" rel="noopener noreferrer" class="header-cta">Get Involved</a>
+        <a :href="getInvolvedUrl" target="_blank" rel="noopener noreferrer" class="header-cta">{{ getInvolvedLabel }}</a>
         <button class="menu-button" type="button" :aria-expanded="open" aria-controls="primary-navigation" @click="open = !open">
           <span />
           <span />

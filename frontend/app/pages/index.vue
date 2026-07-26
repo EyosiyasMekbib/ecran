@@ -1,16 +1,12 @@
 <script setup lang="ts">
-useHead({
-  title: 'ECRAN | Ethiopian Child Rights Advocacy Network',
-  meta: [
-    { name: 'description', content: 'ECRAN is an Ethiopian child rights advocacy network promoting evidence-based advocacy, partnership, and child participation.' }
-  ]
-})
-
 // Sourced from the Strapi CMS at build/SSR time, with static fallback (see composables/useStrapi.ts).
 const { data: impactStories } = await useAsyncData('home-impact-stories', () => getImpactStories())
 const { data: resources } = await useAsyncData('home-resources', () => getResourceCards())
 const { data: page } = await useAsyncData('page-home', () => getPage('home'))
 const { data: profile } = await useAsyncData('site-profile', () => getSiteProfile())
+const { data: partners } = await useAsyncData('home-partners', () => getPartners())
+
+await useSeo(page.value)
 
 const mission = computed(() => profile.value?.mission || 'Promote evidence-based advocacy for child rights in Ethiopia.')
 const vision = computed(() => profile.value?.vision || 'A country where all children enjoy survival, development, protection, and participation rights.')
@@ -61,6 +57,35 @@ const fallbackObjectives = [
 const objectives = computed(() =>
   Array.isArray(page.value?.sections?.objectives) ? page.value.sections.objectives : fallbackObjectives
 )
+
+// Editable section copy — CMS-managed via page `home` sections.*, current copy as fallback.
+const heroSignals = computed(() =>
+  Array.isArray(page.value?.sections?.heroSignals) && page.value.sections.heroSignals.length
+    ? page.value.sections.heroSignals
+    : ['Policy evidence', 'Child protection', 'Participation']
+)
+const partnerCtaLabel = computed(() => page.value?.sections?.partnerCtaLabel || 'Partner with ECRAN')
+const partnersHeading = computed(() => page.value?.sections?.partnersHeading || 'Our partners')
+const showcaseEyebrow = computed(() => page.value?.sections?.showcaseEyebrow || 'What ECRAN makes possible')
+const objectivesTitle = computed(() => page.value?.sections?.objectivesTitle || 'Stated Objectives')
+const newsTitle = computed(() => page.value?.sections?.newsTitle || 'Stories from the network')
+const resourcesHeading = computed(() => page.value?.sections?.resourcesHeading || 'Reports, briefs, and tools in one accessible center.')
+const secondaryCtaLabel = computed(() => page.value?.sections?.secondaryCtaLabel || 'Learn more about us')
+const showcaseLinkLabel = computed(() => page.value?.sections?.showcaseLinkLabel || 'Read about ECRAN')
+const manifestoLabels = computed(() =>
+  Array.isArray(page.value?.sections?.manifestoLabels) && page.value.sections.manifestoLabels.length
+    ? page.value.sections.manifestoLabels
+    : ['Mission', 'Vision', 'Legal status']
+)
+const objectivesEyebrow = computed(() => page.value?.sections?.objectivesEyebrow || 'Network Focus')
+const objectivesSummary = computed(() => page.value?.sections?.objectivesSummary || 'Ten formal objectives, organized into four workstreams so the homepage reads like a strategy rather than a charter document.')
+const objectivesCount = computed(() => page.value?.sections?.objectivesCount || '10')
+const objectivesCountLabel = computed(() => page.value?.sections?.objectivesCountLabel || 'stated objectives')
+const objectivesDetailsLabel = computed(() => page.value?.sections?.objectivesDetailsLabel || 'Read formal objectives')
+const newsEyebrow = computed(() => page.value?.sections?.newsEyebrow || 'Latest updates')
+const newsLinkLabel = computed(() => page.value?.sections?.newsLinkLabel || 'Read story')
+const resourcesEyebrow = computed(() => page.value?.sections?.resourcesEyebrow || 'Resource Library')
+const resourcesCtaLabel = computed(() => page.value?.sections?.resourcesCtaLabel || 'View all resources')
 </script>
 
 <template>
@@ -74,37 +99,38 @@ const objectives = computed(() =>
       <div class="hero-container">
         <div class="hero-copy reveal">
           <div class="hero-signals" aria-label="ECRAN focus areas">
-            <span>Policy evidence</span>
-            <span>Child protection</span>
-            <span>Participation</span>
+            <span v-for="signal in heroSignals" :key="signal">{{ signal }}</span>
           </div>
           <h1>{{ page?.heroTitle || 'Evidence-led advocacy for every child in Ethiopia.' }}</h1>
           <p>
             {{ page?.heroText || `ECRAN brings partners, communities, and decision-makers together to turn evidence into action for children's rights.` }}
           </p>
           <div class="hero-actions">
-            <NuxtLink to="/get-involved" class="button primary">Partner with ECRAN</NuxtLink>
-            <NuxtLink to="/who-we-are/about-us" class="button secondary">Learn more about us</NuxtLink>
+            <NuxtLink to="/get-involved" class="button primary">{{ partnerCtaLabel }}</NuxtLink>
+            <NuxtLink to="/who-we-are/about-us" class="button secondary">{{ secondaryCtaLabel }}</NuxtLink>
           </div>
         </div>
         <div class="hero-visual reveal delay-1" aria-label="Ethiopian children standing together outdoors">
-          <img src="/brand/ecran-children-header.png" alt="Ethiopian children standing together outdoors in school uniforms" />
+          <img :src="page?.heroImage || '/brand/ecran-children-header.png'" alt="Ethiopian children standing together outdoors in school uniforms" />
         </div>
       </div>
     </section>
 
-    <section class="partners-section">
+    <section v-if="partners && partners.length" class="partners-section">
       <div class="partners-container">
-        <h3>Our partners</h3>
+        <h3>{{ partnersHeading }}</h3>
         <div class="partners-marquee">
-          <div class="partner-placeholder"></div>
-          <div class="partner-placeholder"></div>
-          <div class="partner-placeholder"></div>
-          <div class="partner-placeholder"></div>
-          <div class="partner-placeholder"></div>
-          <div class="partner-placeholder"></div>
-          <div class="partner-placeholder"></div>
-          <div class="partner-placeholder"></div>
+          <a
+            v-for="partner in partners"
+            :key="partner.name"
+            class="partner-item"
+            :href="partner.url || undefined"
+            :target="partner.url ? '_blank' : undefined"
+            :rel="partner.url ? 'noopener' : undefined"
+          >
+            <img v-if="partner.logo" :src="strapiMedia(partner.logo)" :alt="partner.name" />
+            <span v-else class="partner-name">{{ partner.name }}</span>
+          </a>
         </div>
       </div>
     </section>
@@ -113,32 +139,32 @@ const objectives = computed(() =>
   <div class="section-dark">
     <section class="story-section story-showcase">
       <div class="story-anchor">
-        <p class="eyebrow">What ECRAN makes possible</p>
+        <p class="eyebrow">{{ showcaseEyebrow }}</p>
         <h2>{{ page?.sections?.showcaseTitle || 'A stronger public platform for child-rights evidence, partnership, and accountability.' }}</h2>
         <p>
           {{ page?.sections?.showcaseText || 'ECRAN connects field experience, civil society coordination, and policy dialogue so advocacy work can move with a shared public mandate.' }}
         </p>
-        <NuxtLink to="/who-we-are/about-us" class="story-link">Read about ECRAN</NuxtLink>
+        <NuxtLink to="/who-we-are/about-us" class="story-link">{{ showcaseLinkLabel }}</NuxtLink>
       </div>
       <div class="manifesto-list">
         <article class="manifesto-item">
           <span>01</span>
           <div class="content">
-            <p>Mission</p>
+            <p>{{ manifestoLabels[0] }}</p>
             <h3>{{ mission }}</h3>
           </div>
         </article>
         <article class="manifesto-item">
           <span>02</span>
           <div class="content">
-            <p>Vision</p>
+            <p>{{ manifestoLabels[1] }}</p>
             <h3>{{ vision }}</h3>
           </div>
         </article>
         <article class="manifesto-item">
           <span>03</span>
           <div class="content">
-            <p>Legal status</p>
+            <p>{{ manifestoLabels[2] }}</p>
             <h3>{{ legalStatus }}</h3>
           </div>
         </article>
@@ -148,17 +174,17 @@ const objectives = computed(() =>
 
   <section class="objectives-section">
     <div class="objectives-heading-block">
-      <p class="eyebrow">Network Focus</p>
-      <h2>Stated Objectives</h2>
+      <p class="eyebrow">{{ objectivesEyebrow }}</p>
+      <h2>{{ objectivesTitle }}</h2>
       <p class="objectives-summary">
-        Ten formal objectives, organized into four workstreams so the homepage reads like a strategy rather than a charter document.
+        {{ objectivesSummary }}
       </p>
     </div>
 
     <div class="objectives-showcase">
       <aside class="objective-index" aria-label="Ten stated objectives grouped into four workstreams">
-        <strong>10</strong>
-        <span>stated objectives</span>
+        <strong>{{ objectivesCount }}</strong>
+        <span>{{ objectivesCountLabel }}</span>
         <div class="objective-index-list" aria-hidden="true">
           <span>01</span><span>02</span><span>03</span><span>04</span><span>05</span>
           <span>06</span><span>07</span><span>08</span><span>09</span><span>10</span>
@@ -172,7 +198,7 @@ const objectives = computed(() =>
             <h3>{{ theme.title }}</h3>
             <p>{{ theme.text }}</p>
             <details>
-              <summary>Read formal objectives</summary>
+              <summary>{{ objectivesDetailsLabel }}</summary>
               <ul>
                 <li v-for="item in theme.items" :key="item">{{ item }}</li>
               </ul>
@@ -187,8 +213,8 @@ const objectives = computed(() =>
 
   <section class="news-section">
     <div class="news-header">
-      <p class="eyebrow">Latest updates</p>
-      <h2>Stories from the network</h2>
+      <p class="eyebrow">{{ newsEyebrow }}</p>
+      <h2>{{ newsTitle }}</h2>
     </div>
     <div class="news-grid" aria-label="Impact stories">
       <article v-for="story in impactStories" :key="story.title" class="news-card">
@@ -201,7 +227,7 @@ const objectives = computed(() =>
         </div>
         <div class="news-card-footer">
           <NuxtLink to="/impact-stories" class="news-link">
-            Read story <span class="arrow">&rarr;</span>
+            {{ newsLinkLabel }} <span class="arrow">&rarr;</span>
           </NuxtLink>
         </div>
       </article>
@@ -212,10 +238,10 @@ const objectives = computed(() =>
     <section class="library-section">
       <div class="library-header">
         <div class="library-title-block">
-          <p class="eyebrow">Resource Library</p>
-          <h2>Reports, briefs, and tools in one accessible center.</h2>
+          <p class="eyebrow">{{ resourcesEyebrow }}</p>
+          <h2>{{ resourcesHeading }}</h2>
         </div>
-        <NuxtLink to="/resources" class="button secondary-light">View all resources</NuxtLink>
+        <NuxtLink to="/resources" class="button secondary-light">{{ resourcesCtaLabel }}</NuxtLink>
       </div>
 
       <div class="library-grid">

@@ -21,17 +21,28 @@ const fallback = [
 
 const { data: cmsPosts } = await useAsyncData('posts-bid', () => getPosts('bid'))
 const { data: page } = await useAsyncData('page-bids', () => getPage('bids'))
+await useSeo(page.value)
+
+const defaultRef = computed(() => page.value?.sections?.refFallback || 'ECRAN')
+const defaultCtaLabel = computed(() => page.value?.sections?.ctaLabel || 'Request tender documents')
+const refLabel = computed(() => page.value?.sections?.refLabel || 'Ref:')
+const publishedLabel = computed(() => page.value?.sections?.publishedLabel || 'Published:')
+const deadlineLabel = computed(() => page.value?.sections?.deadlineLabel || 'Deadline:')
+const defaultStatusOpen = computed(() => page.value?.sections?.statusOpenLabel || 'Open')
+const defaultStatusClosed = computed(() => page.value?.sections?.statusClosedLabel || 'Closed')
 
 // A bid is "Open" while its deadline is in the future (or when no deadline is set).
 const bids = computed(() =>
   cmsPosts.value?.length
     ? cmsPosts.value.map((p) => ({
+        slug: p.slug,
         title: p.title,
-        reference: p.location || 'ECRAN',
-        status: !p.deadline || new Date(p.deadline) >= new Date() ? 'Open' : 'Closed',
+        reference: p.location || defaultRef.value,
+        status: !p.deadline || new Date(p.deadline) >= new Date() ? defaultStatusOpen.value : defaultStatusClosed.value,
         published: p.date,
         deadline: p.deadline,
-        description: p.excerpt
+        description: p.excerpt,
+        ctaLabel: p.ctaLabel || defaultCtaLabel.value
       }))
     : fallback
 )
@@ -48,17 +59,18 @@ const bids = computed(() =>
     <div class="bids-grid">
       <article v-for="bid in bids" :key="bid.title" class="bid-card" :class="{ 'is-closed': bid.status === 'Closed' }">
         <div class="bid-meta">
-          <span class="bid-ref">Ref: {{ bid.reference }}</span>
+          <span class="bid-ref">{{ refLabel }} {{ bid.reference }}</span>
           <span class="bid-status" :class="bid.status.toLowerCase()">{{ bid.status }}</span>
         </div>
         <h2>{{ bid.title }}</h2>
         <div class="bid-dates">
-          <span><strong>Published:</strong> {{ bid.published }}</span>
-          <span><strong>Deadline:</strong> {{ bid.deadline }}</span>
+          <span><strong>{{ publishedLabel }}</strong> {{ bid.published }}</span>
+          <span><strong>{{ deadlineLabel }}</strong> {{ bid.deadline }}</span>
         </div>
         <p>{{ bid.description }}</p>
         <div class="bid-actions" v-if="bid.status === 'Open'">
-          <NuxtLink to="/contact" class="button secondary">Request tender documents</NuxtLink>
+          <NuxtLink v-if="bid.slug" :to="`/news/${bid.slug}`" class="button secondary">{{ bid.ctaLabel || defaultCtaLabel }}</NuxtLink>
+          <span v-else class="button secondary">{{ bid.ctaLabel || defaultCtaLabel }}</span>
         </div>
       </article>
     </div>

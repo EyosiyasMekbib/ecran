@@ -21,15 +21,23 @@ const fallback = [
 
 const { data: cmsPosts } = await useAsyncData('posts-vacancy', () => getPosts('vacancy'))
 const { data: page } = await useAsyncData('page-vacancies', () => getPage('vacancies'))
+await useSeo(page.value)
+
+const defaultTypeBadge = computed(() => page.value?.sections?.typeBadge || 'Vacancy')
+const defaultCtaLabel = computed(() => page.value?.sections?.ctaLabel || 'Apply now')
+const locationLabel = computed(() => page.value?.sections?.locationLabel || 'Location:')
+const deadlineLabel = computed(() => page.value?.sections?.deadlineLabel || 'Deadline:')
 const vacancies = computed(() =>
   cmsPosts.value?.length
     ? cmsPosts.value.map((p) => ({
+        slug: p.slug,
         title: p.title,
         location: p.location,
         deadline: p.deadline,
         excerpt: p.excerpt,
-        department: 'ECRAN',
-        type: 'Vacancy'
+        department: p.department || '',
+        type: p.employmentType || defaultTypeBadge.value,
+        ctaLabel: p.ctaLabel || defaultCtaLabel.value
       }))
     : fallback
 )
@@ -51,12 +59,13 @@ const vacancies = computed(() =>
         </div>
         <h2>{{ job.title }}</h2>
         <div class="vacancy-details">
-          <span><strong>Location:</strong> {{ job.location }}</span>
-          <span><strong>Deadline:</strong> {{ job.deadline }}</span>
+          <span><strong>{{ locationLabel }}</strong> {{ job.location }}</span>
+          <span><strong>{{ deadlineLabel }}</strong> {{ job.deadline }}</span>
         </div>
         <p>{{ job.excerpt }}</p>
         <div class="vacancy-actions">
-          <NuxtLink to="/contact" class="button secondary">Apply now</NuxtLink>
+          <NuxtLink v-if="job.slug" :to="`/news/${job.slug}`" class="button secondary">{{ job.ctaLabel || defaultCtaLabel }}</NuxtLink>
+          <span v-else class="button secondary">{{ job.ctaLabel || defaultCtaLabel }}</span>
         </div>
       </article>
     </div>

@@ -110,17 +110,53 @@ const allResources = computed<Resource[]>(() =>
     : resourcesData
 )
 
+const { data: page } = await useAsyncData('page-resources', () => getPage('resources'))
+await useSeo(page.value)
+
 const searchQuery = ref('')
 const selectedType = ref('All')
 const selectedTopic = ref('All')
 const sortBy = ref('latest')
 
-const types = ['All', 'Report', 'Policy Brief', 'Publication', 'Toolkit']
-const topics = ['All', 'Child Protection', 'Participation', 'Advocacy', 'Capacity Building']
+// Filter taxonomy — editable via page.sections.filterTypes / filterTopics; current arrays as fallback.
+const types = computed<string[]>(() =>
+  Array.isArray(page.value?.sections?.filterTypes) && page.value?.sections?.filterTypes.length
+    ? page.value.sections.filterTypes
+    : ['All', 'Report', 'Policy Brief', 'Publication', 'Toolkit']
+)
+const topics = computed<string[]>(() =>
+  Array.isArray(page.value?.sections?.filterTopics) && page.value?.sections?.filterTopics.length
+    ? page.value.sections.filterTopics
+    : ['All', 'Child Protection', 'Participation', 'Advocacy', 'Capacity Building']
+)
+
+// Editable UI copy — page.sections.* with current copy as fallback.
+const searchLabel = computed(() => page.value?.sections?.filterLabels?.search || 'Search')
+const typeLabel = computed(() => page.value?.sections?.filterLabels?.type || 'Resource Type')
+const topicLabel = computed(() => page.value?.sections?.filterLabels?.topic || 'Topic')
+const searchPlaceholder = computed(() => page.value?.sections?.searchPlaceholder || 'Search resources...')
+const allTypesLabel = computed(() => page.value?.sections?.allTypesLabel || 'All Types')
+const allTopicsLabel = computed(() => page.value?.sections?.allTopicsLabel || 'All Topics')
+const resetLabel = computed(() => page.value?.sections?.resetLabel || 'Reset Filters')
+const resultsShowing = computed(() => page.value?.sections?.resultsShowing || 'Showing')
+const resourceNoun = computed(() => page.value?.sections?.resourceNoun || 'resource')
+const sortLabel = computed(() => page.value?.sections?.sortLabel || 'Sort by:')
+const sortOptions = computed<{ value: string; label: string }[]>(() =>
+  Array.isArray(page.value?.sections?.sortOptions) && page.value?.sections?.sortOptions.length
+    ? page.value.sections.sortOptions
+    : [
+        { value: 'latest', label: 'Latest' },
+        { value: 'oldest', label: 'Oldest' },
+        { value: 'title', label: 'Title A-Z' }
+      ]
+)
+const downloadLabel = computed(() => page.value?.sections?.downloadLabel || 'Download Resource')
+const noResultsTitle = computed(() => page.value?.sections?.noResults?.title || 'No resources found')
+const noResultsText = computed(() => page.value?.sections?.noResults?.text || 'Try adjusting your search terms or filter selections.')
 
 const typeCounts = computed(() => {
   const counts: Record<string, number> = { All: allResources.value.length }
-  types.forEach(t => {
+  types.value.forEach(t => {
     if (t !== 'All') {
       counts[t] = allResources.value.filter(r => r.type === t).length
     }
@@ -130,7 +166,7 @@ const typeCounts = computed(() => {
 
 const topicCounts = computed(() => {
   const counts: Record<string, number> = { All: allResources.value.length }
-  topics.forEach(t => {
+  topics.value.forEach(t => {
     if (t !== 'All') {
       counts[t] = allResources.value.filter(r => r.topic === t).length
     }
@@ -188,19 +224,19 @@ const formatDate = (dateString: string) => {
 <template>
   <PageHero
     class="resources-hero"
-    title="Resource Repository"
-    text="Explore and download ECRAN's research publications, policy briefs, toolkit guidelines, and annual reports detailing child-rights progress in Ethiopia."
+    :title="page?.heroTitle || 'Resource Repository'"
+    :text="page?.heroText || 'Explore and download ECRAN\'s research publications, policy briefs, toolkit guidelines, and annual reports detailing child-rights progress in Ethiopia.'"
   />
 
   <main class="resources-layout">
     <aside class="resources-filters" aria-label="Filter resources">
       <div class="filter-group">
-        <h2 class="filter-group-title">Search</h2>
+        <h2 class="filter-group-title">{{ searchLabel }}</h2>
         <div class="search-wrapper">
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Search resources..."
+            :placeholder="searchPlaceholder"
             class="search-input"
           />
           <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18">
@@ -210,7 +246,7 @@ const formatDate = (dateString: string) => {
       </div>
 
       <div class="filter-group">
-        <h2 class="filter-group-title">Resource Type</h2>
+        <h2 class="filter-group-title">{{ typeLabel }}</h2>
         <ul class="filter-list">
           <li v-for="type in types" :key="type">
             <button
@@ -219,7 +255,7 @@ const formatDate = (dateString: string) => {
               :class="{ active: selectedType === type }"
               @click="selectedType = type"
             >
-              <span>{{ type === 'All' ? 'All Types' : type }}</span>
+              <span>{{ type === 'All' ? allTypesLabel : type }}</span>
               <span class="filter-count">{{ typeCounts[type] }}</span>
             </button>
           </li>
@@ -227,7 +263,7 @@ const formatDate = (dateString: string) => {
       </div>
 
       <div class="filter-group">
-        <h2 class="filter-group-title">Topic</h2>
+        <h2 class="filter-group-title">{{ topicLabel }}</h2>
         <ul class="filter-list">
           <li v-for="topic in topics" :key="topic">
             <button
@@ -236,7 +272,7 @@ const formatDate = (dateString: string) => {
               :class="{ active: selectedTopic === topic }"
               @click="selectedTopic = topic"
             >
-              <span>{{ topic === 'All' ? 'All Topics' : topic }}</span>
+              <span>{{ topic === 'All' ? allTopicsLabel : topic }}</span>
               <span class="filter-count">{{ topicCounts[topic] }}</span>
             </button>
           </li>
@@ -252,21 +288,19 @@ const formatDate = (dateString: string) => {
         <svg viewBox="0 0 24 24" width="16" height="16">
           <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
         </svg>
-        <span>Reset Filters</span>
+        <span>{{ resetLabel }}</span>
       </button>
     </aside>
 
     <section class="resources-content" aria-label="Matching resources">
       <div class="resources-meta-bar">
         <span class="results-count">
-          Showing {{ filteredResources.length }} resource{{ filteredResources.length === 1 ? '' : 's' }}
+          {{ resultsShowing }} {{ filteredResources.length }} {{ resourceNoun }}{{ filteredResources.length === 1 ? '' : 's' }}
         </span>
         <div class="sort-wrapper">
-          <label for="sort-select" class="results-count">Sort by:</label>
+          <label for="sort-select" class="results-count">{{ sortLabel }}</label>
           <select id="sort-select" v-model="sortBy" class="sort-select">
-            <option value="latest">Latest</option>
-            <option value="oldest">Oldest</option>
-            <option value="title">Title A-Z</option>
+            <option v-for="opt in sortOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
           </select>
         </div>
       </div>
@@ -304,14 +338,14 @@ const formatDate = (dateString: string) => {
               <svg viewBox="0 0 24 24" width="16" height="16">
                 <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
               </svg>
-              <span>Download Resource</span>
+              <span>{{ downloadLabel }}</span>
             </button>
           </div>
         </article>
 
         <div v-if="filteredResources.length === 0" class="no-results">
-          <h3>No resources found</h3>
-          <p>Try adjusting your search terms or filter selections.</p>
+          <h3>{{ noResultsTitle }}</h3>
+          <p>{{ noResultsText }}</p>
         </div>
       </div>
     </section>
