@@ -49,6 +49,10 @@ export function useSeo(
       meta.push({ name: 'twitter:image', content: image })
     }
 
-    return { title, meta }
+    // Favicon is CMS-managed (Global → favicon); falls back to the bundled icon.
+    const faviconUrl = strapiMedia(g.favicon?.url) || '/favicon.ico'
+    const link = [{ rel: 'icon', href: faviconUrl }]
+
+    return { title, meta, link }
   })
 }

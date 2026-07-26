@@ -122,6 +122,13 @@ const GLOBAL = {
     factLabels: { department: 'Department', type: 'Type', location: 'Location / Ref', deadline: 'Deadline' },
     categoryLabels: { news: 'News', vacancy: 'Vacancy', bid: 'Bid / Tender', media: 'Media', announcement: 'Announcement' },
     defaultCtaLabel: 'Learn more',
+    errorPage: {
+      notFoundTitle: 'Page not found',
+      notFoundText: 'The page you are looking for may have been moved or removed.',
+      genericTitle: 'Something went wrong',
+      genericText: 'An unexpected error occurred. Please try again in a moment.',
+      homeLabel: 'Back to homepage',
+    },
   },
 };
 
@@ -150,6 +157,7 @@ const PAGES = [
     heroText: "ECRAN brings partners, communities, and decision-makers together to turn evidence into action for children's rights.",
     sections: {
       heroSignals: ['Policy evidence', 'Child protection', 'Participation'],
+      heroImageAlt: 'Ethiopian children standing together outdoors in school uniforms',
       partnerCtaLabel: 'Partner with ECRAN',
       secondaryCtaLabel: 'Learn more about us',
       partnersHeading: 'Our partners',

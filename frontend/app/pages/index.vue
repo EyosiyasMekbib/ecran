@@ -86,6 +86,9 @@ const newsEyebrow = computed(() => page.value?.sections?.newsEyebrow || 'Latest 
 const newsLinkLabel = computed(() => page.value?.sections?.newsLinkLabel || 'Read story')
 const resourcesEyebrow = computed(() => page.value?.sections?.resourcesEyebrow || 'Resource Library')
 const resourcesCtaLabel = computed(() => page.value?.sections?.resourcesCtaLabel || 'View all resources')
+const heroImageAlt = computed(
+  () => page.value?.sections?.heroImageAlt || 'Ethiopian children standing together outdoors in school uniforms'
+)
 </script>
 
 <template>
@@ -111,7 +114,7 @@ const resourcesCtaLabel = computed(() => page.value?.sections?.resourcesCtaLabel
           </div>
         </div>
         <div class="hero-visual reveal delay-1" aria-label="Ethiopian children standing together outdoors">
-          <img :src="page?.heroImage || '/brand/ecran-children-header.png'" alt="Ethiopian children standing together outdoors in school uniforms" />
+          <img :src="page?.heroImage || '/brand/ecran-children-header.png'" :alt="heroImageAlt" />
         </div>
       </div>
     </section>
