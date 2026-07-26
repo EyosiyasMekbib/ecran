@@ -31,6 +31,10 @@ const commitmentsLabel = computed(() => page.value?.sections?.commitmentsLabel |
 const ctaLabel = computed(() => page.value?.sections?.ctaLabel || 'Get involved')
 const directoryEyebrow = computed(() => page.value?.sections?.directoryEyebrow || 'Network Members')
 const directoryTitle = computed(() => page.value?.sections?.directoryTitle || 'ECRAN coalition partners')
+const memberLinkLabel = computed(() => page.value?.sections?.memberLinkLabel || 'Visit website')
+const emptyState = computed(
+  () => page.value?.sections?.emptyState || 'Member organizations are published here once added in the CMS.'
+)
 </script>
 
 <template>
@@ -68,9 +72,9 @@ const directoryTitle = computed(() => page.value?.sections?.directoryTitle || 'E
           <img v-if="member.logo" :src="member.logo" :alt="member.label" style="max-height: 48px; margin-bottom: 0.75rem;" />
           <h3>{{ member.label }}</h3>
         </div>
-        <a v-if="member.url" :href="member.url" target="_blank" rel="noopener noreferrer" class="member-link">Visit website</a>
+        <a v-if="member.url" :href="member.url" target="_blank" rel="noopener noreferrer" class="member-link">{{ memberLinkLabel }}</a>
       </article>
     </div>
-    <p v-else class="directory-intro" style="text-align:center;opacity:.7;">Member organizations are published here once added in the CMS.</p>
+    <p v-else class="directory-intro" style="text-align:center;opacity:.7;">{{ emptyState }}</p>
   </section>
 </template>

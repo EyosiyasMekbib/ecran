@@ -18,13 +18,30 @@ await useSeo(page.value)
 
 const email = computed(() => profile.value?.email || 'info@ecran-et.org')
 const address = computed(() => profile.value?.address || 'Addis Ababa, Ethiopia')
-const registration = computed(() => `No. ${profile.value?.registrationNumber || '7750'}`)
+const registration = computed(() => `${page.value?.sections?.registrationPrefix || 'No. '}${profile.value?.registrationNumber || '7750'}`)
 
 // Editable section labels/headings (page.sections.* with current copy as fallback).
+const heroEyebrow = computed(() => page.value?.sections?.heroEyebrow || 'Contact us')
 const connectLabel = computed(() => page.value?.sections?.connectLabel || 'Connect')
 const getInTouchHeading = computed(() => page.value?.sections?.getInTouchHeading || 'Get in touch')
 const inquiryPortalLabel = computed(() => page.value?.sections?.inquiryPortalLabel || 'Inquiry Portal')
 const sendMessageHeading = computed(() => page.value?.sections?.sendMessageHeading || 'Send a message')
+
+// Contact detail labels (page.sections.detailLabels.*).
+const emailLabel = computed(() => page.value?.sections?.detailLabels?.email || 'Email')
+const locationLabel = computed(() => page.value?.sections?.detailLabels?.location || 'Location')
+const registrationLabel = computed(() => page.value?.sections?.detailLabels?.registration || 'ACSO Registration')
+
+// Form placeholders (page.sections.form.*).
+const namePlaceholder = computed(() => page.value?.sections?.form?.namePlaceholder || 'Your name')
+const emailPlaceholder = computed(() => page.value?.sections?.form?.emailPlaceholder || 'Your email address')
+const subjectPlaceholder = computed(() => page.value?.sections?.form?.subjectPlaceholder || 'Subject (optional)')
+const messagePlaceholder = computed(() => page.value?.sections?.form?.messagePlaceholder || 'How can we help you?')
+
+// Form feedback + submit label.
+const successMessage = computed(() => page.value?.sections?.successMessage || 'Message sent successfully!')
+const errorMessage = computed(() => page.value?.sections?.errorMessage || 'Something went wrong. Please try again or email us directly.')
+const submitLabel = computed(() => page.value?.sections?.submitLabel || 'Send message')
 
 async function submitForm() {
   error.value = false
@@ -47,7 +64,7 @@ async function submitForm() {
 <template>
   <PageHero
     class="contact-hero"
-    eyebrow="Contact us"
+    :eyebrow="heroEyebrow"
     :title="page?.heroTitle || 'Reach ECRAN for inquiries, partnership conversations, and resource coordination.'"
     :text="page?.heroText || 'Have a question or want to get involved? Use the form below to get in touch with our team or find our office location details.'"
   />
@@ -63,15 +80,15 @@ async function submitForm() {
 
         <div class="contact-details-list">
           <div class="detail-row">
-            <span class="detail-label">Email</span>
+            <span class="detail-label">{{ emailLabel }}</span>
             <a :href="`mailto:${email}`" class="detail-value">{{ email }}</a>
           </div>
           <div class="detail-row">
-            <span class="detail-label">Location</span>
+            <span class="detail-label">{{ locationLabel }}</span>
             <span class="detail-value">{{ address }}</span>
           </div>
           <div class="detail-row">
-            <span class="detail-label">ACSO Registration</span>
+            <span class="detail-label">{{ registrationLabel }}</span>
             <span class="detail-value">{{ registration }}</span>
           </div>
         </div>
@@ -83,21 +100,21 @@ async function submitForm() {
 
         <form class="contact-modern-form" @submit.prevent="submitForm">
           <div class="form-field">
-            <input type="text" id="name" v-model="formName" placeholder="Your name" required />
+            <input type="text" id="name" v-model="formName" :placeholder="namePlaceholder" required />
           </div>
           <div class="form-field">
-            <input type="email" id="email" v-model="formEmail" placeholder="Your email address" required />
+            <input type="email" id="email" v-model="formEmail" :placeholder="emailPlaceholder" required />
           </div>
           <div class="form-field">
-            <input type="text" id="subject" v-model="formSubject" placeholder="Subject (optional)" />
+            <input type="text" id="subject" v-model="formSubject" :placeholder="subjectPlaceholder" />
           </div>
           <div class="form-field">
-            <textarea id="message" v-model="formMessage" rows="5" placeholder="How can we help you?" required></textarea>
+            <textarea id="message" v-model="formMessage" rows="5" :placeholder="messagePlaceholder" required></textarea>
           </div>
-          <p v-if="sent" class="success-message">Message sent successfully!</p>
-          <p v-if="error" class="error-message">Something went wrong. Please try again or email us directly.</p>
+          <p v-if="sent" class="success-message">{{ successMessage }}</p>
+          <p v-if="error" class="error-message">{{ errorMessage }}</p>
           <button class="button primary submit-button" type="submit" :disabled="submitting">
-            Send message
+            {{ submitLabel }}
           </button>
         </form>
       </div>

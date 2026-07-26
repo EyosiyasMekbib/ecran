@@ -21,6 +21,9 @@ const roleEyebrow = computed(() => page.value?.sections?.roleEyebrow || 'Team ro
 const principlesLabel = computed(() => page.value?.sections?.principlesLabel || 'Working principles')
 const directoryEyebrow = computed(() => page.value?.sections?.directoryEyebrow || 'Our Team')
 const directoryTitle = computed(() => page.value?.sections?.directoryTitle || 'Staff & leadership')
+const emptyState = computed(
+  () => page.value?.sections?.emptyState || 'Team profiles are published here once added in the CMS.'
+)
 const initials = (name: string) =>
   name
     .split(/\s+/)
@@ -69,6 +72,6 @@ const initials = (name: string) =>
         </div>
       </article>
     </div>
-    <p v-else class="directory-intro" style="text-align:center;opacity:.7;">Team profiles are published here once added in the CMS.</p>
+    <p v-else class="directory-intro" style="text-align:center;opacity:.7;">{{ emptyState }}</p>
   </section>
 </template>

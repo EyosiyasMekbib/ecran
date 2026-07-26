@@ -4,28 +4,39 @@ const route = useRoute()
 const slug = computed(() => String(route.params.slug || ''))
 
 const { data: post } = await useAsyncData(`post-${slug.value}`, () => getPostBySlug(slug.value))
+const { data: site } = await useAsyncData('global', () => getGlobal())
 
-await useSeo(
-  post.value
-    ? { seoTitle: post.value.title, seoDescription: post.value.excerpt, heroImage: post.value.image }
-    : { title: 'Story not found' }
-)
-
-const categoryLabel: Record<string, string> = {
+// Site-wide chrome labels (Global.ui JSON) — all fall back to the current copy.
+const ui = () => (site.value as any)?.ui || {}
+const defaultCategoryLabels: Record<string, string> = {
   news: 'News',
   vacancy: 'Vacancy',
   bid: 'Bid / Tender',
   media: 'Media',
   announcement: 'Announcement'
 }
+const categoryLabels = computed<Record<string, string>>(() => ui().categoryLabels || defaultCategoryLabels)
+const defaultFactLabels = { department: 'Department', type: 'Type', location: 'Location / Ref', deadline: 'Deadline' }
+const factLabels = computed<Record<string, string>>(() => ({ ...defaultFactLabels, ...(ui().factLabels || {}) }))
+const backToNewsLabel = computed(() => ui().backToNewsLabel || 'Back to News')
+const attachmentsHeading = computed(() => ui().attachmentsHeading || 'Attachments')
+const defaultCtaLabel = computed(() => ui().defaultCtaLabel || 'Learn more')
+const notFoundTitle = computed(() => ui().postNotFoundTitle || 'Story not found')
+const notFoundText = computed(() => ui().postNotFoundText || 'This story may have been moved or unpublished.')
+
+await useSeo(
+  post.value
+    ? { seoTitle: post.value.title, seoDescription: post.value.excerpt, heroImage: post.value.image }
+    : { title: notFoundTitle.value }
+)
 </script>
 
 <template>
   <article v-if="post" class="post-detail">
     <div class="post-detail-inner">
-      <NuxtLink to="/news" class="post-back">&larr; Back to News</NuxtLink>
+      <NuxtLink to="/news" class="post-back">&larr; {{ backToNewsLabel }}</NuxtLink>
       <div class="post-detail-meta">
-        <span v-if="post.category" class="announcement-badge">{{ categoryLabel[post.category] || post.category }}</span>
+        <span v-if="post.category" class="announcement-badge">{{ categoryLabels[post.category] || post.category }}</span>
         <span v-if="post.date" class="announcement-date">{{ post.date }}</span>
       </div>
       <h1>{{ post.title }}</h1>
@@ -35,10 +46,10 @@ const categoryLabel: Record<string, string> = {
         v-if="post.location || post.deadline || post.department || post.employmentType"
         class="post-detail-facts"
       >
-        <div v-if="post.department"><dt>Department</dt><dd>{{ post.department }}</dd></div>
-        <div v-if="post.employmentType"><dt>Type</dt><dd>{{ post.employmentType }}</dd></div>
-        <div v-if="post.location"><dt>Location / Ref</dt><dd>{{ post.location }}</dd></div>
-        <div v-if="post.deadline"><dt>Deadline</dt><dd>{{ post.deadline }}</dd></div>
+        <div v-if="post.department"><dt>{{ factLabels.department }}</dt><dd>{{ post.department }}</dd></div>
+        <div v-if="post.employmentType"><dt>{{ factLabels.type }}</dt><dd>{{ post.employmentType }}</dd></div>
+        <div v-if="post.location"><dt>{{ factLabels.location }}</dt><dd>{{ post.location }}</dd></div>
+        <div v-if="post.deadline"><dt>{{ factLabels.deadline }}</dt><dd>{{ post.deadline }}</dd></div>
       </dl>
 
       <img v-if="post.image" :src="post.image" :alt="post.title" class="post-detail-image" />
@@ -47,7 +58,7 @@ const categoryLabel: Record<string, string> = {
       <div v-if="post.body" class="post-detail-body" v-html="post.body" />
 
       <div v-if="post.attachments?.length" class="post-detail-attachments">
-        <h2>Attachments</h2>
+        <h2>{{ attachmentsHeading }}</h2>
         <ul>
           <li v-for="a in post.attachments" :key="a.url || a.name">
             <a :href="a.url || '#'" target="_blank" rel="noopener noreferrer">{{ a.name }}</a>
@@ -62,16 +73,16 @@ const categoryLabel: Record<string, string> = {
         rel="noopener noreferrer"
         class="post-detail-cta"
       >
-        {{ post.ctaLabel || 'Learn more' }} &rarr;
+        {{ post.ctaLabel || defaultCtaLabel }} &rarr;
       </a>
     </div>
   </article>
 
   <section v-else class="post-detail post-detail--missing">
     <div class="post-detail-inner">
-      <h1>Story not found</h1>
-      <p>This story may have been moved or unpublished.</p>
-      <NuxtLink to="/news" class="post-back">&larr; Back to News</NuxtLink>
+      <h1>{{ notFoundTitle }}</h1>
+      <p>{{ notFoundText }}</p>
+      <NuxtLink to="/news" class="post-back">&larr; {{ backToNewsLabel }}</NuxtLink>
     </div>
   </section>
 </template>

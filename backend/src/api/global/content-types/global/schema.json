@@ -19,6 +19,7 @@
     "social": { "type": "json" },
     "footerTagline": { "type": "text" },
     "footerQuickLinks": { "type": "json" },
-    "footerLegalLinks": { "type": "json" }
+    "footerLegalLinks": { "type": "json" },
+    "ui": { "type": "json" }
   }
 }

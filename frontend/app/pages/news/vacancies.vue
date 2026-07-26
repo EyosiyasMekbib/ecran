@@ -25,6 +25,8 @@ await useSeo(page.value)
 
 const defaultTypeBadge = computed(() => page.value?.sections?.typeBadge || 'Vacancy')
 const defaultCtaLabel = computed(() => page.value?.sections?.ctaLabel || 'Apply now')
+const locationLabel = computed(() => page.value?.sections?.locationLabel || 'Location:')
+const deadlineLabel = computed(() => page.value?.sections?.deadlineLabel || 'Deadline:')
 const vacancies = computed(() =>
   cmsPosts.value?.length
     ? cmsPosts.value.map((p) => ({
@@ -57,8 +59,8 @@ const vacancies = computed(() =>
         </div>
         <h2>{{ job.title }}</h2>
         <div class="vacancy-details">
-          <span><strong>Location:</strong> {{ job.location }}</span>
-          <span><strong>Deadline:</strong> {{ job.deadline }}</span>
+          <span><strong>{{ locationLabel }}</strong> {{ job.location }}</span>
+          <span><strong>{{ deadlineLabel }}</strong> {{ job.deadline }}</span>
         </div>
         <p>{{ job.excerpt }}</p>
         <div class="vacancy-actions">

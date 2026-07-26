@@ -70,6 +70,22 @@ const showcaseEyebrow = computed(() => page.value?.sections?.showcaseEyebrow || 
 const objectivesTitle = computed(() => page.value?.sections?.objectivesTitle || 'Stated Objectives')
 const newsTitle = computed(() => page.value?.sections?.newsTitle || 'Stories from the network')
 const resourcesHeading = computed(() => page.value?.sections?.resourcesHeading || 'Reports, briefs, and tools in one accessible center.')
+const secondaryCtaLabel = computed(() => page.value?.sections?.secondaryCtaLabel || 'Learn more about us')
+const showcaseLinkLabel = computed(() => page.value?.sections?.showcaseLinkLabel || 'Read about ECRAN')
+const manifestoLabels = computed(() =>
+  Array.isArray(page.value?.sections?.manifestoLabels) && page.value.sections.manifestoLabels.length
+    ? page.value.sections.manifestoLabels
+    : ['Mission', 'Vision', 'Legal status']
+)
+const objectivesEyebrow = computed(() => page.value?.sections?.objectivesEyebrow || 'Network Focus')
+const objectivesSummary = computed(() => page.value?.sections?.objectivesSummary || 'Ten formal objectives, organized into four workstreams so the homepage reads like a strategy rather than a charter document.')
+const objectivesCount = computed(() => page.value?.sections?.objectivesCount || '10')
+const objectivesCountLabel = computed(() => page.value?.sections?.objectivesCountLabel || 'stated objectives')
+const objectivesDetailsLabel = computed(() => page.value?.sections?.objectivesDetailsLabel || 'Read formal objectives')
+const newsEyebrow = computed(() => page.value?.sections?.newsEyebrow || 'Latest updates')
+const newsLinkLabel = computed(() => page.value?.sections?.newsLinkLabel || 'Read story')
+const resourcesEyebrow = computed(() => page.value?.sections?.resourcesEyebrow || 'Resource Library')
+const resourcesCtaLabel = computed(() => page.value?.sections?.resourcesCtaLabel || 'View all resources')
 </script>
 
 <template>
@@ -91,7 +107,7 @@ const resourcesHeading = computed(() => page.value?.sections?.resourcesHeading |
           </p>
           <div class="hero-actions">
             <NuxtLink to="/get-involved" class="button primary">{{ partnerCtaLabel }}</NuxtLink>
-            <NuxtLink to="/who-we-are/about-us" class="button secondary">Learn more about us</NuxtLink>
+            <NuxtLink to="/who-we-are/about-us" class="button secondary">{{ secondaryCtaLabel }}</NuxtLink>
           </div>
         </div>
         <div class="hero-visual reveal delay-1" aria-label="Ethiopian children standing together outdoors">
@@ -128,27 +144,27 @@ const resourcesHeading = computed(() => page.value?.sections?.resourcesHeading |
         <p>
           {{ page?.sections?.showcaseText || 'ECRAN connects field experience, civil society coordination, and policy dialogue so advocacy work can move with a shared public mandate.' }}
         </p>
-        <NuxtLink to="/who-we-are/about-us" class="story-link">Read about ECRAN</NuxtLink>
+        <NuxtLink to="/who-we-are/about-us" class="story-link">{{ showcaseLinkLabel }}</NuxtLink>
       </div>
       <div class="manifesto-list">
         <article class="manifesto-item">
           <span>01</span>
           <div class="content">
-            <p>Mission</p>
+            <p>{{ manifestoLabels[0] }}</p>
             <h3>{{ mission }}</h3>
           </div>
         </article>
         <article class="manifesto-item">
           <span>02</span>
           <div class="content">
-            <p>Vision</p>
+            <p>{{ manifestoLabels[1] }}</p>
             <h3>{{ vision }}</h3>
           </div>
         </article>
         <article class="manifesto-item">
           <span>03</span>
           <div class="content">
-            <p>Legal status</p>
+            <p>{{ manifestoLabels[2] }}</p>
             <h3>{{ legalStatus }}</h3>
           </div>
         </article>
@@ -158,17 +174,17 @@ const resourcesHeading = computed(() => page.value?.sections?.resourcesHeading |
 
   <section class="objectives-section">
     <div class="objectives-heading-block">
-      <p class="eyebrow">Network Focus</p>
+      <p class="eyebrow">{{ objectivesEyebrow }}</p>
       <h2>{{ objectivesTitle }}</h2>
       <p class="objectives-summary">
-        Ten formal objectives, organized into four workstreams so the homepage reads like a strategy rather than a charter document.
+        {{ objectivesSummary }}
       </p>
     </div>
 
     <div class="objectives-showcase">
       <aside class="objective-index" aria-label="Ten stated objectives grouped into four workstreams">
-        <strong>10</strong>
-        <span>stated objectives</span>
+        <strong>{{ objectivesCount }}</strong>
+        <span>{{ objectivesCountLabel }}</span>
         <div class="objective-index-list" aria-hidden="true">
           <span>01</span><span>02</span><span>03</span><span>04</span><span>05</span>
           <span>06</span><span>07</span><span>08</span><span>09</span><span>10</span>
@@ -182,7 +198,7 @@ const resourcesHeading = computed(() => page.value?.sections?.resourcesHeading |
             <h3>{{ theme.title }}</h3>
             <p>{{ theme.text }}</p>
             <details>
-              <summary>Read formal objectives</summary>
+              <summary>{{ objectivesDetailsLabel }}</summary>
               <ul>
                 <li v-for="item in theme.items" :key="item">{{ item }}</li>
               </ul>
@@ -197,7 +213,7 @@ const resourcesHeading = computed(() => page.value?.sections?.resourcesHeading |
 
   <section class="news-section">
     <div class="news-header">
-      <p class="eyebrow">Latest updates</p>
+      <p class="eyebrow">{{ newsEyebrow }}</p>
       <h2>{{ newsTitle }}</h2>
     </div>
     <div class="news-grid" aria-label="Impact stories">
@@ -211,7 +227,7 @@ const resourcesHeading = computed(() => page.value?.sections?.resourcesHeading |
         </div>
         <div class="news-card-footer">
           <NuxtLink to="/impact-stories" class="news-link">
-            Read story <span class="arrow">&rarr;</span>
+            {{ newsLinkLabel }} <span class="arrow">&rarr;</span>
           </NuxtLink>
         </div>
       </article>
@@ -222,10 +238,10 @@ const resourcesHeading = computed(() => page.value?.sections?.resourcesHeading |
     <section class="library-section">
       <div class="library-header">
         <div class="library-title-block">
-          <p class="eyebrow">Resource Library</p>
+          <p class="eyebrow">{{ resourcesEyebrow }}</p>
           <h2>{{ resourcesHeading }}</h2>
         </div>
-        <NuxtLink to="/resources" class="button secondary-light">View all resources</NuxtLink>
+        <NuxtLink to="/resources" class="button secondary-light">{{ resourcesCtaLabel }}</NuxtLink>
       </div>
 
       <div class="library-grid">

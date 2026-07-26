@@ -72,6 +72,13 @@ const howWeWork = computed(() => ({
     'Listen to communities, document evidence, convene partners, and advocate for policy and practice changes children can feel.'
 }))
 
+// ── Governance card labels (values come from getSiteProfile(); only these labels are CMS-editable here) ──
+const governanceLabels = computed(() => ({
+  mission: page.value?.sections?.governanceLabels?.mission || 'Mission',
+  vision: page.value?.sections?.governanceLabels?.vision || 'Vision',
+  legalStatus: page.value?.sections?.governanceLabels?.legalStatus || 'Legal Status'
+}))
+
 // ── Objectives accordion (4 thematic workstreams) ──
 const fallbackObjectives = [
   {
@@ -178,21 +185,21 @@ const cta = computed(() => ({
         <article class="au-gov-card au-gov-card--accent">
           <span class="au-gov-num">01</span>
           <div class="au-gov-body">
-            <h3>Mission</h3>
+            <h3>{{ governanceLabels.mission }}</h3>
             <p>{{ mission }}</p>
           </div>
         </article>
         <article class="au-gov-card">
           <span class="au-gov-num">02</span>
           <div class="au-gov-body">
-            <h3>Vision</h3>
+            <h3>{{ governanceLabels.vision }}</h3>
             <p>{{ vision }}</p>
           </div>
         </article>
         <article class="au-gov-card">
           <span class="au-gov-num">03</span>
           <div class="au-gov-body">
-            <h3>Legal Status</h3>
+            <h3>{{ governanceLabels.legalStatus }}</h3>
             <p>{{ legalStatus }}</p>
           </div>
         </article>

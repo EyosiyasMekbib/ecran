@@ -12,6 +12,7 @@ const getInvolvedUrl = computed(
     (site.value as any)?.getInvolvedUrl ||
     'https://docs.google.com/forms/d/e/1FAIpQLSefVosbpua5Zkh_CwGoPpwil4VCdnJAUOJhr4fsP0cspBtZ1A/viewform'
 )
+const getInvolvedLabel = computed(() => (site.value as any)?.ui?.getInvolvedLabel || 'Get Involved')
 
 const route = useRoute()
 const open = ref(false)
@@ -101,7 +102,7 @@ onBeforeUnmount(() => {
       </nav>
 
       <div class="header-actions-wrapper">
-        <a :href="getInvolvedUrl" target="_blank" rel="noopener noreferrer" class="header-cta">Get Involved</a>
+        <a :href="getInvolvedUrl" target="_blank" rel="noopener noreferrer" class="header-cta">{{ getInvolvedLabel }}</a>
         <button class="menu-button" type="button" :aria-expanded="open" aria-controls="primary-navigation" @click="open = !open">
           <span />
           <span />
