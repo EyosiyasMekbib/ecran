@@ -93,7 +93,7 @@ const GLOBAL = {
   social: {
     facebook: '',
     x: '',
-    linkedin: '',
+    linkedin: 'https://www.linkedin.com/company/ecran-ethiopian-child-right-advocacy-network/',
     instagram: '',
     youtube: '',
     telegram: '',
