@@ -32,3 +32,13 @@ services:
         generateValue: true
       - key: JWT_SECRET
         generateValue: true
+      # Contact-form notifications (Resend HTTP API — Render restricts outbound SMTP).
+      # Paste the Resend API key in the dashboard; the form still saves submissions
+      # to the CMS without it, it just won't email anyone.
+      - key: RESEND_API_KEY
+        sync: false
+      - key: CONTACT_NOTIFY_EMAIL
+        value: info@ecran-et.org
+      # Must be on a domain verified in Resend, otherwise sends are rejected.
+      - key: CONTACT_FROM_EMAIL
+        value: ECRAN Website <noreply@ecran-et.org>
