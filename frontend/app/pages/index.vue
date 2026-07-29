@@ -66,6 +66,13 @@ const heroSignals = computed(() =>
 )
 const partnerCtaLabel = computed(() => page.value?.sections?.partnerCtaLabel || 'Partner with ECRAN')
 const partnersHeading = computed(() => page.value?.sections?.partnersHeading || 'Our partners')
+// Duplicated track: the marquee keyframe shifts by -50%, so the second pass has to
+// exist for the loop to be seamless. Clones are hidden from assistive tech.
+const marqueePartners = computed(() =>
+  [false, true].flatMap((clone) =>
+    (partners.value || []).map((partner: any) => ({ ...partner, clone, key: `${clone ? 'clone' : 'main'}-${partner.name}` }))
+  )
+)
 const showcaseEyebrow = computed(() => page.value?.sections?.showcaseEyebrow || 'What ECRAN makes possible')
 const objectivesTitle = computed(() => page.value?.sections?.objectivesTitle || 'Stated Objectives')
 const newsTitle = computed(() => page.value?.sections?.newsTitle || 'Stories from the network')
@@ -122,16 +129,19 @@ const heroImageAlt = computed(
     <section v-if="partners && partners.length" class="partners-section">
       <div class="partners-container">
         <h3>{{ partnersHeading }}</h3>
+        <!-- The track is rendered twice so the -50% marquee keyframe loops seamlessly. -->
         <div class="partners-marquee">
           <a
-            v-for="partner in partners"
-            :key="partner.name"
+            v-for="partner in marqueePartners"
+            :key="partner.key"
             class="partner-item"
             :href="partner.url || undefined"
             :target="partner.url ? '_blank' : undefined"
             :rel="partner.url ? 'noopener' : undefined"
+            :aria-hidden="partner.clone ? 'true' : undefined"
+            :tabindex="partner.clone ? -1 : undefined"
           >
-            <img v-if="partner.logo" :src="strapiMedia(partner.logo)" :alt="partner.name" />
+            <img v-if="partner.logo" :src="strapiMedia(partner.logo)" :alt="partner.clone ? '' : partner.name" />
             <span v-else class="partner-name">{{ partner.name }}</span>
           </a>
         </div>
