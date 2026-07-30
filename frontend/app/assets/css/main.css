@@ -2065,6 +2065,41 @@ a.detail-value:hover {
   font-weight: 700;
 }
 
+/* Shown in place of the contact form once a submission lands. */
+.form-confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.1rem;
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  border: 1px solid rgba(11, 143, 167, 0.35);
+  border-radius: 10px;
+  background: var(--gradient-brand-soft);
+  color: var(--brand-dark);
+}
+
+.form-confirmation svg {
+  color: var(--brand);
+}
+
+.form-confirmation .success-message {
+  font-size: 1.05rem;
+  line-height: 1.5;
+}
+
+.error-message {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(190, 40, 40, 0.3);
+  border-left: 3px solid #be2828;
+  border-radius: 6px;
+  background: rgba(190, 40, 40, 0.06);
+  color: #8e1f1f;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+
 .site-footer {
   background: var(--brand-dark);
   color: #fff;

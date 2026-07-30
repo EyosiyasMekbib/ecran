@@ -39,25 +39,52 @@ const subjectPlaceholder = computed(() => page.value?.sections?.form?.subjectPla
 const messagePlaceholder = computed(() => page.value?.sections?.form?.messagePlaceholder || 'How can we help you?')
 
 // Form feedback + submit label.
-const successMessage = computed(() => page.value?.sections?.successMessage || 'Message sent successfully!')
+const successMessage = computed(
+  () => page.value?.sections?.successMessage || 'Thank you — your message has been sent. We aim to reply within two business days.'
+)
 const errorMessage = computed(() => page.value?.sections?.errorMessage || 'Something went wrong. Please try again or email us directly.')
+// A cold CMS can take a while to answer, so an unreachable server gets its own
+// wording — "try again" is wrong advice when the fix is to wait a moment.
+const unreachableMessage = computed(
+  () =>
+    page.value?.sections?.unreachableMessage ||
+    `We couldn't reach the server just now. Please try again in a moment, or email us at ${email.value}.`
+)
 const submitLabel = computed(() => page.value?.sections?.submitLabel || 'Send message')
+const sendingLabel = computed(() => page.value?.sections?.sendingLabel || 'Sending…')
+const sendAnotherLabel = computed(() => page.value?.sections?.sendAnotherLabel || 'Send another message')
+
+const errorReason = ref<'invalid' | 'unreachable' | null>(null)
+const failureMessage = computed(() => (errorReason.value === 'unreachable' ? unreachableMessage.value : errorMessage.value))
 
 async function submitForm() {
   error.value = false
+  errorReason.value = null
   submitting.value = true
-  const ok = await submitContact({
+  const result = await submitContact({
     name: formName.value,
     email: formEmail.value,
     subject: formSubject.value,
     message: formMessage.value
   })
   submitting.value = false
-  if (ok) {
+  if (result.ok) {
+    // Clear the fields so a stray second submit can't duplicate the message.
+    formName.value = ''
+    formEmail.value = ''
+    formSubject.value = ''
+    formMessage.value = ''
     sent.value = true
   } else {
     error.value = true
+    errorReason.value = result.reason ?? 'invalid'
   }
+}
+
+function resetForm() {
+  sent.value = false
+  error.value = false
+  errorReason.value = null
 }
 </script>
 
@@ -98,7 +125,24 @@ async function submitForm() {
         <span class="section-label">{{ inquiryPortalLabel }}</span>
         <h2 class="contact-heading">{{ sendMessageHeading }}</h2>
 
-        <form class="contact-modern-form" @submit.prevent="submitForm">
+        <!-- On success the form is replaced by the confirmation, so the outcome is
+             unmissable and the visitor cannot resubmit the same message. -->
+        <div v-if="sent" class="form-confirmation" role="status" aria-live="polite">
+          <svg viewBox="0 0 24 24" width="32" height="32" aria-hidden="true">
+            <path
+              d="M20 6 9 17l-5-5"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              fill="none"
+            />
+          </svg>
+          <p class="success-message">{{ successMessage }}</p>
+          <button type="button" class="button secondary" @click="resetForm">{{ sendAnotherLabel }}</button>
+        </div>
+
+        <form v-else class="contact-modern-form" @submit.prevent="submitForm">
           <div class="form-field">
             <input type="text" id="name" v-model="formName" :placeholder="namePlaceholder" required />
           </div>
@@ -111,10 +155,9 @@ async function submitForm() {
           <div class="form-field">
             <textarea id="message" v-model="formMessage" rows="5" :placeholder="messagePlaceholder" required></textarea>
           </div>
-          <p v-if="sent" class="success-message">{{ successMessage }}</p>
-          <p v-if="error" class="error-message">{{ errorMessage }}</p>
+          <p v-if="error" class="error-message" role="alert">{{ failureMessage }}</p>
           <button class="button primary submit-button" type="submit" :disabled="submitting">
-            {{ submitLabel }}
+            {{ submitting ? sendingLabel : submitLabel }}
           </button>
         </form>
       </div>

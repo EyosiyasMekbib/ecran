@@ -211,7 +211,18 @@ export async function getPostBySlug(slug: string) {
   }
 }
 
-/** Submit the contact form to the CMS (public create). Returns true on success. */
+/**
+ * Submit the contact form to the CMS (public create).
+ *
+ * The CMS spins down when idle, so the first request after a quiet spell can
+ * fail outright while the instance boots — a connection error, not a rejection.
+ * Treating that as "submission failed" showed visitors an error for a message
+ * that would have gone through, so transport failures are retried with a long
+ * timeout that accommodates a cold boot.
+ *
+ * A 4xx is the opposite case: the server answered and refused (validation),
+ * so retrying would just fail identically — those return immediately.
+ */
 export async function submitContact(payload: {
   name: string
   email: string
@@ -219,14 +230,25 @@ export async function submitContact(payload: {
   message: string
   phone?: string
   organization?: string
-}) {
-  try {
-    await $fetch(`${useStrapiUrl()}/api/contact-submissions`, {
+}): Promise<{ ok: boolean; reason?: 'invalid' | 'unreachable' }> {
+  const attempt = () =>
+    $fetch(`${useStrapiUrl()}/api/contact-submissions`, {
       method: 'POST',
-      body: { data: payload }
+      body: { data: payload },
+      timeout: 60_000,
+      retry: 0
     })
-    return true
-  } catch {
-    return false
+
+  for (let i = 0; i < 3; i++) {
+    try {
+      await attempt()
+      return { ok: true }
+    } catch (err: any) {
+      const status = err?.response?.status ?? err?.statusCode
+      // The server replied and rejected the payload — retrying changes nothing.
+      if (status && status >= 400 && status < 500) return { ok: false, reason: 'invalid' }
+      if (i < 2) await new Promise((r) => setTimeout(r, 2000 * (i + 1)))
+    }
   }
+  return { ok: false, reason: 'unreachable' }
 }
