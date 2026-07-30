@@ -1,32 +1,31 @@
 /**
  * Emails the team whenever the public contact form creates a submission.
  *
- * Sends through Resend's HTTP API rather than SMTP: Render restricts outbound
- * SMTP, so a nodemailer/port-587 setup can fail there in ways that are hard to
- * diagnose. A plain POST needs no provider package and no plugin config.
+ * Sends through the cPanel mailbox that already handles ecran-et.org mail (see
+ * the `email` block in config/plugins.ts), so there is no third-party sender
+ * and no DNS work — the existing SPF record already authorises that host.
  *
- * The row is always stored first (that is the core create); mail is best-effort
- * on top. If sending fails — bad key, provider outage, unverified domain — we
- * log and swallow, so the visitor still gets a success response and the message
- * is never lost: it is already in the CMS under Contact Submissions.
+ * Deliberately NOT awaited. afterCreate runs inside the visitor's request, so
+ * awaiting a slow or blocked SMTP connection would stall their response; the
+ * frontend retries a timed-out submit, which would then duplicate the row.
+ * Firing and forgetting keeps the response immediate and the row unique.
  *
- * Required env: RESEND_API_KEY. CONTACT_FROM_EMAIL must be an address on a
- * domain verified in Resend; the visitor's address goes in reply_to instead, so
- * hitting Reply in the mail client answers them directly.
+ * Mail is best-effort either way: the row is committed before this runs, so a
+ * send failure only costs a notification, never the message. Failures land in
+ * the Strapi log and the submission is still in the CMS under Contact
+ * Submissions.
+ *
+ * Required env: SMTP_USERNAME, SMTP_PASSWORD (the cPanel mailbox credentials).
  */
-const RESEND_ENDPOINT = 'https://api.resend.com/emails';
-
 export default {
-  async afterCreate(event: { result: Record<string, any> }) {
+  afterCreate(event: { result: Record<string, any> }) {
     const { name, email, subject, message, id } = event.result;
 
     const to = process.env.CONTACT_NOTIFY_EMAIL || 'info@ecran-et.org';
-    const from = process.env.CONTACT_FROM_EMAIL || 'ECRAN Website <noreply@ecran-et.org>';
-    const apiKey = process.env.RESEND_API_KEY;
 
-    if (!apiKey) {
+    if (!process.env.SMTP_PASSWORD) {
       strapi.log.warn(
-        `[contact] submission #${id} saved, but RESEND_API_KEY is not set — no notification sent`
+        `[contact] submission #${id} saved, but SMTP_PASSWORD is not set — no notification sent`
       );
       return;
     }
@@ -45,35 +44,22 @@ export default {
       `— Submission #${id} via the ecran-et.org contact form.`,
     ].join('\n');
 
-    try {
-      const res = await fetch(RESEND_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from,
-          to: [to],
-          reply_to: email,
-          subject: subjectLine,
-          text,
-        }),
+    // The From address stays the authenticated mailbox — sending as the visitor
+    // would fail SPF and get filtered. Their address goes in replyTo, so Reply
+    // in the mail client answers them directly.
+    strapi
+      .plugin('email')
+      .service('email')
+      .send({ to, replyTo: email, subject: subjectLine, text })
+      .then(() => {
+        strapi.log.info(`[contact] notification sent to ${to} for submission #${id}`);
+      })
+      .catch((err: unknown) => {
+        strapi.log.error(
+          `[contact] submission #${id} saved but notification to ${to} failed: ${
+            err instanceof Error ? err.message : err
+          }`
+        );
       });
-
-      if (!res.ok) {
-        // Resend reports rejected sends with a 4xx/5xx plus a JSON body; surface it.
-        throw new Error(`Resend responded ${res.status}: ${await res.text()}`);
-      }
-
-      strapi.log.info(`[contact] notification sent to ${to} for submission #${id}`);
-    } catch (err) {
-      // Never fail the request over mail — the submission is already persisted.
-      strapi.log.error(
-        `[contact] submission #${id} saved but notification to ${to} failed: ${
-          err instanceof Error ? err.message : err
-        }`
-      );
-    }
   },
 };
