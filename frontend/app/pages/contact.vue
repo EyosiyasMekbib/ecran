@@ -57,16 +57,42 @@ const sendAnotherLabel = computed(() => page.value?.sections?.sendAnotherLabel |
 const errorReason = ref<'invalid' | 'unreachable' | null>(null)
 const failureMessage = computed(() => (errorReason.value === 'unreachable' ? unreachableMessage.value : errorMessage.value))
 
+/**
+ * Posts the same message to Netlify Forms, which emails the team.
+ *
+ * The CMS cannot send the notification itself: it runs on Render, which blocks
+ * outbound SMTP, so connections to the mail server time out. Netlify sends over
+ * its own infrastructure, so nothing has to leave Render on a mail port.
+ *
+ * Netlify discovers forms by parsing deployed HTML, which is why the hidden
+ * `contact` form below has to exist in the built page — this fetch alone would
+ * 404. Failures are swallowed: the submission is already saved in the CMS, and
+ * a missed notification must not show the visitor an error.
+ */
+async function notifyNetlify(payload: Record<string, string>) {
+  try {
+    await $fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ 'form-name': 'contact', 'bot-field': '', ...payload }).toString()
+    })
+  } catch (err) {
+    console.error('[contact] Netlify notification failed', err)
+  }
+}
+
 async function submitForm() {
   error.value = false
   errorReason.value = null
   submitting.value = true
-  const result = await submitContact({
+  const payload = {
     name: formName.value,
     email: formEmail.value,
     subject: formSubject.value,
     message: formMessage.value
-  })
+  }
+  const result = await submitContact(payload)
+  if (result.ok) await notifyNetlify(payload)
   submitting.value = false
   if (result.ok) {
     // Clear the fields so a stray second submit can't duplicate the message.
@@ -124,6 +150,19 @@ function resetForm() {
       <div class="contact-form-container">
         <span class="section-label">{{ inquiryPortalLabel }}</span>
         <h2 class="contact-heading">{{ sendMessageHeading }}</h2>
+
+        <!-- Netlify registers a form by parsing the deployed HTML at build time, so
+             this static copy must exist for the real (JS) submit to be accepted —
+             without it the POST 404s. Never shown; the visible form below is the
+             one people use. Field names must match what notifyNetlify sends.
+             Kept outside the v-if/v-else pair below, which must stay adjacent. -->
+        <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+          <input type="text" name="name" />
+          <input type="email" name="email" />
+          <input type="text" name="subject" />
+          <textarea name="message"></textarea>
+          <input type="text" name="bot-field" />
+        </form>
 
         <!-- On success the form is replaced by the confirmation, so the outcome is
              unmissable and the visitor cannot resubmit the same message. -->

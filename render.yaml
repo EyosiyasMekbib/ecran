@@ -32,23 +32,3 @@ services:
         generateValue: true
       - key: JWT_SECRET
         generateValue: true
-      # Contact-form notifications, sent through the existing cPanel mailbox.
-      # Paste the mailbox password in the dashboard; without it the form still
-      # saves submissions to the CMS, it just won't email anyone.
-      # NOTE: some hosts block outbound SMTP. If the log shows connection
-      # timeouts on send, that egress is blocked and this needs an HTTP-API
-      # sender (e.g. Resend) instead.
-      - key: SMTP_HOST
-        value: mail.ecran-et.org
-      - key: SMTP_PORT
-        value: "465"
-      - key: SMTP_SECURE
-        value: "true"
-      - key: SMTP_USERNAME
-        value: info@ecran-et.org
-      - key: SMTP_PASSWORD
-        sync: false
-      - key: CONTACT_NOTIFY_EMAIL
-        value: info@ecran-et.org
-      - key: CONTACT_FROM_EMAIL
-        value: info@ecran-et.org

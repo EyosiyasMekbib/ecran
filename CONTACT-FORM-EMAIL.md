@@ -1,10 +1,10 @@
 # Contact form email — configuration guide
 
-How the contact form on `/contact` turns into an email in the `info@ecran-et.org`
-inbox, and what you have to set up to switch it on.
+How a message submitted at `/contact` reaches `info@ecran-et.org`.
 
-Only **one** secret is missing: the mailbox password. Everything else is in the
-repo already.
+Notifications are sent by **Netlify Forms**, not by the CMS. There is no SMTP
+server, no API key and no DNS record to configure — only one setting to switch
+on in the Netlify dashboard.
 
 ---
 
@@ -13,111 +13,74 @@ repo already.
 ```
 visitor fills /contact
         │
-        ▼
-POST https://ecran-cms.onrender.com/api/contact-submissions
+        ├──► POST to Strapi ────► row saved in the CMS
+        │                         (Content Manager → Contact Submissions)
         │
-        ├──► row saved in Strapi ──► Content Manager → Contact Submissions
-        │                            (this always happens)
-        │
-        └──► afterCreate lifecycle ──► SMTP to mail.ecran-et.org:465
-                                       └──► info@ecran-et.org
+        └──► POST to Netlify ───► Netlify emails info@ecran-et.org
 ```
 
-Files involved:
+Both happen on every submission: the CMS keeps the permanent record, Netlify
+delivers the notification.
+
+### Why not send from the CMS
+
+The obvious design — Strapi sends the email over SMTP — was built and deployed,
+and it does not work. Strapi runs on Render, and **Render blocks outbound
+SMTP**. Connections to `mail.ecran-et.org:465` are silently dropped:
+
+```
+21:29:48.491  POST /api/contact-submissions (249 ms) 201
+21:29:58.593  [contact] submission #9 saved but notification failed: Connection timeout
+```
+
+A *connection* timeout, not an auth error — the TCP connection never opened, so
+the mailbox password was never even tested. Cloud providers block ports
+25/465/587 by default to stop spammers abusing their IP ranges. No setting,
+port or credential fixes it.
+
+Netlify avoids the problem entirely: the browser posts over HTTPS (port 443,
+never blocked) and Netlify's own infrastructure sends the mail.
+
+### Files involved
 
 | File | Role |
 | --- | --- |
-| `frontend/app/pages/contact.vue` | The form, success panel, error messages |
-| `frontend/app/composables/useStrapi.ts` | `submitContact()` — POST, timeout, retry |
-| `backend/src/api/contact-submission/.../lifecycles.ts` | Composes and sends the email |
-| `backend/config/plugins.ts` | SMTP connection settings |
-| `render.yaml` | Declares the environment variables |
+| `frontend/app/pages/contact.vue` | The form, the hidden Netlify form, `notifyNetlify()` |
+| `frontend/app/composables/useStrapi.ts` | `submitContact()` — saves to the CMS |
+| `netlify.toml` | `pnpm generate` → publish `dist` |
 
-Two deliberate design choices worth knowing before you debug anything:
-
-- **The row is saved before the email is attempted.** A mail failure never loses
-  a message — it is already in the CMS. Worst case you lose the notification,
-  not the enquiry.
-- **The email is not awaited.** `afterCreate` runs inside the visitor's HTTP
-  request. If SMTP hangs (which is how a blocked port behaves), awaiting it
-  would stall their response, the frontend would retry, and you would get
-  duplicate rows. So the send is fired and forgotten, with failures logged.
+The **hidden form** in `contact.vue` is load-bearing. Netlify discovers forms by
+parsing deployed HTML at build time; without that static copy the POST returns
+404. Its field names must match what `notifyNetlify()` sends.
 
 ---
 
-## 2. What you need to set
+## 2. Switch it on (one-time)
 
-Six variables. Five have values committed in `render.yaml`; only
-`SMTP_PASSWORD` is a secret you must paste in yourself.
+1. **Netlify → your site → Forms.** If it offers *Enable form detection*, click
+   it, then trigger a redeploy so the build is parsed.
+2. **Submit the form once** at <https://ecran-et.org/contact>. This is what makes
+   the `contact` form appear in the dashboard — it will not exist before a first
+   submission.
+3. **Netlify → Forms → `contact` → Settings and usage → Form notifications →
+   Add notification → Email notification.** Set the recipient to
+   `info@ecran-et.org` and save.
 
-| Variable | Value | Notes |
-| --- | --- | --- |
-| `SMTP_HOST` | `mail.ecran-et.org` | cPanel mail server |
-| `SMTP_PORT` | `465` | Implicit TLS. 587 and 25 are also open |
-| `SMTP_SECURE` | `true` | Must be `true` for port 465 |
-| `SMTP_USERNAME` | `info@ecran-et.org` | Full address, not just `info` |
-| `SMTP_PASSWORD` | *(the mailbox password)* | **Secret — set in dashboard only** |
-| `CONTACT_NOTIFY_EMAIL` | `info@ecran-et.org` | Change this to redirect notifications |
-| `CONTACT_FROM_EMAIL` | `info@ecran-et.org` | Must match `SMTP_USERNAME` for SPF |
+Step 3 is the one that actually sends mail. Until it is configured, submissions
+are captured and listed in the dashboard but nobody is emailed.
 
-### Getting the password
-
-In cPanel → **Email Accounts** → find `info@ecran-et.org` → **Manage** →
-either read the existing password or **Generate** a new one. If you generate a
-new one, anyone using that mailbox in a mail client has to update it too.
-
-### Setting it in Render
-
-Render Dashboard → **ecran-cms** → **Environment** → **Add Environment
-Variable** → key `SMTP_PASSWORD`, value the password → **Save Changes**. Saving
-triggers a redeploy automatically.
-
-> **Which variables do you actually have to add?**
->
-> Depends on how the service was created:
->
-> - **Created from the blueprint** (`render.yaml`): the five non-secret values
->   are applied for you; add only `SMTP_PASSWORD`.
-> - **Created manually** in the dashboard: `render.yaml` is *ignored entirely*,
->   so add **all six** rows from the table above by hand.
->
-> To tell which: if the service has a **Blueprint** section in its settings, it
-> is blueprint-managed. When in doubt, add all six — setting a value that
-> matches the default is harmless.
-
-No DNS changes are needed. The existing SPF record already authorises this
-host:
-
-```
-v=spf1 +mx +ip4:91.204.209.22 ~all
-```
-
-That is the main reason for using the cPanel mailbox rather than a third-party
-sender — those require adding DKIM/SPF records to `ecran-et.org`.
+Nothing needs to be set in Render, and no DNS records change.
 
 ---
 
-## 3. Test it
+## 3. Verify
 
-1. Open <https://ecran-et.org/contact> and submit the form with a real message.
-2. You should see the green confirmation panel replace the form. If the CMS was
-   asleep, this can take up to a minute on the first submit — that is the free
-   instance waking up, and the retry logic covers it.
-3. Check the `info@ecran-et.org` inbox. **Check the spam folder too** on the
-   first send.
-4. Check the Render logs: Dashboard → **ecran-cms** → **Logs**, and filter for
-   `[contact]`.
+- **Netlify → Forms → `contact`** lists the submission.
+- `info@ecran-et.org` receives the notification (**check spam on the first one**).
+- **Strapi → Content Manager → Contact Submissions** holds the same message.
 
-What the log lines mean:
-
-| Log line | Meaning |
-| --- | --- |
-| `[contact] notification sent to info@ecran-et.org for submission #12` | Working. |
-| `[contact] submission #12 saved, but SMTP_PASSWORD is not set` | Variable missing or the redeploy hasn't finished. |
-| `[contact] submission #12 saved but notification ... failed: ...` | Reached SMTP and it refused, or the connection timed out. See below. |
-
-The submission always appears in Strapi → **Content Manager** → **Contact
-Submissions** regardless, so you can cross-check against what arrived by email.
+If the CMS was asleep, the first submit can take up to a minute while the free
+instance wakes; the frontend retries and shows the confirmation panel when done.
 
 ---
 
@@ -125,57 +88,37 @@ Submissions** regardless, so you can cross-check against what arrived by email.
 
 | Symptom | Cause | Fix |
 | --- | --- | --- |
-| `SMTP_PASSWORD is not set` | Variable absent, or deploy still running | Add it, wait for the redeploy to finish |
-| `Invalid login` / `535` | Wrong password, or username missing the domain | Username must be the full `info@ecran-et.org` |
-| `ETIMEDOUT` / `ESOCKET` / `Connection timeout` | **Outbound SMTP blocked by the host** | Not fixable with SMTP settings — see below |
-| `self signed certificate` | TLS mismatch on the mail host | Try `SMTP_PORT=587` with `SMTP_SECURE=false` (STARTTLS) |
-| `550 relay denied` | Mailbox not permitted to send to that address | Confirm the mailbox is active in cPanel |
-| Form shows an error, no row in CMS | CMS unreachable, or public create permission missing | Check the service is live; the permission is granted at boot in `backend/src/index.ts` |
-| Form shows success but no email and no `[contact]` log at all | Running an old build | Confirm the deploy includes commit `dff58fa` or later |
-| Email arrives in spam | New sending pattern, no DMARC record | Optionally add a DMARC record; mark as not-spam once |
+| Form never appears in Netlify → Forms | Form detection off, or no submission yet | Enable detection, redeploy, submit once |
+| Submissions listed, but no email | No notification configured | Section 2, step 3 |
+| Console: `[contact] Netlify notification failed` with 404 | Hidden form missing from the build | Confirm `data-netlify="true"` is in `dist/contact/index.html` |
+| Message in CMS but not in Netlify | Netlify POST failed | Check the browser console; the CMS save is independent |
+| Nothing anywhere, error shown | CMS unreachable | Check the Render service is live |
+| Emails go to spam | New sending pattern | Mark as not-spam once |
 
-### If outbound SMTP is blocked
-
-This is the one failure mode that configuration cannot solve. Many hosts block
-outbound SMTP ports to prevent spam, and it shows up as a **connection
-timeout**, not a refusal. Port 465 being open on `mail.ecran-et.org` does not
-mean the host will let the connection out.
-
-If the logs show timeouts, the fix is to send over HTTPS instead, via an
-HTTP-API provider such as Resend. That implementation already exists in git
-history at commit `a448907` and can be restored — it needs a Resend account and
-DKIM/SPF records on `ecran-et.org`, and if you add Resend's SPF entry you must
-**merge it into the existing record** rather than adding a second one, or mail
-from your cPanel mailboxes will start failing.
+Submissions are capped at **100/month** on Netlify's free tier. Above that,
+notifications stop but the CMS keeps recording everything.
 
 ---
 
 ## 5. Changing things later
 
-- **Send to a different address:** change `CONTACT_NOTIFY_EMAIL` in Render. No
-  code change, no redeploy beyond the automatic one.
-- **Notify several people:** either use a cPanel forwarder on `info@`, or set
-  `CONTACT_NOTIFY_EMAIL` to a comma-separated list — nodemailer accepts that.
-- **Change the email wording:** edit `lifecycles.ts`.
-- **Change the form's on-screen copy:** it is CMS-managed. Strapi → Pages →
-  `contact` → `sections`, keys `successMessage`, `errorMessage`, `submitLabel`.
-  The code falls back to the current wording when those are empty.
+- **Recipient:** Netlify → Forms → `contact` → Form notifications. No deploy.
+- **More recipients:** add another email notification.
+- **On-screen copy:** CMS-managed. Strapi → Pages → `contact` → `sections`, keys
+  `successMessage`, `errorMessage`, `unreachableMessage`, `submitLabel`,
+  `sendingLabel`, `sendAnotherLabel`. Code falls back to the current wording.
 
----
+### Leftover Render variables
 
-## 6. Local testing
+`SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USERNAME`, `SMTP_PASSWORD`,
+`CONTACT_NOTIFY_EMAIL` and `CONTACT_FROM_EMAIL` are still set on the `ecran-cms`
+service from the abandoned SMTP attempt. Nothing reads them now. Safe to delete,
+and worth deleting `SMTP_PASSWORD` since it is a live mailbox credential.
 
-```bash
-cd backend
-SMTP_PASSWORD='the-password' CONTACT_NOTIFY_EMAIL='your@own.address' pnpm develop
-```
+### If you ever want the CMS to send mail itself
 
-Then point the frontend at your local CMS and submit the form:
-
-```bash
-cd frontend
-NUXT_PUBLIC_STRAPI_URL=http://localhost:1337 pnpm dev
-```
-
-Send to your own address first rather than `info@`, so tests do not clutter the
-team inbox.
+It needs an HTTP-API provider rather than SMTP. A working Resend implementation
+is in git history at commit `a448907` and can be restored — it requires a Resend
+account and DKIM/SPF records on `ecran-et.org`. If you add Resend's SPF entry,
+**merge it into the existing record** rather than adding a second one, or mail
+from your cPanel mailboxes will start failing.
