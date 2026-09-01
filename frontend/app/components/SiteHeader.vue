@@ -2,8 +2,8 @@
 import { navItems as staticNavItems } from '~/data/site'
 
 // Navigation + branding come from the CMS (fallback to static data when empty/down).
-const { data: nav } = await useAsyncData('navigation', () => getNavigation())
-const { data: site } = await useAsyncData('global', () => getGlobal())
+const { data: nav } = await useAsyncData('navigation', getNavigation)
+const { data: site } = await useAsyncData('global', getGlobal)
 
 const navItems = computed(() => (nav.value && nav.value.length ? nav.value : staticNavItems))
 const logoUrl = computed(() => strapiMedia((site.value as any)?.logo?.url) || '/ecran-logo.jpg')

@@ -2,6 +2,7 @@
 // Baked-in fallback — used only when the CMS has no published bid posts.
 const fallback = [
   {
+    slug: 'consultancy-service-midterm-review-of-ecran-strategic-plan',
     title: 'Consultancy Service: Midterm Review of ECRAN Strategic Plan',
     reference: 'ECRAN/RFP/2026/04',
     status: 'Open',
@@ -10,6 +11,7 @@ const fallback = [
     description: 'ECRAN invites qualified national consultants to submit proposals to conduct a comprehensive midterm review of our 5-year strategic plan, evaluating advocacy outcomes, partnership efficacy, and internal operations.'
   },
   {
+    slug: 'supply-and-delivery-of-it-equipment-and-networking-hardware',
     title: 'Supply and Delivery of IT Equipment and Networking Hardware',
     reference: 'ECRAN/IT/2026/02',
     status: 'Closed',

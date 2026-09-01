@@ -14,7 +14,8 @@ export function useSeo(
   page?: { seoTitle?: string; seoDescription?: string; title?: string; heroImage?: string | null } | null,
   override: { title?: string; description?: string; image?: string } = {}
 ) {
-  const { data: site } = useAsyncData('global', () => getGlobal())
+  const { data: site } = useAsyncData('global', getGlobal)
+  const strapiUrl = useStrapiUrl()
 
   useHead(() => {
     const g = (site.value as any) || {}
@@ -31,8 +32,13 @@ export function useSeo(
       g.defaultSeoDescription ||
       'Evidence-based advocacy for children’s survival, development, protection, and participation in Ethiopia.'
 
+    const resolveMedia = (url?: string | null) => {
+      if (!url) return undefined
+      return /^https?:\/\//.test(url) ? url : `${strapiUrl}${url}`
+    }
+
     const image =
-      override.image || strapiMedia(page?.heroImage) || strapiMedia(g.defaultOgImage?.url) || undefined
+      override.image || resolveMedia(page?.heroImage) || resolveMedia(g.defaultOgImage?.url) || undefined
 
     const meta: Record<string, string>[] = [
       { name: 'description', content: description },
@@ -50,7 +56,7 @@ export function useSeo(
     }
 
     // Favicon is CMS-managed (Global → favicon); falls back to the bundled icon.
-    const faviconUrl = strapiMedia(g.favicon?.url) || '/favicon.ico'
+    const faviconUrl = resolveMedia(g.favicon?.url) || '/favicon.ico'
     const link = [{ rel: 'icon', href: faviconUrl }]
 
     return { title, meta, link }

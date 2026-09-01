@@ -2,6 +2,7 @@
 // Baked-in fallback — used only when the CMS has no published vacancy posts.
 const fallback = [
   {
+    slug: 'senior-policy-advocacy-officer',
     title: 'Senior Policy Advocacy Officer',
     location: 'Addis Ababa, Ethiopia',
     deadline: 'June 5, 2026',
@@ -10,6 +11,7 @@ const fallback = [
     type: 'Full-time'
   },
   {
+    slug: 'monitoring-evaluation-and-learning-mel-specialist',
     title: 'Monitoring, Evaluation, & Learning (MEL) Specialist',
     location: 'Addis Ababa (with regional travel)',
     deadline: 'June 12, 2026',

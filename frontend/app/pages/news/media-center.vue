@@ -2,22 +2,28 @@
 // Baked-in fallback — used only when the CMS has no published media posts.
 const fallback = [
   {
+    slug: 'joint-statement-on-regional-child-rights-compliance-in-ethiopia',
     type: 'Press Release',
     title: 'Joint Statement on Regional Child Rights Compliance in Ethiopia',
     date: 'May 10, 2026',
-    desc: 'Read the official statement jointly released by ECRAN and member CSOs regarding policy compliance checks across regional child protection structures.'
+    desc: 'Read the official statement jointly released by ECRAN and member CSOs regarding policy compliance checks across regional child protection structures.',
+    ctaLabel: 'Read press release'
   },
   {
+    slug: 'consultative-assembly-on-child-protection-systems',
     type: 'Gallery',
     title: 'Consultative Assembly on Child Protection Systems',
     date: 'May 02, 2026',
-    desc: 'Photos and summaries from the multi-stakeholder policy dialogue convening 40+ member network delegates.'
+    desc: 'Photos and summaries from the multi-stakeholder policy dialogue convening 40+ member network delegates.',
+    ctaLabel: 'View details'
   },
   {
+    slug: 'ecran-announces-general-assembly-and-executive-council-election-results',
     type: 'Press Release',
     title: 'ECRAN Announces General Assembly & Executive Council Election Results',
     date: 'April 15, 2026',
-    desc: 'The network is proud to share updates from its first formal General Assembly, highlighting the appointment of its new Executive board members.'
+    desc: 'The network is proud to share updates from its first formal General Assembly, highlighting the appointment of its new Executive board members.',
+    ctaLabel: 'Read press release'
   }
 ]
 

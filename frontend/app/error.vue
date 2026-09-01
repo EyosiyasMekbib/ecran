@@ -3,7 +3,7 @@
 // the current text as fallback, so it stays branded even when the CMS is down.
 const props = defineProps<{ error: { statusCode?: number; statusMessage?: string } }>()
 
-const { data: site } = await useAsyncData('global', () => getGlobal())
+const { data: site } = await useAsyncData('global', getGlobal)
 const ui = () => (site.value as any)?.ui || {}
 const errorCopy = computed(() => ui().errorPage || {})
 

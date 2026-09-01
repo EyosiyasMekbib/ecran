@@ -87,7 +87,8 @@ const typeMap: Record<string, string> = {
 const { data: cmsResources } = await useAsyncData('resources-all', async () => {
   try {
     const res = await $fetch<{ data: any[] }>(`${useStrapiUrl()}/api/resources`, {
-      query: { 'pagination[pageSize]': 100, populate: '*', sort: 'publishedOn:desc' }
+      query: { 'pagination[pageSize]': 100, populate: '*', sort: 'publishedOn:desc' },
+      timeout: 3500
     })
     return Array.isArray(res?.data) ? res.data : []
   } catch {

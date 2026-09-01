@@ -1,12 +1,18 @@
 import {
   programs as staticPrograms,
   impactStories as staticImpactStories,
-  resources as staticResources
+  resources as staticResources,
+  staticPosts
 } from '~/data/site'
 
 /** Base URL of the Strapi CMS (from runtime config; override with NUXT_PUBLIC_STRAPI_URL). */
 export function useStrapiUrl(): string {
-  return useRuntimeConfig().public.strapiUrl as string
+  try {
+    const config = useRuntimeConfig()
+    return (config?.public?.strapiUrl as string) || 'https://ecran-cms.onrender.com'
+  } catch {
+    return 'https://ecran-cms.onrender.com'
+  }
 }
 
 /** Resolve a Strapi media path to an absolute URL. */
@@ -23,7 +29,8 @@ export function strapiMedia(url?: string | null): string | null {
 async function fetchCollection(path: string, query: Record<string, unknown> = {}): Promise<any[]> {
   try {
     const res = await $fetch<{ data: any[] }>(`${useStrapiUrl()}/api/${path}`, {
-      query: { 'pagination[pageSize]': 100, populate: '*', ...query }
+      query: { 'pagination[pageSize]': 100, populate: '*', ...query },
+      timeout: 3500
     })
     return Array.isArray(res?.data) ? res.data : []
   } catch {
@@ -61,6 +68,9 @@ export async function getPosts(category?: 'news' | 'vacancy' | 'bid' | 'announce
   const query: Record<string, unknown> = { sort: 'publishDate:desc' }
   if (category) query['filters[category][$eq]'] = category
   const rows = await fetchCollection('posts', query)
+  if (!rows.length) {
+    return category ? staticPosts.filter((p: any) => p.category === category) : staticPosts
+  }
   return rows.map((e: any) => ({
     title: e.title,
     slug: e.slug,
@@ -128,7 +138,8 @@ export async function getPage(slug: string) {
 export async function getSiteProfile() {
   try {
     const res = await $fetch<{ data: any }>(`${useStrapiUrl()}/api/site-profile`, {
-      query: { populate: '*' }
+      query: { populate: '*' },
+      timeout: 3500
     })
     return res?.data || null
   } catch {
@@ -155,7 +166,8 @@ export async function getResourceCards() {
 export async function getGlobal() {
   try {
     const res = await $fetch<{ data: any }>(`${useStrapiUrl()}/api/global`, {
-      query: { populate: '*' }
+      query: { populate: '*' },
+      timeout: 3500
     })
     return res?.data || null
   } catch {
@@ -166,7 +178,9 @@ export async function getGlobal() {
 /** Header navigation tree (`[{ label, to, children? }]`). Null on error so callers fall back. */
 export async function getNavigation() {
   try {
-    const res = await $fetch<{ data: any }>(`${useStrapiUrl()}/api/navigation`)
+    const res = await $fetch<{ data: any }>(`${useStrapiUrl()}/api/navigation`, {
+      timeout: 3500
+    })
     const items = res?.data?.items
     return Array.isArray(items) ? items : null
   } catch {
@@ -188,7 +202,10 @@ export async function getPartners() {
 export async function getPostBySlug(slug: string) {
   const rows = await fetchCollection('posts', { 'filters[slug][$eq]': slug })
   const e = rows[0]
-  if (!e) return null
+  if (!e) {
+    const fallback = staticPosts.find((p: any) => p.slug === slug)
+    return fallback || null
+  }
   return {
     title: e.title,
     slug: e.slug,

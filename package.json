@@ -1,0 +1,17 @@
+{
+  "name": "ecran",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "build": "npm --prefix frontend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build:backend": "npm --prefix backend run build",
+    "generate": "npm --prefix frontend run generate",
+    "preview": "npm --prefix frontend run preview",
+    "install:all": "npm --prefix frontend install && npm --prefix backend install"
+  }
+}

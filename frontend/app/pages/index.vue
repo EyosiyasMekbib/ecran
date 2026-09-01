@@ -1,10 +1,10 @@
 <script setup lang="ts">
 // Sourced from the Strapi CMS at build/SSR time, with static fallback (see composables/useStrapi.ts).
-const { data: impactStories } = await useAsyncData('home-impact-stories', () => getImpactStories())
-const { data: resources } = await useAsyncData('home-resources', () => getResourceCards())
+const { data: impactStories } = await useAsyncData('home-impact-stories', getImpactStories)
+const { data: resources } = await useAsyncData('home-resources', getResourceCards)
 const { data: page } = await useAsyncData('page-home', () => getPage('home'))
-const { data: profile } = await useAsyncData('site-profile', () => getSiteProfile())
-const { data: partners } = await useAsyncData('home-partners', () => getPartners())
+const { data: profile } = await useAsyncData('site-profile', getSiteProfile)
+const { data: partners } = await useAsyncData('home-partners', getPartners)
 
 await useSeo(page.value)
 

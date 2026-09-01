@@ -4,7 +4,7 @@ const route = useRoute()
 const slug = computed(() => String(route.params.slug || ''))
 
 const { data: post } = await useAsyncData(`post-${slug.value}`, () => getPostBySlug(slug.value))
-const { data: site } = await useAsyncData('global', () => getGlobal())
+const { data: site } = await useAsyncData('global', getGlobal)
 
 // Site-wide chrome labels (Global.ui JSON) — all fall back to the current copy.
 const ui = () => (site.value as any)?.ui || {}

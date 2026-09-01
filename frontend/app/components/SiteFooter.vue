@@ -1,7 +1,7 @@
 <script setup lang="ts">
 // Footer content comes from the CMS: global (branding/links/labels/social) + site profile (contact).
-const { data: site } = await useAsyncData('global', () => getGlobal())
-const { data: profile } = await useAsyncData('site-profile', () => getSiteProfile())
+const { data: site } = await useAsyncData('global', getGlobal)
+const { data: profile } = await useAsyncData('site-profile', getSiteProfile)
 
 const g = () => (site.value as any) || {}
 const ui = () => g().ui || {}

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { data: page } = await useAsyncData('page-asfp', () => getPage('asfp'))
-const { data: site } = await useAsyncData('global', () => getGlobal())
+const { data: site } = await useAsyncData('global', getGlobal)
 const getInvolvedUrl = computed(
   () =>
     (site.value as any)?.getInvolvedUrl ||

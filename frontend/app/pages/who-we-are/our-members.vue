@@ -7,9 +7,9 @@ const fallbackCommitments = [
   'Practical learning that can be shared'
 ]
 
-const { data: cmsMembers } = await useAsyncData('member-orgs', () => getMemberOrgs())
+const { data: cmsMembers } = await useAsyncData('member-orgs', getMemberOrgs)
 const { data: page } = await useAsyncData('page-our-members', () => getPage('our-members'))
-const { data: site } = await useAsyncData('global', () => getGlobal())
+const { data: site } = await useAsyncData('global', getGlobal)
 const getInvolvedUrl = computed(
   () =>
     (site.value as any)?.getInvolvedUrl ||
