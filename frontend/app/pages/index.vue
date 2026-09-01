@@ -66,13 +66,20 @@ const heroSignals = computed(() =>
 )
 const partnerCtaLabel = computed(() => page.value?.sections?.partnerCtaLabel || 'Partner with ECRAN')
 const partnersHeading = computed(() => page.value?.sections?.partnersHeading || 'Our partners')
-// Duplicated track: the marquee keyframe shifts by -50%, so the second pass has to
-// exist for the loop to be seamless. Clones are hidden from assistive tech.
-const marqueePartners = computed(() =>
-  [false, true].flatMap((clone) =>
-    (partners.value || []).map((partner: any) => ({ ...partner, clone, key: `${clone ? 'clone' : 'main'}-${partner.name}` }))
+// Duplicated track: the marquee keyframe shifts by -50%, so passes are repeated
+// for the loop to be seamless. Clones are hidden from assistive tech.
+const marqueePartners = computed(() => {
+  const list = partners.value || []
+  if (!list.length) return []
+  const sets = [0, 1, 2, 3]
+  return sets.flatMap((setIndex) =>
+    list.map((partner: any) => ({
+      ...partner,
+      clone: setIndex > 0,
+      key: `set-${setIndex}-${partner.name}`
+    }))
   )
-)
+})
 const showcaseEyebrow = computed(() => page.value?.sections?.showcaseEyebrow || 'What ECRAN makes possible')
 const objectivesTitle = computed(() => page.value?.sections?.objectivesTitle || 'Stated Objectives')
 const newsTitle = computed(() => page.value?.sections?.newsTitle || 'Stories from the network')

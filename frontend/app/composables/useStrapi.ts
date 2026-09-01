@@ -2,7 +2,9 @@ import {
   programs as staticPrograms,
   impactStories as staticImpactStories,
   resources as staticResources,
-  staticPosts
+  staticPosts,
+  staticPartners,
+  staticMembers
 } from '~/data/site'
 
 /** Base URL of the Strapi CMS (from runtime config; override with NUXT_PUBLIC_STRAPI_URL). */
@@ -104,9 +106,10 @@ export async function getTeamMembers() {
   }))
 }
 
-/** Member organizations ordered by `order`. Returns [] when CMS has none. */
+/** Member organizations ordered by `order`. Falls back to static members. */
 export async function getMemberOrgs() {
   const rows = await fetchCollection('member-orgs', { sort: 'order:asc' })
+  if (!rows.length) return staticMembers
   return rows.map((e: any) => ({
     name: e.name,
     url: e.url || '',
@@ -188,9 +191,10 @@ export async function getNavigation() {
   }
 }
 
-/** Partner cards: `{ name, url, logo }`. Empty array when the CMS has none. */
+/** Partner cards: `{ name, url, logo }`. Falls back to static partners. */
 export async function getPartners() {
   const rows = await fetchCollection('partners', { sort: 'order:asc' })
+  if (!rows.length) return staticPartners
   return rows.map((e: any) => ({
     name: e.name,
     url: e.website || '',

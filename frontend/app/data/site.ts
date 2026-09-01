@@ -233,3 +233,26 @@ export const staticPosts = [
     ctaLabel: 'Read press release'
   }
 ]
+
+export const staticPartners = [
+  { name: 'Ministry of Women and Social Affairs (MoWSA)', url: 'https://mowsa.gov.et', logo: null },
+  { name: 'Ethiopian Human Rights Commission (EHRC)', url: 'https://ehrc.org', logo: null },
+  { name: 'Save the Children Ethiopia', url: 'https://ethiopia.savethechildren.net', logo: null },
+  { name: 'UNICEF Ethiopia', url: 'https://www.unicef.org/ethiopia', logo: null },
+  { name: 'Plan International Ethiopia', url: 'https://plan-international.org/ethiopia', logo: null },
+  { name: 'ChildFund Ethiopia', url: 'https://www.childfund.org', logo: null },
+  { name: 'African Child Policy Forum (ACPF)', url: 'https://africanchildforum.org', logo: null },
+  { name: 'SOS Children’s Villages Ethiopia', url: 'https://www.sos-childrensvillages.org', logo: null }
+]
+
+export const staticMembers = [
+  { name: 'Organization for Child Development and Transformation (CHADET)', url: 'https://chadet.org', logo: null },
+  { name: 'Forum on Sustainable Child Empowerment (FSCE)', url: 'https://fsce-ethiopia.org', logo: null },
+  { name: 'Children’s Heart Fund of Ethiopia (CHFE)', url: 'https://chfe.org.et', logo: null },
+  { name: 'Ethiopian Women Lawyers Association (EWLA)', url: 'https://ewla-et.org', logo: null },
+  { name: 'Hiwot Integrated Development Association (HIDA)', url: 'https://hiwotethiopia.org', logo: null },
+  { name: 'Bethlehem Child & Family Program', url: '', logo: null },
+  { name: 'Mary Joy Development Association', url: 'https://maryjoyethiopia.org', logo: null },
+  { name: 'Mothers and Children Multisectoral Development Organization (MCMDO)', url: 'https://mcmdo.org', logo: null }
+]
+
