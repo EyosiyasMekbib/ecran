@@ -6,3 +6,9 @@ publish = "dist"
 [build.environment]
 NODE_VERSION = "22"
 NETLIFY_USE_PNPM = "true"
+
+# /projects used to live under Resources; the old path is already on main.
+[[redirects]]
+  from = "/resources/projects"
+  to = "/projects"
+  status = 301

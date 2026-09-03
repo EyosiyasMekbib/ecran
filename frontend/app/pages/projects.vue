@@ -15,7 +15,7 @@ const countLabel = computed(() =>
 
 <template>
   <PageHero
-    class="resources-hero"
+    class="news-hero"
     :title="page?.heroTitle || 'Projects'"
     :text="page?.heroText || 'Each project is coordinated with member organizations and partners — spanning evidence and policy advocacy, protection systems, participation, and network coordination.'"
   />

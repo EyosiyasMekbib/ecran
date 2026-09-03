@@ -18,13 +18,23 @@ const { data: site } = await useAsyncData('global', getGlobal)
 const navItems = computed(() => {
   const cmsItems = nav.value
   if (!cmsItems || !cmsItems.length) return staticNavItems
-  return cmsItems.map((item: any) => {
+
+  // Fill in sub-items the CMS entry omits, matched on `to` so nothing duplicates.
+  const merged: any[] = cmsItems.map((item: any) => {
     const known = staticNavItems.find((entry) => entry.to === item.to)
     if (!known?.children?.length) return item
     const listed = new Set((item.children || []).map((child: any) => child.to))
     const missing = known.children.filter((child) => !listed.has(child.to))
     return missing.length ? { ...item, children: [...(item.children || []), ...missing] } : item
   })
+
+  // Then top-level entries it omits, inserted at the position the code gives them
+  // so a new page lands where it belongs rather than after Contact.
+  const present = new Set(merged.map((item) => item.to))
+  staticNavItems.forEach((entry, index) => {
+    if (!present.has(entry.to)) merged.splice(Math.min(index, merged.length), 0, entry)
+  })
+  return merged
 })
 const logoUrl = computed(() => strapiMedia((site.value as any)?.logo?.url) || '/ecran-logo.jpg')
 const getInvolvedUrl = computed(
