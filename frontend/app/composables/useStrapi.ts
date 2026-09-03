@@ -113,6 +113,27 @@ function mapPost(e: any) {
 }
 
 /**
+ * `nuxt generate` prerenders every route in a single process, and each post detail
+ * page was firing its own request for the same collection. That burst is what tips
+ * the CMS into throttling — a throttled miss rendered a published post as "Story not
+ * found". Fetch the collection once and let every detail page share it. Safe because
+ * the site is fully static: this lives only for the duration of the build.
+ *
+ * An empty result is never cached; it means the request failed (or the CMS is truly
+ * empty), and caching it would blank every remaining detail page.
+ */
+let allPostsCache: Promise<any[]> | null = null
+function allPosts(): Promise<any[]> {
+  if (!allPostsCache) {
+    allPostsCache = fetchCollection('posts').then((rows) => {
+      if (!rows.length) allPostsCache = null
+      return rows
+    })
+  }
+  return allPostsCache
+}
+
+/**
  * Posts (news / vacancy / bid / announcement / media), newest first.
  * Returns [] when the CMS has none — callers decide their own fallback.
  */
@@ -216,16 +237,7 @@ export async function getPartners() {
 
 /** A single post by slug, for /news/[slug] detail pages. Null when missing. */
 export async function getPostBySlug(slug: string) {
-  const rows = await fetchCollection('posts', { 'filters[slug][$eq]': slug })
-  let e = rows[0]
-  // One filtered request coming back empty does not mean the post is gone. The CMS
-  // throttles under the request burst of a full prerender, and a miss here rendered
-  // published posts as "Story not found" — the listing had already produced the route.
-  // Re-check the full collection before falling back to static copy.
-  if (!e) {
-    const all = await fetchCollection('posts')
-    e = all.find((row: any) => row.slug === slug)
-  }
+  const e = (await allPosts()).find((row: any) => row.slug === slug)
   if (!e) {
     const fallback = staticPosts.find((p: any) => p.slug === slug)
     return fallback || null
