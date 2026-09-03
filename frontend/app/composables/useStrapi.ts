@@ -24,20 +24,39 @@ export function strapiMedia(url?: string | null): string | null {
 }
 
 /**
+ * The CMS spins down when idle and is LVE-throttled, so its first response after a
+ * quiet spell is far slower than a warm one — measured at 4.3s cold against 0.8s
+ * warm. These reads run during `nuxt generate`, not in a visitor's browser, so a
+ * 3.5s ceiling bought nothing and cost everything: it expired before the CMS
+ * answered and the whole site silently prerendered from static fallbacks. Wait for
+ * the cold boot instead, and retry rather than accept the first miss.
+ */
+const CMS_TIMEOUT = 30_000
+const CMS_RETRIES = 2
+
+async function cmsRequest<T>(path: string, query: Record<string, unknown> = {}): Promise<T | null> {
+  for (let attempt = 0; attempt <= CMS_RETRIES; attempt++) {
+    try {
+      return await $fetch<T>(`${useStrapiUrl()}/api/${path}`, { query, timeout: CMS_TIMEOUT, retry: 0 })
+    } catch {
+      if (attempt === CMS_RETRIES) return null
+    }
+  }
+  return null
+}
+
+/**
  * Fetch a published Strapi collection. Returns [] on any error so callers can
  * fall back to static content — the site must never break because the CMS is down.
  * Strapi v5 returns a flat `data` array (fields are not nested under `attributes`).
  */
 async function fetchCollection(path: string, query: Record<string, unknown> = {}): Promise<any[]> {
-  try {
-    const res = await $fetch<{ data: any[] }>(`${useStrapiUrl()}/api/${path}`, {
-      query: { 'pagination[pageSize]': 100, populate: '*', ...query },
-      timeout: 3500
-    })
-    return Array.isArray(res?.data) ? res.data : []
-  } catch {
-    return []
-  }
+  const res = await cmsRequest<{ data: any[] }>(path, {
+    'pagination[pageSize]': 100,
+    populate: '*',
+    ...query
+  })
+  return Array.isArray(res?.data) ? res.data : []
 }
 
 /** Program cards: `{ title, text, image }`. Falls back to static data. */
@@ -142,15 +161,8 @@ export async function getPage(slug: string) {
 
 /** Site profile single type (org info, contact details). Returns null when missing. */
 export async function getSiteProfile() {
-  try {
-    const res = await $fetch<{ data: any }>(`${useStrapiUrl()}/api/site-profile`, {
-      query: { populate: '*' },
-      timeout: 3500
-    })
-    return res?.data || null
-  } catch {
-    return null
-  }
+  const res = await cmsRequest<{ data: any }>('site-profile', { populate: '*' })
+  return res?.data || null
 }
 
 /** Homepage resource cards: `{ type, title, meta }`. Falls back to static data. */
@@ -170,28 +182,15 @@ export async function getResourceCards() {
 
 /** Global settings single type: branding, SEO defaults, social, footer. Null on error. */
 export async function getGlobal() {
-  try {
-    const res = await $fetch<{ data: any }>(`${useStrapiUrl()}/api/global`, {
-      query: { populate: '*' },
-      timeout: 3500
-    })
-    return res?.data || null
-  } catch {
-    return null
-  }
+  const res = await cmsRequest<{ data: any }>('global', { populate: '*' })
+  return res?.data || null
 }
 
 /** Header navigation tree (`[{ label, to, children? }]`). Null on error so callers fall back. */
 export async function getNavigation() {
-  try {
-    const res = await $fetch<{ data: any }>(`${useStrapiUrl()}/api/navigation`, {
-      timeout: 3500
-    })
-    const items = res?.data?.items
-    return Array.isArray(items) ? items : null
-  } catch {
-    return null
-  }
+  const res = await cmsRequest<{ data: any }>('navigation')
+  const items = res?.data?.items
+  return Array.isArray(items) ? items : null
 }
 
 /** Partner cards: `{ name, url, logo }`. Falls back to static partners. */
