@@ -15,8 +15,8 @@ const countLabel = computed(() =>
 
 <template>
   <PageHero
-    :eyebrow="page?.sections?.heroEyebrow || 'Projects'"
-    :title="page?.heroTitle || 'Projects turning child-rights evidence into coordinated action.'"
+    class="resources-hero"
+    :title="page?.heroTitle || 'Projects'"
     :text="page?.heroText || 'Each project is coordinated with member organizations and partners — spanning evidence and policy advocacy, protection systems, participation, and network coordination.'"
   />
 
