@@ -7,7 +7,7 @@ const { data: page } = await useAsyncData('page-projects', () => getPage('projec
 await useSeo(page.value)
 
 const emptyState = computed(
-  () => page.value?.sections?.emptyState || 'Projects appear here once programs are published in the CMS.'
+  () => page.value?.sections?.emptyState || 'No projects yet.'
 )
 </script>
 

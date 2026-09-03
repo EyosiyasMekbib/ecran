@@ -36,7 +36,7 @@ const directoryEyebrow = computed(() => page.value?.sections?.directoryEyebrow |
 const directoryTitle = computed(() => page.value?.sections?.directoryTitle || 'ECRAN coalition partners')
 const memberLinkLabel = computed(() => page.value?.sections?.memberLinkLabel || 'Visit website')
 const emptyState = computed(
-  () => page.value?.sections?.emptyState || 'Member organizations are published here once added in the CMS.'
+  () => page.value?.sections?.emptyState || 'No member organizations yet.'
 )
 </script>
 
@@ -71,11 +71,12 @@ const emptyState = computed(
 
     <div v-if="members.length" class="members-grid">
       <article v-for="member in members" :key="member.label" class="member-card">
-        <div class="member-identity">
+        <div class="member-logo-frame">
           <img v-if="member.logo" :src="member.logo" :alt="member.label" class="member-logo" />
-          <h3>{{ member.label }}</h3>
+          <span v-else class="member-logo-placeholder" aria-hidden="true">{{ member.label.charAt(0) }}</span>
         </div>
-        <p class="member-description">{{ member.description }}</p>
+        <h3>{{ member.label }}</h3>
+        <p v-if="member.description" class="member-description">{{ member.description }}</p>
         <a
           v-if="member.url"
           :href="member.url"
@@ -86,6 +87,6 @@ const emptyState = computed(
         >{{ displayUrl(member.url) }}</a>
       </article>
     </div>
-    <p v-else class="directory-intro" style="text-align:center;opacity:.7;">{{ emptyState }}</p>
+    <p v-else class="members-empty">{{ emptyState }}</p>
   </section>
 </template>

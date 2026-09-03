@@ -1,10 +1,8 @@
 import {
-  programs as staticPrograms,
   impactStories as staticImpactStories,
   resources as staticResources,
   staticPosts,
-  staticPartners,
-  staticMembers
+  staticPartners
 } from '~/data/site'
 
 /** Base URL of the Strapi CMS (from runtime config; override with NUXT_PUBLIC_STRAPI_URL). */
@@ -32,14 +30,22 @@ export function strapiMedia(url?: string | null): string | null {
  * the cold boot instead, and retry rather than accept the first miss.
  */
 const CMS_TIMEOUT = 30_000
-const CMS_RETRIES = 2
+const CMS_RETRIES = 4
 
+/**
+ * Backs off between attempts. Retrying a throttled CMS immediately just spends the
+ * next attempt on the same closed door: without a pause, a burst of prerender
+ * requests exhausts every retry inside the throttle window and a section renders
+ * empty. Now that nothing falls back to static copy, an exhausted read is a blank
+ * page rather than stale content, so it is worth waiting the CMS out.
+ */
 async function cmsRequest<T>(path: string, query: Record<string, unknown> = {}): Promise<T | null> {
   for (let attempt = 0; attempt <= CMS_RETRIES; attempt++) {
     try {
       return await $fetch<T>(`${useStrapiUrl()}/api/${path}`, { query, timeout: CMS_TIMEOUT, retry: 0 })
     } catch {
       if (attempt === CMS_RETRIES) return null
+      await new Promise((resolve) => setTimeout(resolve, 1000 * 2 ** attempt))
     }
   }
   return null
@@ -59,10 +65,12 @@ async function fetchCollection(path: string, query: Record<string, unknown> = {}
   return Array.isArray(res?.data) ? res.data : []
 }
 
-/** Program cards: `{ title, text, image }`. Falls back to static data. */
+/**
+ * Program cards: `{ title, slug, text, body, image }`. No static fallback — these
+ * name real projects, so the page shows what the CMS publishes and nothing else.
+ */
 export async function getPrograms() {
   const rows = await fetchCollection('programs', { sort: 'order:asc' })
-  if (!rows.length) return staticPrograms.map((p) => ({ ...p, slug: '', body: '' }))
   return rows.map((e: any) => ({
     title: e.title,
     slug: e.slug || '',
@@ -158,10 +166,12 @@ export async function getTeamMembers() {
   }))
 }
 
-/** Member organizations ordered by `order`. Falls back to static members. */
+/**
+ * Member organizations ordered by `order`. No static fallback: the directory names
+ * real organizations, so it shows exactly who the CMS publishes and nothing else.
+ */
 export async function getMemberOrgs() {
   const rows = await fetchCollection('member-orgs', { sort: 'order:asc' })
-  if (!rows.length) return staticMembers.map((m) => ({ ...m, description: '' }))
   return rows.map((e: any) => ({
     name: e.name,
     description: e.description || '',

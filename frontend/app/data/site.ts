@@ -30,29 +30,6 @@ export const navItems = [
   { label: 'Contact', to: '/contact' }
 ]
 
-export const programs = [
-  {
-    title: 'Evidence and Policy Advocacy',
-    text: 'Turning research, field learning, and child-rights data into policy asks that decision makers can act on.',
-    image: '/brand/evidence-card.svg'
-  },
-  {
-    title: 'Child Protection Systems',
-    text: 'Supporting stronger prevention, reporting, referral, and response pathways for children at risk of violence or neglect.',
-    image: '/brand/protection-card.svg'
-  },
-  {
-    title: 'Child Participation',
-    text: 'Creating safe spaces where children and young people can contribute to decisions that affect their lives.',
-    image: '/brand/participation-card.svg'
-  },
-  {
-    title: 'Network Coordination',
-    text: 'Bringing civil society members, technical partners, and community actors together around shared advocacy priorities.',
-    image: '/brand/network-card.svg'
-  }
-]
-
 export const impactStories = [
   {
     place: 'Addis Ababa',
@@ -219,15 +196,3 @@ export const staticPartners = [
   { name: 'African Child Policy Forum (ACPF)', url: 'https://africanchildforum.org', logo: null },
   { name: 'SOS Children’s Villages Ethiopia', url: 'https://www.sos-childrensvillages.org', logo: null }
 ]
-
-export const staticMembers = [
-  { name: 'Organization for Child Development and Transformation (CHADET)', url: 'https://chadet.org', logo: null },
-  { name: 'Forum on Sustainable Child Empowerment (FSCE)', url: 'https://fsce-ethiopia.org', logo: null },
-  { name: 'Children’s Heart Fund of Ethiopia (CHFE)', url: 'https://chfe.org.et', logo: null },
-  { name: 'Ethiopian Women Lawyers Association (EWLA)', url: 'https://ewla-et.org', logo: null },
-  { name: 'Hiwot Integrated Development Association (HIDA)', url: 'https://hiwotethiopia.org', logo: null },
-  { name: 'Bethlehem Child & Family Program', url: '', logo: null },
-  { name: 'Mary Joy Development Association', url: 'https://maryjoyethiopia.org', logo: null },
-  { name: 'Mothers and Children Multisectoral Development Organization (MCMDO)', url: 'https://mcmdo.org', logo: null }
-]
-

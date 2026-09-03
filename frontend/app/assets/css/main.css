@@ -1017,23 +1017,24 @@ h1 {
 /* Members Grid styling */
 .members-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  border-top: 1px solid var(--line);
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem);
 }
 
 .member-card {
-  display: grid;
-  grid-template-columns: minmax(15rem, 0.45fr) minmax(0, 1fr) auto;
-  gap: clamp(1rem, 3vw, 3rem);
-  align-items: start;
-  padding: clamp(1.35rem, 2.6vw, 2rem) 0;
-  background: transparent;
-  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: clamp(1.5rem, 2.5vw, 2rem);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
   transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), border-color 220ms ease;
 }
 
 .member-card:hover {
-  transform: translateX(0.35rem);
+  transform: translateY(-4px);
   border-color: rgba(36, 48, 111, 0.28);
 }
 
@@ -1068,26 +1069,57 @@ h1 {
 .member-card h3 {
   margin: 0;
   color: var(--brand-dark);
-  font-size: clamp(1.25rem, 1.8vw, 1.85rem);
-  line-height: 1.08;
+  font-size: clamp(1.1rem, 1.4vw, 1.35rem);
+  line-height: 1.2;
 }
 
 .member-card p {
-  margin: 0.8rem 0 0;
+  margin: 0;
   color: var(--muted);
-  font-size: 0.98rem;
-  line-height: 1.65;
+  font-size: 0.95rem;
+  line-height: 1.6;
 }
 
+/* Pushed to the card foot so links line up across a row of uneven cards. */
 .member-link {
-  justify-self: end;
-  max-width: 9rem;
+  margin-top: auto;
+  padding-top: 0.35rem;
   font-size: 0.88rem;
   font-weight: 800;
   line-height: 1.25;
   color: var(--brand-dark);
   text-decoration: none;
-  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.member-logo-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 72px;
+  background: rgba(36, 48, 111, 0.04);
+  border-radius: 0.35rem;
+}
+
+.member-logo {
+  max-height: 56px;
+  max-width: 80%;
+  object-fit: contain;
+}
+
+.member-logo-placeholder {
+  color: var(--brand-dark);
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 800;
+  opacity: 0.35;
+}
+
+.members-empty {
+  text-align: center;
+  color: var(--muted);
+  opacity: 0.7;
 }
 
 /* Team Grid styling */
@@ -2630,8 +2662,7 @@ a.detail-value:hover {
     grid-template-columns: 1fr;
   }
 
-  .directory-header,
-  .member-card {
+  .directory-header {
     grid-template-columns: 1fr;
   }
 
@@ -3448,29 +3479,6 @@ a.detail-value:hover {
 
 .news-header-cta {
   flex-shrink: 0;
-}
-
-/* ---- Member directory: logo + name, description, then the member's web address ---- */
-.member-identity {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.75rem;
-}
-
-.member-logo {
-  max-height: 48px;
-  max-width: 100%;
-  object-fit: contain;
-}
-
-.member-card .member-description {
-  margin: 0;
-}
-
-.member-link {
-  max-width: 14rem;
-  overflow-wrap: anywhere;
 }
 
 /* ---- Projects (CMS programs) ---- */
