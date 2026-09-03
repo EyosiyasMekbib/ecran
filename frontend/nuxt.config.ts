@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // Strapi CMS base URL. Override per environment with NUXT_PUBLIC_STRAPI_URL.
-      strapiUrl: 'https://cms.ecran-et.com'
+      strapiUrl: 'https://cms.ecran-et.org'
     }
   }
 })

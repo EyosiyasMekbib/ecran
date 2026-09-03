@@ -3,7 +3,7 @@
  * Push content from ../content/*.json into the live Strapi CMS.
  * Idempotent: matches by slug (collections) and updates in place.
  *
- * Env: STRAPI_URL (default https://cms.ecran-et.com), STRAPI_API_TOKEN (required)
+ * Env: STRAPI_URL (default https://cms.ecran-et.org), STRAPI_API_TOKEN (required)
  * Run: node scripts/cms/apply-content.mjs
  */
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
@@ -12,7 +12,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const CONTENT_DIR = join(ROOT, 'content');
-const BASE = (process.env.STRAPI_URL || 'https://cms.ecran-et.com').replace(/\/$/, '');
+const BASE = (process.env.STRAPI_URL || 'https://cms.ecran-et.org').replace(/\/$/, '');
 const TOKEN = process.env.STRAPI_API_TOKEN;
 if (!TOKEN) { console.error('STRAPI_API_TOKEN is required'); process.exit(1); }
 

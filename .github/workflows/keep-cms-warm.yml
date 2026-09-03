@@ -31,7 +31,7 @@ jobs:
     steps:
       - name: Warm Strapi (Node + Postgres)
         env:
-          CMS_URL: 'https://ecran-cms.onrender.com/api/global?populate=*'
+          CMS_URL: 'https://cms.ecran-et.org/api/global?populate=*'
           PINGS: '4'          # pings per run
           GAP_SECONDS: '60'   # spacing between pings
         run: |

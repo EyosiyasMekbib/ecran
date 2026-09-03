@@ -9,9 +9,9 @@ import {
 export function useStrapiUrl(): string {
   try {
     const config = useRuntimeConfig()
-    return (config?.public?.strapiUrl as string) || 'https://ecran-cms.onrender.com'
+    return (config?.public?.strapiUrl as string) || 'https://cms.ecran-et.org'
   } catch {
-    return 'https://ecran-cms.onrender.com'
+    return 'https://cms.ecran-et.org'
   }
 }
 
