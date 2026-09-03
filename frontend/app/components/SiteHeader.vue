@@ -5,7 +5,27 @@ import { navItems as staticNavItems } from '~/data/site'
 const { data: nav } = await useAsyncData('navigation', getNavigation)
 const { data: site } = await useAsyncData('global', getGlobal)
 
-const navItems = computed(() => (nav.value && nav.value.length ? nav.value : staticNavItems))
+/**
+ * The CMS navigation entry is authoritative for labels and ordering, but it is
+ * edited by hand and lags the code: a page can ship, exist at its route, and still
+ * be unreachable from the menu because nobody added it there. Sub-items defined in
+ * the code's own structure are therefore merged in where the CMS entry omits them,
+ * matched on `to` so nothing is duplicated.
+ *
+ * The trade-off: a child deliberately removed in the CMS comes back. Remove it from
+ * `navItems` in ~/data/site.ts to drop it for good.
+ */
+const navItems = computed(() => {
+  const cmsItems = nav.value
+  if (!cmsItems || !cmsItems.length) return staticNavItems
+  return cmsItems.map((item: any) => {
+    const known = staticNavItems.find((entry) => entry.to === item.to)
+    if (!known?.children?.length) return item
+    const listed = new Set((item.children || []).map((child: any) => child.to))
+    const missing = known.children.filter((child) => !listed.has(child.to))
+    return missing.length ? { ...item, children: [...(item.children || []), ...missing] } : item
+  })
+})
 const logoUrl = computed(() => strapiMedia((site.value as any)?.logo?.url) || '/ecran-logo.jpg')
 const getInvolvedUrl = computed(
   () =>
