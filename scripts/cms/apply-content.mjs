@@ -18,7 +18,7 @@ if (!TOKEN) { console.error('STRAPI_API_TOKEN is required'); process.exit(1); }
 
 // filename (without .json) -> Strapi plural API id; site-profile is a single type
 const COLLECTIONS = { programs: 'programs', 'impact-stories': 'impact-stories', resources: 'resources', partners: 'partners' };
-const SINGLES = { 'site-profile': 'site-profile' };
+const SINGLES = { 'site-profile': 'site-profile', navigation: 'navigation', global: 'global' };
 
 const slugify = (s) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
