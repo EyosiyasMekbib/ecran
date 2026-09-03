@@ -3571,3 +3571,26 @@ a.detail-value:hover {
   color: var(--muted);
   opacity: 0.7;
 }
+
+/* Project detail body (Objective / Served / Outcome from the CMS) */
+.project-card-detail {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--line);
+}
+
+.project-card-detail h3 {
+  margin: 1rem 0 0.25rem;
+  color: var(--brand-dark);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.project-card-detail p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}

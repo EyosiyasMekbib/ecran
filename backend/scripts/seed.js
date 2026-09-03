@@ -16,6 +16,7 @@ const slugify = (s) =>
   s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 const PROGRAMS = [
+  { title: "Civil Society Strengthening Programme for Children Rights", summary: "Project kick-off with Sida (Sweden), running from 2026 to 2029 to strengthen child-centered community systems for children, youth, women, and families.", body: "<p><strong>Funder:</strong> Sida (Sweden / Sverige)</p><p><strong>Duration:</strong> 2026 to 2029</p><h3>Objective</h3><p>Strengthen child-centered community systems.</p><h3>Served</h3><p>Children, youth, women, families.</p><h3>Outcome</h3><p>Dignity, access, protection, resilience.</p>", order: 0 },
   { title: 'Evidence and Policy Advocacy', summary: 'Turning research, field learning, and child-rights data into policy asks that decision makers can act on.', order: 1 },
   { title: 'Child Protection Systems', summary: 'Supporting stronger prevention, reporting, referral, and response pathways for children at risk of violence or neglect.', order: 2 },
   { title: 'Child Participation', summary: 'Creating safe spaces where children and young people can contribute to decisions that affect their lives.', order: 3 },

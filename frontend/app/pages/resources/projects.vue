@@ -28,6 +28,8 @@ const emptyState = computed(
           <span class="project-index">{{ String(i + 1).padStart(2, '0') }}</span>
           <h2>{{ project.title }}</h2>
           <p>{{ project.text }}</p>
+          <!-- Rich body from the CMS (trusted content) -->
+          <div v-if="project.body" class="project-card-detail" v-html="project.body" />
         </div>
       </article>
     </div>
