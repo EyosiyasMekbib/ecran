@@ -17,7 +17,7 @@ const getInvolvedUrl = computed(
 )
 
 const members = computed(() =>
-  (cmsMembers.value || []).map((m) => ({ label: m.name, url: m.url, logo: m.logo }))
+  (cmsMembers.value || []).map((m) => ({ label: m.name, description: m.description, url: m.url, logo: m.logo }))
 )
 const commitments = computed(() =>
   Array.isArray(page.value?.sections?.commitments) ? page.value.sections.commitments : fallbackCommitments
@@ -71,6 +71,7 @@ const emptyState = computed(
         <div>
           <img v-if="member.logo" :src="member.logo" :alt="member.label" style="max-height: 48px; margin-bottom: 0.75rem;" />
           <h3>{{ member.label }}</h3>
+          <p v-if="member.description" class="member-description">{{ member.description }}</p>
         </div>
         <a v-if="member.url" :href="member.url" target="_blank" rel="noopener noreferrer" class="member-link">{{ memberLinkLabel }}</a>
       </article>

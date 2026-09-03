@@ -109,9 +109,10 @@ export async function getTeamMembers() {
 /** Member organizations ordered by `order`. Falls back to static members. */
 export async function getMemberOrgs() {
   const rows = await fetchCollection('member-orgs', { sort: 'order:asc' })
-  if (!rows.length) return staticMembers
+  if (!rows.length) return staticMembers.map((m) => ({ ...m, description: '' }))
   return rows.map((e: any) => ({
     name: e.name,
+    description: e.description || '',
     url: e.url || '',
     logo: strapiMedia(e.logo?.url)
   }))
