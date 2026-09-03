@@ -3565,3 +3565,9 @@ a.detail-value:hover {
   object-fit: cover;
   display: block;
 }
+
+.vacancies-empty {
+  text-align: center;
+  color: var(--muted);
+  opacity: 0.7;
+}

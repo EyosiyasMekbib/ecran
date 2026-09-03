@@ -1,6 +1,5 @@
 <script setup lang="ts">
 // Sourced from the Strapi CMS at build/SSR time, with static fallback (see composables/useStrapi.ts).
-const { data: impactStories } = await useAsyncData('home-impact-stories', getImpactStories)
 const { data: resources } = await useAsyncData('home-resources', getResourceCards)
 const { data: page } = await useAsyncData('page-home', () => getPage('home'))
 const { data: profile } = await useAsyncData('site-profile', getSiteProfile)
@@ -102,9 +101,6 @@ const newsCtaLabel = computed(() => page.value?.sections?.newsCtaLabel || 'All n
 // The "Latest updates" band shows the three most recent news posts. getPosts()
 // already guarantees an image, so a card and its detail page always agree.
 const latestPosts = computed(() => (latestNews.value || []).slice(0, 3))
-const impactEyebrow = computed(() => page.value?.sections?.impactEyebrow || 'Impact stories')
-const impactTitle = computed(() => page.value?.sections?.impactTitle || 'Stories from the network')
-const impactCtaLabel = computed(() => page.value?.sections?.impactCtaLabel || 'All impact stories')
 const newsLinkLabel = computed(() => page.value?.sections?.newsLinkLabel || 'Read story')
 const resourcesEyebrow = computed(() => page.value?.sections?.resourcesEyebrow || 'Resource Library')
 const resourcesCtaLabel = computed(() => page.value?.sections?.resourcesCtaLabel || 'View all resources')
@@ -261,32 +257,6 @@ const heroImageAlt = computed(
         </div>
         <div class="news-card-footer">
           <NuxtLink :to="`/news/${post.slug}`" class="news-link">
-            {{ newsLinkLabel }} <span class="arrow">&rarr;</span>
-          </NuxtLink>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <section v-if="impactStories && impactStories.length" class="news-section">
-    <div class="news-header">
-      <div class="news-title-block">
-        <p class="eyebrow">{{ impactEyebrow }}</p>
-        <h2>{{ impactTitle }}</h2>
-      </div>
-      <NuxtLink to="/impact-stories" class="button secondary news-header-cta">{{ impactCtaLabel }}</NuxtLink>
-    </div>
-    <div class="news-grid" aria-label="Impact stories">
-      <article v-for="story in impactStories" :key="story.title" class="news-card">
-        <div class="news-card-meta">
-          <span class="news-tag">{{ story.place }}</span>
-        </div>
-        <div class="news-card-content">
-          <h3>{{ story.title }}</h3>
-          <p>{{ story.text }}</p>
-        </div>
-        <div class="news-card-footer">
-          <NuxtLink to="/impact-stories" class="news-link">
             {{ newsLinkLabel }} <span class="arrow">&rarr;</span>
           </NuxtLink>
         </div>

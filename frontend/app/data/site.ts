@@ -128,38 +128,6 @@ export const staticPosts = [
     ctaLabel: 'Read full story'
   },
   {
-    title: 'Senior Policy Advocacy Officer',
-    slug: 'senior-policy-advocacy-officer',
-    category: 'vacancy',
-    date: 'May 1, 2026',
-    deadline: 'June 5, 2026',
-    location: 'Addis Ababa, Ethiopia',
-    department: 'Programs & Advocacy',
-    employmentType: 'Full-time',
-    excerpt: 'ECRAN is looking for an experienced advocate to lead our policy engagement and coordinate research initiatives, translating child-rights field evidence into policy briefs.',
-    body: '<p>ECRAN is seeking a highly motivated and qualified <strong>Senior Policy Advocacy Officer</strong> to lead our policy analysis and stakeholder engagement initiatives.</p><h3>Key Responsibilities</h3><ul><li>Translate field research and member evidence into targeted policy briefs and position papers.</li><li>Coordinate dialogue platforms with government ministries, parliamentary committees, and development partners.</li><li>Support member CSOs in formulating evidence-based advocacy campaigns.</li></ul><h3>Qualifications & Requirements</h3><ul><li>Master’s or Bachelor’s degree in Law, Human Rights, Development Studies, or related social sciences.</li><li>Minimum of 5 years of demonstrated experience in policy advocacy, legal analysis, or child-rights programming.</li><li>Excellent communication and writing skills in English and Amharic.</li></ul><p>Interested applicants should submit their CV and cover letter to <a href="mailto:info@ecran-et.org">info@ecran-et.org</a> with the job title in the subject line.</p>',
-    image: null,
-    attachments: [],
-    externalUrl: '',
-    ctaLabel: 'Apply now'
-  },
-  {
-    title: 'Monitoring, Evaluation, & Learning (MEL) Specialist',
-    slug: 'monitoring-evaluation-and-learning-mel-specialist',
-    category: 'vacancy',
-    date: 'May 1, 2026',
-    deadline: 'June 12, 2026',
-    location: 'Addis Ababa (with regional travel)',
-    department: 'Programs & MEL',
-    employmentType: 'Full-time',
-    excerpt: 'We are seeking a MEL Specialist to design and implement monitoring systems across network activities, helping to track the implementation of regional and national child-rights advocacy.',
-    body: '<p>ECRAN invites applications from qualified candidates for the position of <strong>MEL Specialist</strong>.</p><h3>Key Responsibilities</h3><ul><li>Design, implement, and maintain network-wide MEL frameworks and data collection systems.</li><li>Track progress against strategic indicators and prepare quarterly and annual performance reports.</li><li>Facilitate learning sessions and capacity-building workshops for member organizations.</li></ul><h3>Qualifications & Requirements</h3><ul><li>Degree in Statistics, Economics, Development Studies, or a related field.</li><li>At least 4 years of proven MEL experience in NGO/CSO settings.</li></ul><p>Please send applications to <a href="mailto:info@ecran-et.org">info@ecran-et.org</a> before the application deadline.</p>',
-    image: null,
-    attachments: [],
-    externalUrl: '',
-    ctaLabel: 'Apply now'
-  },
-  {
     title: 'Consultancy Service: Midterm Review of ECRAN Strategic Plan',
     slug: 'consultancy-service-midterm-review-of-ecran-strategic-plan',
     category: 'bid',
