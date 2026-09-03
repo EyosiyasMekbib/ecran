@@ -84,6 +84,35 @@ export async function getImpactStories() {
 }
 
 /**
+ * Posts published without a featuredImage still need something to show wherever a
+ * post is rendered with an image — a card and its detail page disagreeing looks
+ * like a bug. Same brand card getPrograms() falls back to.
+ */
+const POST_IMAGE_FALLBACK = '/brand/network-card.svg'
+
+/** Shape a raw Strapi post row for the UI. Shared so a card and its detail page cannot drift. */
+function mapPost(e: any) {
+  const asDate = (value?: string) =>
+    value ? new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''
+  return {
+    title: e.title,
+    slug: e.slug,
+    category: e.category,
+    excerpt: e.excerpt || '',
+    body: e.body || '',
+    date: asDate(e.publishDate),
+    deadline: asDate(e.deadline),
+    location: e.location || '',
+    image: strapiMedia(e.featuredImage?.url) || POST_IMAGE_FALLBACK,
+    attachments: (e.attachment || []).map((a: any) => ({ name: a.name, url: strapiMedia(a.url) })),
+    externalUrl: e.externalUrl || '',
+    department: e.department || '',
+    employmentType: e.employmentType || '',
+    ctaLabel: e.ctaLabel || ''
+  }
+}
+
+/**
  * Posts (news / vacancy / bid / announcement / media), newest first.
  * Returns [] when the CMS has none — callers decide their own fallback.
  */
@@ -94,26 +123,7 @@ export async function getPosts(category?: 'news' | 'vacancy' | 'bid' | 'announce
   if (!rows.length) {
     return category ? staticPosts.filter((p: any) => p.category === category) : staticPosts
   }
-  return rows.map((e: any) => ({
-    title: e.title,
-    slug: e.slug,
-    category: e.category,
-    excerpt: e.excerpt || '',
-    body: e.body || '',
-    date: e.publishDate
-      ? new Date(e.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-      : '',
-    deadline: e.deadline
-      ? new Date(e.deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-      : '',
-    location: e.location || '',
-    image: strapiMedia(e.featuredImage?.url),
-    attachments: (e.attachment || []).map((a: any) => ({ name: a.name, url: strapiMedia(a.url) })),
-    externalUrl: e.externalUrl || '',
-    department: e.department || '',
-    employmentType: e.employmentType || '',
-    ctaLabel: e.ctaLabel || ''
-  }))
+  return rows.map(mapPost)
 }
 
 /** Team members ordered by `order`. Returns [] when CMS has none. */
@@ -207,31 +217,20 @@ export async function getPartners() {
 /** A single post by slug, for /news/[slug] detail pages. Null when missing. */
 export async function getPostBySlug(slug: string) {
   const rows = await fetchCollection('posts', { 'filters[slug][$eq]': slug })
-  const e = rows[0]
+  let e = rows[0]
+  // One filtered request coming back empty does not mean the post is gone. The CMS
+  // throttles under the request burst of a full prerender, and a miss here rendered
+  // published posts as "Story not found" — the listing had already produced the route.
+  // Re-check the full collection before falling back to static copy.
+  if (!e) {
+    const all = await fetchCollection('posts')
+    e = all.find((row: any) => row.slug === slug)
+  }
   if (!e) {
     const fallback = staticPosts.find((p: any) => p.slug === slug)
     return fallback || null
   }
-  return {
-    title: e.title,
-    slug: e.slug,
-    category: e.category,
-    excerpt: e.excerpt || '',
-    body: e.body || '',
-    date: e.publishDate
-      ? new Date(e.publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-      : '',
-    deadline: e.deadline
-      ? new Date(e.deadline).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
-      : '',
-    location: e.location || '',
-    image: strapiMedia(e.featuredImage?.url),
-    attachments: (e.attachment || []).map((a: any) => ({ name: a.name, url: strapiMedia(a.url) })),
-    externalUrl: e.externalUrl || '',
-    department: e.department || '',
-    employmentType: e.employmentType || '',
-    ctaLabel: e.ctaLabel || ''
-  }
+  return mapPost(e)
 }
 
 /**

@@ -99,14 +99,9 @@ const objectivesCountLabel = computed(() => page.value?.sections?.objectivesCoun
 const objectivesDetailsLabel = computed(() => page.value?.sections?.objectivesDetailsLabel || 'Read formal objectives')
 const newsEyebrow = computed(() => page.value?.sections?.newsEyebrow || 'Latest updates')
 const newsCtaLabel = computed(() => page.value?.sections?.newsCtaLabel || 'All news')
-// The "Latest updates" band shows the three most recent news posts. Posts published
-// without a featuredImage fall back to a brand card, the same way getPrograms() does,
-// so the row of cards stays visually even.
-const latestPosts = computed(() =>
-  (latestNews.value || [])
-    .slice(0, 3)
-    .map((post: any) => ({ ...post, image: post.image || '/brand/network-card.svg' }))
-)
+// The "Latest updates" band shows the three most recent news posts. getPosts()
+// already guarantees an image, so a card and its detail page always agree.
+const latestPosts = computed(() => (latestNews.value || []).slice(0, 3))
 const impactEyebrow = computed(() => page.value?.sections?.impactEyebrow || 'Impact stories')
 const impactTitle = computed(() => page.value?.sections?.impactTitle || 'Stories from the network')
 const impactCtaLabel = computed(() => page.value?.sections?.impactCtaLabel || 'All impact stories')
