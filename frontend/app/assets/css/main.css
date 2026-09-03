@@ -757,7 +757,8 @@ h1 {
 .announcements-list-section,
 .vacancies-list-section,
 .bids-list-section,
-.media-center-section {
+.media-center-section,
+.projects-section {
   max-width: 1400px;
   margin: 0 auto;
   padding: clamp(4rem, 8vw, 7rem) var(--gutter);
@@ -3429,4 +3430,123 @@ a.detail-value:hover {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+}
+
+/* ---- Homepage "Latest updates" / impact bands: heading with a trailing CTA ---- */
+.news-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.news-title-block {
+  max-width: 38rem;
+}
+
+.news-header-cta {
+  flex-shrink: 0;
+}
+
+/* ---- Member directory: logo + name, description, then the member's web address ---- */
+.member-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.member-logo {
+  max-height: 48px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.member-card .member-description {
+  margin: 0;
+}
+
+.member-link {
+  max-width: 14rem;
+  overflow-wrap: anywhere;
+}
+
+/* ---- Projects (CMS programs) ---- */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.project-card {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(36, 48, 111, 0.28);
+}
+
+.project-card-media {
+  aspect-ratio: 16 / 9;
+  background: var(--line);
+}
+
+.project-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-card-body {
+  padding: clamp(1.5rem, 2.5vw, 2rem);
+}
+
+.project-index {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.project-card-body h2 {
+  margin: 0 0 0.75rem;
+  color: var(--brand-dark);
+  font-size: clamp(1.25rem, 1.8vw, 1.6rem);
+  line-height: 1.15;
+  font-family: var(--font-heading);
+}
+
+.project-card-body p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
+.projects-empty {
+  text-align: center;
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+@media (max-width: 860px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .news-header-cta {
+    width: 100%;
+    text-align: center;
+  }
 }

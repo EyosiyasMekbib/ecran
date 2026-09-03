@@ -19,7 +19,14 @@ export const navItems = [
       { label: 'Bids', to: '/news/bids' }
     ]
   },
-  { label: 'Resources', to: '/resources' },
+  {
+    label: 'Resources',
+    to: '/resources',
+    children: [
+      { label: 'Resources', to: '/resources' },
+      { label: 'Projects', to: '/resources/projects' }
+    ]
+  },
   { label: 'Contact', to: '/contact' }
 ]
 

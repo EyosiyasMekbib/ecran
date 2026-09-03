@@ -5,6 +5,7 @@ const { data: resources } = await useAsyncData('home-resources', getResourceCard
 const { data: page } = await useAsyncData('page-home', () => getPage('home'))
 const { data: profile } = await useAsyncData('site-profile', getSiteProfile)
 const { data: partners } = await useAsyncData('home-partners', getPartners)
+const { data: latestNews } = await useAsyncData('home-latest-news', () => getPosts('news'))
 
 await useSeo(page.value)
 
@@ -97,6 +98,12 @@ const objectivesCount = computed(() => page.value?.sections?.objectivesCount || 
 const objectivesCountLabel = computed(() => page.value?.sections?.objectivesCountLabel || 'stated objectives')
 const objectivesDetailsLabel = computed(() => page.value?.sections?.objectivesDetailsLabel || 'Read formal objectives')
 const newsEyebrow = computed(() => page.value?.sections?.newsEyebrow || 'Latest updates')
+const newsCtaLabel = computed(() => page.value?.sections?.newsCtaLabel || 'All news')
+// The "Latest updates" band shows the three most recent news posts.
+const latestPosts = computed(() => (latestNews.value || []).slice(0, 3))
+const impactEyebrow = computed(() => page.value?.sections?.impactEyebrow || 'Impact stories')
+const impactTitle = computed(() => page.value?.sections?.impactTitle || 'Stories from the network')
+const impactCtaLabel = computed(() => page.value?.sections?.impactCtaLabel || 'All impact stories')
 const newsLinkLabel = computed(() => page.value?.sections?.newsLinkLabel || 'Read story')
 const resourcesEyebrow = computed(() => page.value?.sections?.resourcesEyebrow || 'Resource Library')
 const resourcesCtaLabel = computed(() => page.value?.sections?.resourcesCtaLabel || 'View all resources')
@@ -148,7 +155,7 @@ const heroImageAlt = computed(
             :aria-hidden="partner.clone ? 'true' : undefined"
             :tabindex="partner.clone ? -1 : undefined"
           >
-            <img v-if="partner.logo" :src="strapiMedia(partner.logo)" :alt="partner.clone ? '' : partner.name" />
+            <img v-if="partner.logo" :src="partner.logo" :alt="partner.clone ? '' : partner.name" />
             <span v-else class="partner-name">{{ partner.name }}</span>
           </a>
         </div>
@@ -231,10 +238,39 @@ const heroImageAlt = computed(
 
 
 
-  <section class="news-section">
+  <section v-if="latestPosts.length" class="news-section">
     <div class="news-header">
-      <p class="eyebrow">{{ newsEyebrow }}</p>
-      <h2>{{ newsTitle }}</h2>
+      <div class="news-title-block">
+        <p class="eyebrow">{{ newsEyebrow }}</p>
+        <h2>{{ newsTitle }}</h2>
+      </div>
+      <NuxtLink to="/news/news" class="button secondary news-header-cta">{{ newsCtaLabel }}</NuxtLink>
+    </div>
+    <div class="news-grid" aria-label="Latest news">
+      <article v-for="post in latestPosts" :key="post.slug" class="news-card">
+        <div class="news-card-meta">
+          <span class="news-tag">{{ post.date }}</span>
+        </div>
+        <div class="news-card-content">
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.excerpt }}</p>
+        </div>
+        <div class="news-card-footer">
+          <NuxtLink :to="`/news/${post.slug}`" class="news-link">
+            {{ newsLinkLabel }} <span class="arrow">&rarr;</span>
+          </NuxtLink>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section v-if="impactStories && impactStories.length" class="news-section">
+    <div class="news-header">
+      <div class="news-title-block">
+        <p class="eyebrow">{{ impactEyebrow }}</p>
+        <h2>{{ impactTitle }}</h2>
+      </div>
+      <NuxtLink to="/impact-stories" class="button secondary news-header-cta">{{ impactCtaLabel }}</NuxtLink>
     </div>
     <div class="news-grid" aria-label="Impact stories">
       <article v-for="story in impactStories" :key="story.title" class="news-card">

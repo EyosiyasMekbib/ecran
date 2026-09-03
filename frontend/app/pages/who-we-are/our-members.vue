@@ -19,6 +19,9 @@ const getInvolvedUrl = computed(
 const members = computed(() =>
   (cmsMembers.value || []).map((m) => ({ label: m.name, description: m.description, url: m.url, logo: m.logo }))
 )
+// Members list their site by address rather than a generic label.
+const displayUrl = (url?: string) => (url || '').replace(/^https?:\/\//, '').replace(/\/$/, '')
+
 const commitments = computed(() =>
   Array.isArray(page.value?.sections?.commitments) ? page.value.sections.commitments : fallbackCommitments
 )
@@ -68,12 +71,19 @@ const emptyState = computed(
 
     <div v-if="members.length" class="members-grid">
       <article v-for="member in members" :key="member.label" class="member-card">
-        <div>
-          <img v-if="member.logo" :src="member.logo" :alt="member.label" style="max-height: 48px; margin-bottom: 0.75rem;" />
+        <div class="member-identity">
+          <img v-if="member.logo" :src="member.logo" :alt="member.label" class="member-logo" />
           <h3>{{ member.label }}</h3>
-          <p v-if="member.description" class="member-description">{{ member.description }}</p>
         </div>
-        <a v-if="member.url" :href="member.url" target="_blank" rel="noopener noreferrer" class="member-link">{{ memberLinkLabel }}</a>
+        <p class="member-description">{{ member.description }}</p>
+        <a
+          v-if="member.url"
+          :href="member.url"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="member-link"
+          :title="memberLinkLabel"
+        >{{ displayUrl(member.url) }}</a>
       </article>
     </div>
     <p v-else class="directory-intro" style="text-align:center;opacity:.7;">{{ emptyState }}</p>

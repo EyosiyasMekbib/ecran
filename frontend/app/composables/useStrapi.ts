@@ -43,10 +43,12 @@ async function fetchCollection(path: string, query: Record<string, unknown> = {}
 /** Program cards: `{ title, text, image }`. Falls back to static data. */
 export async function getPrograms() {
   const rows = await fetchCollection('programs', { sort: 'order:asc' })
-  if (!rows.length) return staticPrograms
+  if (!rows.length) return staticPrograms.map((p) => ({ ...p, slug: '', body: '' }))
   return rows.map((e: any) => ({
     title: e.title,
+    slug: e.slug || '',
     text: e.summary,
+    body: e.body || '',
     image: strapiMedia(e.featuredImage?.url) || '/brand/network-card.svg'
   }))
 }
