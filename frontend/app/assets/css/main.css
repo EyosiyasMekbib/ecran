@@ -1434,6 +1434,13 @@ h1 {
 }
 
 .news-card-content h3 {
+  /* Headline lengths differ by several lines between posts, and the grid stretches
+     every card to the tallest — so one long title was setting the height for the
+     whole row. Three lines keeps the sense of a long headline while capping it. */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   margin: 0 0 0.6rem;
   font-size: clamp(1.15rem, 1.5vw, 1.5rem);
   line-height: 1.25;
