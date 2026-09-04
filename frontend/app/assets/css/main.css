@@ -3634,7 +3634,9 @@ a.detail-value:hover {
 /* News card cover image — negative margins bleed it back out past the card padding. */
 .news-card-media {
   margin: -1.6rem -1.5rem 1.1rem;
-  aspect-ratio: 16 / 9;
+  /* A 2:1 band rather than 16:9 — the cover image is supporting detail on a
+     summary card, so it should not take a third of the card's height. */
+  aspect-ratio: 2 / 1;
   background: var(--line);
 }
 
