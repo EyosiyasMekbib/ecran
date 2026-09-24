@@ -105,7 +105,7 @@ const newsLinkLabel = computed(() => page.value?.sections?.newsLinkLabel || 'Rea
 const resourcesEyebrow = computed(() => page.value?.sections?.resourcesEyebrow || 'Resource Library')
 const resourcesCtaLabel = computed(() => page.value?.sections?.resourcesCtaLabel || 'View all resources')
 const heroImageAlt = computed(
-  () => page.value?.sections?.heroImageAlt || 'Ethiopian children standing together outdoors in school uniforms'
+  () => page.value?.sections?.heroImageAlt || 'ECRAN members and partners gathered together'
 )
 </script>
 
@@ -131,8 +131,8 @@ const heroImageAlt = computed(
             <NuxtLink to="/who-we-are/about-us" class="button secondary">{{ secondaryCtaLabel }}</NuxtLink>
           </div>
         </div>
-        <div class="hero-visual reveal delay-1" aria-label="Ethiopian children standing together outdoors">
-          <img :src="page?.heroImage || '/brand/ecran-children-header.png'" :alt="heroImageAlt" />
+        <div class="hero-visual reveal delay-1" aria-label="ECRAN members and partners gathered together">
+          <img :src="page?.heroImage || '/brand/ecran-hero.jpg'" :alt="heroImageAlt" />
         </div>
       </div>
     </section>
@@ -244,7 +244,12 @@ const heroImageAlt = computed(
       <NuxtLink to="/news/news" class="button secondary news-header-cta">{{ newsCtaLabel }}</NuxtLink>
     </div>
     <div class="news-grid" aria-label="Latest news">
-      <article v-for="post in latestPosts" :key="post.slug" class="news-card">
+      <NuxtLink
+        v-for="post in latestPosts"
+        :key="post.slug"
+        :to="`/news/${post.slug}`"
+        class="news-card"
+      >
         <div v-if="post.image" class="news-card-media">
           <img :src="post.image" :alt="post.title" loading="lazy" />
         </div>
@@ -256,11 +261,11 @@ const heroImageAlt = computed(
           <p>{{ post.excerpt }}</p>
         </div>
         <div class="news-card-footer">
-          <NuxtLink :to="`/news/${post.slug}`" class="news-link">
+          <span class="news-link">
             {{ newsLinkLabel }} <span class="arrow">&rarr;</span>
-          </NuxtLink>
+          </span>
         </div>
-      </article>
+      </NuxtLink>
     </div>
   </section>
 

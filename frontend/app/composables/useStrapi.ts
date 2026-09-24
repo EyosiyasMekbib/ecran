@@ -102,21 +102,22 @@ const POST_IMAGE_FALLBACK = '/brand/network-card.svg'
 function mapPost(e: any) {
   const asDate = (value?: string) =>
     value ? new Date(value).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) : ''
+  const staticMatch = staticPosts.find((p: any) => p.slug === e.slug)
   return {
     title: e.title,
     slug: e.slug,
     category: e.category,
-    excerpt: e.excerpt || '',
-    body: e.body || '',
-    date: asDate(e.publishDate),
-    deadline: asDate(e.deadline),
-    location: e.location || '',
-    image: strapiMedia(e.featuredImage?.url) || POST_IMAGE_FALLBACK,
+    excerpt: e.excerpt || staticMatch?.excerpt || '',
+    body: e.body || staticMatch?.body || '',
+    date: asDate(e.publishDate) || staticMatch?.date || '',
+    deadline: asDate(e.deadline) || staticMatch?.deadline || '',
+    location: e.location || staticMatch?.location || '',
+    image: strapiMedia(e.featuredImage?.url) || staticMatch?.image || POST_IMAGE_FALLBACK,
     attachments: (e.attachment || []).map((a: any) => ({ name: a.name, url: strapiMedia(a.url) })),
-    externalUrl: e.externalUrl || '',
-    department: e.department || '',
-    employmentType: e.employmentType || '',
-    ctaLabel: e.ctaLabel || ''
+    externalUrl: e.externalUrl || staticMatch?.externalUrl || '',
+    department: e.department || staticMatch?.department || '',
+    employmentType: e.employmentType || staticMatch?.employmentType || '',
+    ctaLabel: e.ctaLabel || staticMatch?.ctaLabel || ''
   }
 }
 

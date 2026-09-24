@@ -1411,6 +1411,9 @@ h1 {
   border: 1px solid var(--line);
   border-radius: 0.5rem;
   overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -1418,6 +1421,18 @@ h1 {
   transform: translateY(-4px);
   border-color: var(--brand);
   box-shadow: 0 12px 30px rgba(11, 143, 167, 0.05);
+}
+
+.news-card:hover .news-card-content h3 {
+  color: var(--brand);
+}
+
+.news-card:hover .news-link {
+  color: var(--brand-dark);
+}
+
+.news-card:hover .news-link .arrow {
+  transform: translateX(4px);
 }
 
 .news-tag {
