@@ -139,7 +139,7 @@ const heroImageAlt = computed(
 
     <section v-if="partners && partners.length" class="partners-section">
       <div class="partners-container">
-        <h3>{{ partnersHeading }}</h3>
+        <h2 class="partners-heading">{{ partnersHeading }}</h2>
         <!-- The track is rendered twice so the -50% marquee keyframe loops seamlessly. -->
         <div class="partners-marquee">
           <a

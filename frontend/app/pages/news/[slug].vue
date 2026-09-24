@@ -151,7 +151,7 @@ await useSeo(
       <!-- 2-Column Content + Sticky Sidebar Grid -->
       <div class="post-content-grid">
         <!-- Main Column -->
-        <main class="post-main-column">
+        <div class="post-main-column">
           <!-- Rich Body from CMS -->
           <div v-if="post.body" class="post-body-content" v-html="post.body" />
 
@@ -250,7 +250,7 @@ await useSeo(
               &larr; {{ backLabel }}
             </NuxtLink>
           </div>
-        </main>
+        </div>
 
         <!-- Sticky Sidebar Column -->
         <aside class="post-sidebar-column">

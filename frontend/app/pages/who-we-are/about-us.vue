@@ -143,7 +143,7 @@ const cta = computed(() => ({
 </script>
 
 <template>
-  <main class="about-page">
+  <div class="about-page">
 
     <!-- Hero -->
     <section class="au-hero">
@@ -250,7 +250,7 @@ const cta = computed(() => ({
       </div>
     </section>
 
-  </main>
+  </div>
 </template>
 
 <style scoped>

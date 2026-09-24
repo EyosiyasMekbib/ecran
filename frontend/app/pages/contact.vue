@@ -122,7 +122,7 @@ function resetForm() {
     :text="page?.heroText || 'Have a question or want to get involved? Use the form below to get in touch with our team or find our office location details.'"
   />
 
-  <main class="contact-page-layout">
+  <div class="contact-page-layout">
     <section class="contact-grid">
       <div class="contact-info">
         <span class="section-label">{{ connectLabel }}</span>
@@ -183,15 +183,19 @@ function resetForm() {
 
         <form v-else class="contact-modern-form" @submit.prevent="submitForm">
           <div class="form-field">
+            <label for="name" class="sr-only">{{ namePlaceholder }}</label>
             <input type="text" id="name" v-model="formName" :placeholder="namePlaceholder" required />
           </div>
           <div class="form-field">
+            <label for="email" class="sr-only">{{ emailPlaceholder }}</label>
             <input type="email" id="email" v-model="formEmail" :placeholder="emailPlaceholder" required />
           </div>
           <div class="form-field">
+            <label for="subject" class="sr-only">{{ subjectPlaceholder }}</label>
             <input type="text" id="subject" v-model="formSubject" :placeholder="subjectPlaceholder" />
           </div>
           <div class="form-field">
+            <label for="message" class="sr-only">{{ messagePlaceholder }}</label>
             <textarea id="message" v-model="formMessage" rows="5" :placeholder="messagePlaceholder" required></textarea>
           </div>
           <p v-if="error" class="error-message" role="alert">{{ failureMessage }}</p>
@@ -201,5 +205,5 @@ function resetForm() {
         </form>
       </div>
     </section>
-  </main>
+  </div>
 </template>

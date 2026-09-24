@@ -52,7 +52,7 @@ const contactHeading = computed(() => page.value?.sections?.contactHeading || 'C
 </script>
 
 <template>
-  <main class="legal-page">
+  <div class="legal-page">
     <div class="legal-hero">
       <div class="legal-hero-inner">
         <span class="legal-eyebrow">{{ legalEyebrow }}</span>
@@ -80,7 +80,7 @@ const contactHeading = computed(() => page.value?.sections?.contactHeading || 'C
         </section>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <style scoped>

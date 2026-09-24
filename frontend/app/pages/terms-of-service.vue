@@ -56,7 +56,7 @@ const legalEyebrow = computed(() => page.value?.sections?.eyebrow || 'Legal')
 </script>
 
 <template>
-  <main class="legal-page">
+  <div class="legal-page">
     <div class="legal-hero">
       <div class="legal-hero-inner">
         <span class="legal-eyebrow">{{ legalEyebrow }}</span>
@@ -77,7 +77,7 @@ const legalEyebrow = computed(() => page.value?.sections?.eyebrow || 'Legal')
         </section>
       </div>
     </div>
-  </main>
+  </div>
 </template>
 
 <style scoped>

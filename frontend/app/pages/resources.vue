@@ -229,7 +229,7 @@ const formatDate = (dateString: string) => {
     :text="page?.heroText || 'Explore and download ECRAN\'s research publications, policy briefs, toolkit guidelines, and annual reports detailing child-rights progress in Ethiopia.'"
   />
 
-  <main class="resources-layout">
+  <div class="resources-layout">
     <aside class="resources-filters" aria-label="Filter resources">
       <div class="filter-group">
         <h2 class="filter-group-title">{{ searchLabel }}</h2>
@@ -238,6 +238,7 @@ const formatDate = (dateString: string) => {
             v-model="searchQuery"
             type="text"
             :placeholder="searchPlaceholder"
+            :aria-label="searchPlaceholder || 'Search resources'"
             class="search-input"
           />
           <svg class="search-icon" viewBox="0 0 24 24" width="18" height="18">
@@ -350,5 +351,5 @@ const formatDate = (dateString: string) => {
         </div>
       </div>
     </section>
-  </main>
+  </div>
 </template>

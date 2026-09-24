@@ -2,15 +2,16 @@
 
 :root {
   --ink: #0f1610;
-  --muted: #5e6b62;
+  --muted: #49574d;
   --soft: #f4f7f5;
   --paper: #fcfbfa;
   --surface: #ffffff;
   --line: #e3e8e4;
   --brand: #0b8fa7;
+  --brand-text: #066e80;
   --brand-dark: #24306f;
   --brand-soft: #dff4f6;
-  --accent: var(--brand);
+  --accent: var(--brand-text);
   --accent-soft: var(--brand-soft);
   --success: var(--brand-dark);
   --shadow: 0 24px 70px -42px rgba(36, 48, 111, 0.46);
@@ -52,6 +53,43 @@ input,
 select,
 textarea {
   font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand-dark, #24306f);
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1.5rem;
+  background: var(--brand-dark, #24306f);
+  color: #ffffff;
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+  z-index: 9999;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 1.25rem;
 }
 
 .site-shell {
@@ -494,7 +532,9 @@ main {
   background: linear-gradient(to left, var(--paper) 20%, transparent);
 }
 
-.partners-section h3 {
+.partners-section h3,
+.partners-section h2,
+.partners-heading {
   font-family: var(--font-text);
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -1483,7 +1523,7 @@ h1 {
   gap: 0.5rem;
   font-size: 0.9rem;
   font-weight: 700;
-  color: var(--brand);
+  color: var(--brand-text, #066e80);
   text-decoration: none;
   transition: color 0.2s ease;
 }

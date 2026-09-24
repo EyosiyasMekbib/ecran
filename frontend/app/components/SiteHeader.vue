@@ -133,7 +133,14 @@ onBeforeUnmount(() => {
 
       <div class="header-actions-wrapper">
         <a :href="getInvolvedUrl" target="_blank" rel="noopener noreferrer" class="header-cta">{{ getInvolvedLabel }}</a>
-        <button class="menu-button" type="button" :aria-expanded="open" aria-controls="primary-navigation" @click="open = !open">
+        <button
+          class="menu-button"
+          type="button"
+          :aria-expanded="open"
+          aria-controls="primary-navigation"
+          aria-label="Toggle navigation menu"
+          @click="open = !open"
+        >
           <span />
           <span />
           <span />

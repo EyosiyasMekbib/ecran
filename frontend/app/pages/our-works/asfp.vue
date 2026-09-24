@@ -35,7 +35,7 @@ const cards = computed(() =>
 </script>
 
 <template>
-  <main class="asfp-page">
+  <div class="asfp-page">
     <PageHero
       :eyebrow="page?.sections?.heroEyebrow || 'Our Works — ASFP'"
       :title="page?.heroTitle || 'Advocacy and Social Frontline Program'"
@@ -72,5 +72,5 @@ const cards = computed(() =>
         <a :href="getInvolvedUrl" target="_blank" rel="noopener noreferrer" class="button primary">{{ page?.sections?.ctaLabel || 'Express interest' }}</a>
       </div>
     </section>
-  </main>
+  </div>
 </template>
