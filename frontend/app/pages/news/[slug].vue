@@ -385,16 +385,16 @@ await useSeo(
   gap: 0.5rem;
   font-size: 0.88rem;
   font-weight: 700;
-  color: var(--brand, #0b8fa7);
+  color: var(--brand-text, #066e80);
   text-decoration: none;
   padding: 0.4rem 0.85rem;
   border-radius: 999px;
-  background: rgba(11, 143, 167, 0.08);
+  background: rgba(6, 110, 128, 0.08);
   transition: all 0.2s ease;
 }
 
 .post-back-btn:hover {
-  background: var(--brand, #0b8fa7);
+  background: var(--brand-text, #066e80);
   color: #ffffff;
   transform: translateX(-3px);
 }
@@ -584,7 +584,7 @@ await useSeo(
 }
 
 .post-body-content :where(a) {
-  color: var(--brand, #0b8fa7);
+  color: var(--brand-text, #066e80);
   text-decoration: underline;
   text-underline-offset: 3px;
   font-weight: 600;
@@ -636,8 +636,8 @@ await useSeo(
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: rgba(11, 143, 167, 0.1);
-  color: var(--brand, #0b8fa7);
+  background: rgba(6, 110, 128, 0.1);
+  color: var(--brand-text, #066e80);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -657,7 +657,7 @@ await useSeo(
 
 .attachment-action {
   font-size: 0.8rem;
-  color: var(--brand, #0b8fa7);
+  color: var(--brand-text, #066e80);
   font-weight: 600;
   margin-top: 0.2rem;
 }
@@ -710,15 +710,15 @@ await useSeo(
 }
 
 .share-btn:hover {
-  border-color: var(--brand, #0b8fa7);
-  color: var(--brand, #0b8fa7);
+  border-color: var(--brand-text, #066e80);
+  color: var(--brand-text, #066e80);
   transform: translateY(-2px);
 }
 
 .share-btn.copy.active {
-  border-color: var(--brand, #0b8fa7);
-  background: rgba(11, 143, 167, 0.08);
-  color: var(--brand, #0b8fa7);
+  border-color: var(--brand-text, #066e80);
+  background: rgba(6, 110, 128, 0.08);
+  color: var(--brand-text, #066e80);
 }
 
 /* Footer Nav */
@@ -861,7 +861,7 @@ await useSeo(
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--brand, #0b8fa7);
+  color: var(--brand-text, #066e80);
   margin-bottom: 0.2rem;
 }
 
@@ -879,14 +879,14 @@ await useSeo(
 }
 
 .related-item:hover .related-headline {
-  color: var(--brand, #0b8fa7);
+  color: var(--brand-text, #066e80);
 }
 
 .sidebar-more-link {
   display: inline-block;
   font-size: 0.84rem;
   font-weight: 700;
-  color: var(--brand, #0b8fa7);
+  color: var(--brand-text, #066e80);
   text-decoration: none;
   transition: transform 0.2s ease;
 }
@@ -945,7 +945,7 @@ await useSeo(
 .missing-badge {
   font-size: 3rem;
   font-weight: 900;
-  color: var(--brand, #0b8fa7);
+  color: var(--brand-text, #066e80);
   line-height: 1;
   margin-bottom: 1rem;
   font-family: var(--font-heading);

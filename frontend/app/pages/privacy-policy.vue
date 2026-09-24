@@ -106,9 +106,9 @@ const contactHeading = computed(() => page.value?.sections?.contactHeading || 'C
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--brand);
-  background: rgba(11, 143, 167, 0.12);
-  border: 1px solid rgba(11, 143, 167, 0.3);
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
   padding: 0.3rem 0.75rem;
   border-radius: 2px;
   margin-bottom: 1.25rem;
@@ -126,7 +126,7 @@ const contactHeading = computed(() => page.value?.sections?.contactHeading || 'C
 .legal-meta {
   font-family: var(--font-text);
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.82);
   margin: 0;
 }
 
@@ -184,8 +184,8 @@ const contactHeading = computed(() => page.value?.sections?.contactHeading || 'C
 }
 
 .legal-contact a {
-  color: var(--brand);
-  font-weight: 500;
+  color: var(--brand-text, #066e80);
+  font-weight: 600;
 }
 
 .legal-contact a:hover {

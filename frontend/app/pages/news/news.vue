@@ -159,8 +159,8 @@ const readMoreLabel = computed(() => page.value?.sections?.readMoreLabel || 'Rea
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--brand, #0b8fa7);
-  background: rgba(11, 143, 167, 0.08);
+  color: var(--brand-text, #066e80);
+  background: rgba(6, 110, 128, 0.08);
 }
 
 .news-four-content h2 {
@@ -178,7 +178,7 @@ const readMoreLabel = computed(() => page.value?.sections?.readMoreLabel || 'Rea
 }
 
 .news-four-card:hover .news-four-content h2 {
-  color: var(--brand, #0b8fa7);
+  color: var(--brand-text, #066e80);
 }
 
 .news-four-content p {
@@ -204,7 +204,7 @@ const readMoreLabel = computed(() => page.value?.sections?.readMoreLabel || 'Rea
   gap: 0.4rem;
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--brand, #0b8fa7);
+  color: var(--brand-text, #066e80);
   transition: color 0.2s ease;
 }
 

@@ -272,7 +272,7 @@ const cta = computed(() => ({
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--brand);
+  color: var(--brand-text);
   margin: 0 0 1.5rem;
 }
 
@@ -364,7 +364,7 @@ const cta = computed(() => ({
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: var(--brand);
+  color: var(--brand-text);
   display: block;
   margin-bottom: 0.75rem;
 }
@@ -508,7 +508,7 @@ const cta = computed(() => ({
   font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: var(--brand);
+  color: var(--brand-text);
   text-transform: uppercase;
   display: block;
   margin-bottom: 0.5rem;

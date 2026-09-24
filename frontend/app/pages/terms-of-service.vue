@@ -103,9 +103,9 @@ const legalEyebrow = computed(() => page.value?.sections?.eyebrow || 'Legal')
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--brand);
-  background: rgba(11, 143, 167, 0.12);
-  border: 1px solid rgba(11, 143, 167, 0.3);
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
   padding: 0.3rem 0.75rem;
   border-radius: 2px;
   margin-bottom: 1.25rem;
@@ -123,7 +123,7 @@ const legalEyebrow = computed(() => page.value?.sections?.eyebrow || 'Legal')
 .legal-meta {
   font-family: var(--font-text);
   font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.82);
   margin: 0;
 }
 
