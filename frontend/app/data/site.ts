@@ -157,7 +157,7 @@ export const staticPosts = [
     employmentType: '',
     excerpt: 'Photos and summaries from the multi-stakeholder policy dialogue convening 40+ member network delegates.',
     body: '<p>ECRAN convened a high-level consultative assembly in Addis Ababa, bringing together over 40 delegates from member organizations across Ethiopia.</p><p>Delegates shared regional case studies, reviewed protection protocol implementations, and developed joint advocacy actions.</p>',
-    image: null,
+    image: '/brand/network-card.svg',
     attachments: [],
     externalUrl: '',
     ctaLabel: 'View details'
