@@ -442,7 +442,8 @@ await useSeo(
 
 /* Article Header */
 .post-header {
-  max-width: 900px;
+  width: 100%;
+  max-width: 100%;
   margin-bottom: 2.2rem;
 }
 
@@ -480,20 +481,25 @@ await useSeo(
 }
 
 .post-title {
+  width: 100%;
+  max-width: 100%;
   font-family: var(--font-heading);
-  font-size: clamp(2.2rem, 4.2vw, 3.4rem);
-  line-height: 1.15;
+  font-size: clamp(2rem, 3.1vw, 2.85rem);
+  line-height: 1.2;
   letter-spacing: -0.02em;
   color: var(--ink, #1a1a2e);
   margin: 0 0 1.25rem;
+  text-wrap: balance;
 }
 
 .post-header-lead {
+  max-width: 980px;
   font-size: clamp(1.15rem, 1.4vw, 1.3rem);
   line-height: 1.65;
   color: #4a5568;
   margin: 0;
   font-weight: 450;
+  text-wrap: pretty;
 }
 
 /* Featured Media Banner */
@@ -993,6 +999,11 @@ await useSeo(
   .share-btn {
     flex: 1;
     justify-content: center;
+  }
+
+  .post-title {
+    font-size: clamp(1.55rem, 5.2vw, 1.95rem);
+    line-height: 1.22;
   }
 }
 </style>
