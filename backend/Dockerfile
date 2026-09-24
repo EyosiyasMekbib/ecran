@@ -1,4 +1,4 @@
-FROM node:20-slim AS build
+FROM node:22-slim AS build
 WORKDIR /app
 RUN corepack enable
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
@@ -6,7 +6,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build && pnpm prune --prod
 
-FROM node:20-slim AS runtime
+FROM node:22-slim AS runtime
 ENV NODE_ENV=production \
     HOST=0.0.0.0 \
     PORT=1337
