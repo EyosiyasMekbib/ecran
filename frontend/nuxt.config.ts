@@ -14,6 +14,11 @@ export default defineNuxtConfig({
       ]
     }
   },
+  vite: {
+    optimizeDeps: {
+      include: ['marked']
+    }
+  },
   runtimeConfig: {
     public: {
       // Strapi CMS base URL. Override per environment with NUXT_PUBLIC_STRAPI_URL.

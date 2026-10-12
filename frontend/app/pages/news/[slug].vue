@@ -534,42 +534,130 @@ await useSeo(
   min-width: 0;
 }
 
+/* Rendered CMS Markdown — an editorial reading column. */
 .post-body-content {
-  font-size: 1.08rem;
-  line-height: 1.85;
+  max-width: 70ch;
+  font-size: clamp(1.02rem, 0.98rem + 0.2vw, 1.1rem);
+  line-height: 1.8;
   color: #2d3748;
+  overflow-wrap: break-word;
+}
+
+.post-body-content > :first-child {
+  margin-top: 0;
 }
 
 .post-body-content :where(p) {
-  margin: 1.25rem 0;
+  margin: 0 0 1.35em;
+  text-wrap: pretty;
 }
 
-.post-body-content :where(h2, h3) {
+.post-body-content :where(strong) {
+  font-weight: 700;
+  color: var(--ink, #1a1a2e);
+}
+
+.post-body-content :where(p > strong:first-child) {
+  color: var(--brand-dark, #24306f);
+}
+
+.post-body-content :where(h2, h3, h4) {
   font-family: var(--font-heading);
   color: var(--ink, #1a1a2e);
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
   line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
 .post-body-content :where(h2) {
-  font-size: clamp(1.4rem, 2vw, 1.75rem);
-  border-left: 4px solid var(--brand, #0b8fa7);
-  padding-left: 0.9rem;
+  font-size: clamp(1.35rem, 1.1rem + 1vw, 1.7rem);
+  margin: 2.6em 0 0.8em;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--line, #e2e8f0);
 }
 
 .post-body-content :where(h3) {
-  font-size: clamp(1.2rem, 1.6vw, 1.45rem);
+  font-size: clamp(1.15rem, 1rem + 0.6vw, 1.35rem);
+  margin: 2em 0 0.6em;
+}
+
+.post-body-content > h2:first-child {
+  padding-top: 0;
+  border-top: 0;
+}
+
+.post-body-content :where(h2 + p, h3 + p) {
+  margin-top: 0;
 }
 
 .post-body-content :where(ul, ol) {
+  padding-left: 1.35rem;
+  margin: 0 0 1.5em;
+}
+
+.post-body-content :where(ul) {
+  list-style: none;
+  padding-left: 0;
+}
+
+.post-body-content :where(ul > li) {
+  position: relative;
   padding-left: 1.5rem;
-  margin: 1.25rem 0;
+}
+
+.post-body-content :where(ul > li)::before {
+  content: '';
+  position: absolute;
+  left: 0.2rem;
+  top: 0.72em;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 2px;
+  background: var(--brand, #0b8fa7);
+  transform: rotate(45deg);
+}
+
+.post-body-content :where(ol > li)::marker {
+  color: var(--brand-text, #066e80);
+  font-weight: 700;
 }
 
 .post-body-content :where(li) {
-  margin-bottom: 0.65rem;
+  margin-bottom: 0.75em;
   line-height: 1.7;
+}
+
+.post-body-content :where(li > p) {
+  margin: 0;
+}
+
+.post-body-content :where(img) {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 2em 0;
+  border-radius: 0.75rem;
+}
+
+.post-body-content :where(hr) {
+  border: 0;
+  border-top: 1px solid var(--line, #e2e8f0);
+  margin: 2.5em 0;
+}
+
+.post-body-content :where(table) {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  margin: 0 0 1.5em;
+  font-size: 0.95em;
+}
+
+.post-body-content :where(th, td) {
+  border: 1px solid var(--line, #e2e8f0);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
 }
 
 .post-body-content :where(blockquote) {
@@ -978,6 +1066,24 @@ await useSeo(
   }
 }
 
+/* Below the article on tablets, the sidebar cards sit two-up instead of
+   stretching a short facts list across the full width. */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .post-sticky-sidebar {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+
+  .post-sticky-sidebar .cta-card {
+    grid-column: 1 / -1;
+  }
+
+  .cta-card .cta-btn {
+    width: auto;
+  }
+}
+
 @media (max-width: 640px) {
   .post-top-nav-inner {
     justify-content: flex-start;
@@ -999,6 +1105,7 @@ await useSeo(
   .share-btn {
     flex: 1;
     justify-content: center;
+    min-height: 2.75rem;
   }
 
   .post-title {

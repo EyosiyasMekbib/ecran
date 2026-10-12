@@ -556,6 +556,13 @@ main {
   margin-bottom: 1.25rem;
 }
 
+/* The edge fades are for the scrolling logos; on phones they are wider than the
+   gutter and would wash out the label. */
+.partners-heading {
+  position: relative;
+  z-index: 3;
+}
+
 .partners-marquee {
   display: flex;
   gap: 2rem;
@@ -1712,13 +1719,17 @@ h1 {
   position: relative;
   max-width: none;
   margin: 0;
+  /* Outer tracks mirror the header's 1400px container and gutter (less the grid
+     gap), so hero text lines up with the logo at every width. */
+  --hero-gap: clamp(0.75rem, 2vw, 2rem);
+  --hero-edge: calc(max(0px, (100% - 1400px) / 2) + var(--gutter) - var(--hero-gap));
   grid-template-columns:
-    minmax(var(--gutter), 1fr)
-    minmax(0, 34rem)
-    minmax(0, 46rem)
-    minmax(var(--gutter), 1fr);
+    var(--hero-edge)
+    minmax(0, 34fr)
+    minmax(0, 46fr)
+    var(--hero-edge);
   align-items: center;
-  gap: clamp(0.75rem, 2vw, 2rem);
+  gap: var(--hero-gap);
   padding: clamp(1rem, 2vw, 2rem) 0;
   color: #fff;
   background:
@@ -2554,57 +2565,95 @@ a.detail-value:hover {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .site-header {
-    grid-template-columns: 1fr auto;
+  /*
+   * The header is a flex row, so the opened menu wraps onto its own full-width
+   * line below the logo and actions rather than squeezing between them.
+   */
+  .header-container {
+    flex-wrap: wrap;
   }
 
   .menu-button {
     display: block;
   }
 
-  .primary-nav {
-    grid-column: 1 / -1;
-    justify-self: stretch;
-    display: none;
-    border-radius: 0.6rem;
-    flex-direction: column;
-    align-items: stretch;
-    margin-left: 0;
+  .header-actions-wrapper {
+    margin-left: auto;
   }
 
-  .header-actions-wrapper {
-    margin-left: 0;
+  .primary-nav {
+    order: 3;
+    flex-basis: 100%;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.1rem;
+    margin: 1rem 0 0;
+    padding: 0.75rem 0 0.25rem;
+    border-top: 1px solid var(--line);
+    max-height: calc(100dvh - 7rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .primary-nav.is-open {
     display: flex;
   }
 
-  .primary-nav a,
-  .nav-trigger {
-    border-radius: 0.35rem;
-  }
-
   .nav-item {
     display: grid;
   }
 
-  .subnav {
+  .primary-nav a,
+  .nav-trigger {
+    min-height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    text-align: left;
+    border-radius: 0.4rem;
+  }
+
+  /* A full-width underline reads as a divider; mark the current page with a tint. */
+  .primary-nav a::after,
+  .nav-trigger::after {
+    display: none;
+  }
+
+  .primary-nav a.active {
+    background: rgba(36, 48, 111, 0.06);
+  }
+
+  .primary-nav a:hover,
+  .nav-trigger:hover {
+    transform: none;
+  }
+
+  .nav-trigger {
+    cursor: default;
+  }
+
+  .subnav,
+  .nav-item:hover .subnav,
+  .nav-item:focus-within .subnav,
+  .subnav.is-open {
     position: static;
     display: grid;
     min-width: 0;
-    margin: 0.25rem 0 0.35rem;
-    padding: 0.45rem 0.45rem 0.45rem 0.75rem;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    box-shadow: 0 18px 42px -36px rgba(15, 48, 76, 0.46);
+    margin: 0 0 0.4rem 0.75rem;
+    padding: 0 0 0 0.6rem;
+    background: none;
+    border: 0;
+    border-left: 1px solid var(--line);
+    border-radius: 0;
+    box-shadow: none;
     opacity: 1;
     pointer-events: auto;
     transform: none;
   }
 
   .subnav a {
-    min-height: 2rem;
+    min-height: 2.5rem;
+    white-space: normal;
   }
 
   .about-governance {
@@ -2662,6 +2711,16 @@ a.detail-value:hover {
     gap: 1.5rem;
   }
 
+  /* Stacked, the desktop column gap plus uncollapsed h2 margins left the eyebrow,
+     title and summary floating apart. */
+  .objectives-heading-block {
+    gap: 0.9rem;
+  }
+
+  .objectives-heading-block > * {
+    margin: 0;
+  }
+
   .home-hero {
     min-height: auto;
     margin-top: 0;
@@ -2681,23 +2740,26 @@ a.detail-value:hover {
     grid-template-columns: 1fr;
   }
 
+  /*
+   * The stacked hero bleeds its image to the screen edges with negative margins.
+   * A 100vw width would also work visually, but it widens the 1fr grid column to
+   * the viewport and pushes the copy past the right edge, where main clips it.
+   */
   .hero-container {
-    padding-top: clamp(6rem, 15vw, 8rem);
-    padding-bottom: clamp(6rem, 15vw, 8rem);
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: clamp(3rem, 10vw, 6rem);
+    padding-bottom: 0;
   }
 
   .hero-visual {
     position: relative;
-    width: 100vw;
-    height: 45vh;
-    right: auto;
-    left: 50%;
-    top: auto;
-    bottom: auto;
-    transform: translateX(-50%);
-    margin-top: 3rem;
-    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
-    mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
+    inset: auto;
+    width: auto;
+    height: clamp(16rem, 55vw, 26rem);
+    margin: 2.5rem calc(-1 * var(--gutter)) 0;
+    border-radius: 0;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 18%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 18%);
   }
 
   .node-line {
@@ -2828,8 +2890,8 @@ a.detail-value:hover {
   .news-hero,
   .resources-hero,
   .contact-hero {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
   }
 
   .about-hero .eyebrow,
@@ -2859,9 +2921,26 @@ a.detail-value:hover {
 }
 
 @media (max-width: 560px) {
+  :root {
+    --gutter: 1.25rem;
+  }
+
+  .header-container {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
   .brand-logo {
     width: 6rem;
     height: 4rem;
+  }
+
+  .header-actions-wrapper {
+    gap: 0.6rem;
+  }
+
+  .header-cta {
+    padding: 0 1rem;
   }
 
   .brand-mark small {
@@ -2870,7 +2949,6 @@ a.detail-value:hover {
 
   .hero-container,
   .partners-container,
-  .home-hero,
   .story-section,
   .objectives-section,
   .program-preview,
@@ -2893,8 +2971,8 @@ a.detail-value:hover {
   .contact-grid,
   .news-category-page,
   .news-index-page {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
   }
 
   .hero-actions {

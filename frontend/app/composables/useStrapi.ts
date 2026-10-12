@@ -4,6 +4,7 @@ import {
   staticPosts,
   staticPartners
 } from '~/data/site'
+import { renderRichText } from '~/utils/richText'
 
 /** Base URL of the Strapi CMS (from runtime config; override with NUXT_PUBLIC_STRAPI_URL). */
 export function useStrapiUrl(): string {
@@ -75,7 +76,7 @@ export async function getPrograms() {
     title: e.title,
     slug: e.slug || '',
     text: e.summary,
-    body: e.body || '',
+    body: renderRichText(e.body, { title: e.title, mediaBase: useStrapiUrl() }),
     image: strapiMedia(e.featuredImage?.url) || '/brand/network-card.svg'
   }))
 }
@@ -108,7 +109,11 @@ function mapPost(e: any) {
     slug: e.slug,
     category: e.category,
     excerpt: e.excerpt || staticMatch?.excerpt || '',
-    body: e.body || staticMatch?.body || '',
+    body: renderRichText(e.body || staticMatch?.body, {
+      title: e.title,
+      excerpt: e.excerpt || staticMatch?.excerpt,
+      mediaBase: useStrapiUrl()
+    }),
     date: asDate(e.publishDate) || staticMatch?.date || '',
     deadline: asDate(e.deadline) || staticMatch?.deadline || '',
     location: e.location || staticMatch?.location || '',
