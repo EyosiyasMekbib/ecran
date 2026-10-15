@@ -84,7 +84,13 @@ const shareTwitterUrl = computed(() => {
 
 await useSeo(
   post.value
-    ? { seoTitle: post.value.title, seoDescription: post.value.excerpt, heroImage: post.value.image }
+    ? {
+        seoTitle: (post.value as any).seoTitle || post.value.title,
+        seoDescription: (post.value as any).seoDescription || post.value.excerpt,
+        // The no-image fallback is a local brand asset; useSeo would prefix it with the
+        // CMS host and publish a broken og:image, so only pass real (absolute) uploads.
+        heroImage: /^https?:\/\//.test(post.value.image || '') ? post.value.image : null
+      }
     : { title: notFoundTitle.value }
 )
 </script>

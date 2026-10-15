@@ -117,6 +117,8 @@ All five live in **Post**, separated by the **Category** field.
 | **Publish date** | Controls ordering. Newest first |
 | **Featured image** | Optional. See §7 |
 | **Attachment** | Optional PDF, e.g. the full bid document |
+| **SEO title** | Optional. Title shown in Google results and link previews. Blank uses the Title |
+| **SEO description** | Optional. The grey summary in Google results — aim for 150–160 characters. Blank uses the Excerpt |
 
 3. **Save**, then **Publish**.
 

@@ -122,7 +122,10 @@ function mapPost(e: any) {
     externalUrl: e.externalUrl || staticMatch?.externalUrl || '',
     department: e.department || staticMatch?.department || '',
     employmentType: e.employmentType || staticMatch?.employmentType || '',
-    ctaLabel: e.ctaLabel || staticMatch?.ctaLabel || ''
+    ctaLabel: e.ctaLabel || staticMatch?.ctaLabel || '',
+    // Optional overrides for search results and link previews; blank falls back to title/excerpt.
+    seoTitle: e.seoTitle || '',
+    seoDescription: e.seoDescription || ''
   }
 }
 
