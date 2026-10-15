@@ -119,6 +119,10 @@ function mapPost(e: any) {
     location: e.location || staticMatch?.location || '',
     image: strapiMedia(e.featuredImage?.url) || staticMatch?.image || POST_IMAGE_FALLBACK,
     attachments: (e.attachment || []).map((a: any) => ({ name: a.name, url: strapiMedia(a.url) })),
+    gallery: (e.gallery || [])
+      .map((m: any) => ({ url: strapiMedia(m.url), alt: m.alternativeText || m.caption || '' }))
+      .filter((m: any) => m.url),
+    video: e.video?.url ? { url: strapiMedia(e.video.url) as string, mime: e.video.mime || '' } : null,
     externalUrl: e.externalUrl || staticMatch?.externalUrl || '',
     department: e.department || staticMatch?.department || '',
     employmentType: e.employmentType || staticMatch?.employmentType || '',

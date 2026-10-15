@@ -20,6 +20,7 @@ const categoryLabels = computed<Record<string, string>>(() => ui().categoryLabel
 const defaultFactLabels = { department: 'Department', type: 'Type', location: 'Location / Ref', deadline: 'Deadline' }
 const factLabels = computed<Record<string, string>>(() => ({ ...defaultFactLabels, ...(ui().factLabels || {}) }))
 const attachmentsHeading = computed(() => ui().attachmentsHeading || 'Attachments & Documents')
+const galleryHeading = computed(() => ui().galleryHeading || 'Photo gallery')
 const defaultCtaLabel = computed(() => ui().defaultCtaLabel || 'Learn more')
 const notFoundTitle = computed(() => ui().postNotFoundTitle || 'Story not found')
 const notFoundText = computed(() => ui().postNotFoundText || 'This story may have been moved, updated, or unpublished.')
@@ -158,8 +159,21 @@ await useSeo(
       <div class="post-content-grid">
         <!-- Main Column -->
         <div class="post-main-column">
+          <!-- Uploaded video -->
+          <div v-if="post.video" class="post-video">
+            <video controls playsinline preload="metadata" :poster="videoPoster(post.video.url)">
+              <source v-for="s in videoSources(post.video.url, post.video.mime)" :key="s.src" :src="s.src" :type="s.type" />
+            </video>
+          </div>
+
           <!-- Rich Body from CMS -->
           <div v-if="post.body" class="post-body-content" v-html="post.body" />
+
+          <!-- Photo gallery -->
+          <section v-if="post.gallery?.length" class="post-gallery-section">
+            <h2 class="section-subtitle">{{ galleryHeading }}</h2>
+            <MediaGallery :images="post.gallery" :title="post.title" />
+          </section>
 
           <!-- Attachments / Downloads -->
           <section v-if="post.attachments?.length" class="post-attachments-section">
@@ -689,6 +703,26 @@ await useSeo(
 }
 
 /* Attachments */
+.post-video {
+  margin-bottom: 2.5rem;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background: #06172f;
+}
+
+.post-video video {
+  display: block;
+  width: 100%;
+  max-height: 70vh;
+  aspect-ratio: 16 / 9;
+}
+
+.post-gallery-section {
+  margin-top: 3.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line, #e2e8f0);
+}
+
 .post-attachments-section {
   margin-top: 3.5rem;
   padding-top: 2rem;

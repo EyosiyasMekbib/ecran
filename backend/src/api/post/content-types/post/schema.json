@@ -46,6 +46,16 @@
       "multiple": false,
       "allowedTypes": ["images"]
     },
+    "gallery": {
+      "type": "media",
+      "multiple": true,
+      "allowedTypes": ["images"]
+    },
+    "video": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["videos"]
+    },
     "attachment": {
       "type": "media",
       "multiple": true,
