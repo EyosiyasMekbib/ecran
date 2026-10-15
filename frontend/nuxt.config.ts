@@ -10,7 +10,15 @@ export default defineNuxtConfig({
       },
       meta: [
         { charset: 'utf-8' },
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+        { name: 'theme-color', content: '#24306f' }
+      ],
+      // Keyed so useSeo() can swap in a CMS-managed favicon without duplicating tags.
+      link: [
+        { key: 'favicon', rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
+        { key: 'favicon-svg', rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        { rel: 'manifest', href: '/site.webmanifest' }
       ]
     }
   },
