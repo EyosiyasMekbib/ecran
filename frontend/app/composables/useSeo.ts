@@ -55,16 +55,10 @@ export function useSeo(
       meta.push({ name: 'twitter:image', content: image })
     }
 
-    // Favicon is CMS-managed (Global → favicon). The bundled icons are declared in
-    // nuxt.config; an upload replaces both keyed tags so browsers can't prefer the
-    // bundled SVG over it.
+    // Favicon is CMS-managed (Global → favicon). The bundled icon is declared in
+    // nuxt.config; an upload replaces that keyed tag rather than adding a second one.
     const cmsFavicon = resolveMedia(g.favicon?.url)
-    const link = cmsFavicon
-      ? [
-          { key: 'favicon', rel: 'icon', href: cmsFavicon },
-          { key: 'favicon-svg', rel: 'icon', href: cmsFavicon, type: g.favicon?.mime || undefined }
-        ]
-      : []
+    const link = cmsFavicon ? [{ key: 'favicon', rel: 'icon', href: cmsFavicon }] : []
 
     return { title, meta, link }
   })

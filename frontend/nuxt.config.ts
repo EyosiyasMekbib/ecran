@@ -16,7 +16,6 @@ export default defineNuxtConfig({
       // Keyed so useSeo() can swap in a CMS-managed favicon without duplicating tags.
       link: [
         { key: 'favicon', rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
-        { key: 'favicon-svg', rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
         { rel: 'manifest', href: '/site.webmanifest' }
       ]
