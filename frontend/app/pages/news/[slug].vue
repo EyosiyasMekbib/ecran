@@ -72,15 +72,17 @@ const copyCurrentUrl = async () => {
   }
 }
 
-const shareLinkedInUrl = computed(() => {
-  if (!import.meta.client) return '#'
-  return `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(window.location.href)}`
-})
+// Share links are built from the public site URL, not window.location. The page is
+// prerendered, so a client-only URL shipped as href="#" in the static HTML, and
+// production hydration never patches attribute mismatches: the buttons went nowhere.
+const siteUrl = String(useRuntimeConfig().public.siteUrl || '').replace(/\/+$/, '')
+const pageUrl = computed(() => encodeURIComponent(`${siteUrl}${route.path}`))
+
+const shareLinkedInUrl = computed(() => `https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl.value}`)
 
 const shareTwitterUrl = computed(() => {
-  if (!import.meta.client) return '#'
   const text = encodeURIComponent(post.value?.title || 'ECRAN News')
-  return `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(window.location.href)}`
+  return `https://twitter.com/intent/tweet?text=${text}&url=${pageUrl.value}`
 })
 
 await useSeo(

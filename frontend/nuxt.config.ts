@@ -29,7 +29,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // Strapi CMS base URL. Override per environment with NUXT_PUBLIC_STRAPI_URL.
-      strapiUrl: 'https://cms.ecran-et.org'
+      strapiUrl: 'https://cms.ecran-et.org',
+      // Canonical site origin for absolute links (e.g. share buttons). Override with NUXT_PUBLIC_SITE_URL.
+      siteUrl: 'https://ecran-et.org'
     }
   }
 })
