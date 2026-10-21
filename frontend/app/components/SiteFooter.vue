@@ -5,7 +5,7 @@ const { data: profile } = await useAsyncData('site-profile', getSiteProfile)
 
 const g = () => (site.value as any) || {}
 const ui = () => g().ui || {}
-const logoUrl = computed(() => strapiMedia(g().logo?.url) || '/ecran-logo.jpg')
+const logoUrl = computed(() => strapiMedia(g().logo?.url) || '/ecran-logo-192.webp')
 const siteName = computed(() => g().siteName || 'ECRAN')
 const tagline = computed(
   () =>
@@ -77,7 +77,15 @@ const year = new Date().getFullYear()
   <footer class="site-footer">
     <div class="footer-main">
       <div class="footer-brand">
-        <img :src="logoUrl" alt="ECRAN logo" class="footer-logo" />
+        <img
+          :src="logoUrl"
+          width="316"
+          height="184"
+          alt="ECRAN logo"
+          class="footer-logo"
+          loading="lazy"
+          decoding="async"
+        />
         <p>{{ tagline }}</p>
         <div v-if="socialLinks.length" class="footer-social">
           <a

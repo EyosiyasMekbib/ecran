@@ -101,6 +101,9 @@ const newsCtaLabel = computed(() => page.value?.sections?.newsCtaLabel || 'All n
 // The "Latest updates" band shows the three most recent news posts. getPosts()
 // already guarantees an image, so a card and its detail page always agree.
 const latestPosts = computed(() => (latestNews.value || []).slice(0, 3))
+// Resized WebP copies of the built-in hero; a CMS hero image is used as uploaded.
+const heroSrcset =
+  '/brand/ecran-hero-480.webp 480w, /brand/ecran-hero-720.webp 720w, /brand/ecran-hero-975.webp 975w'
 const newsLinkLabel = computed(() => page.value?.sections?.newsLinkLabel || 'Read story')
 const resourcesEyebrow = computed(() => page.value?.sections?.resourcesEyebrow || 'Resource Library')
 const resourcesCtaLabel = computed(() => page.value?.sections?.resourcesCtaLabel || 'View all resources')
@@ -132,7 +135,15 @@ const heroImageAlt = computed(
           </div>
         </div>
         <div class="hero-visual reveal delay-1" aria-label="ECRAN members and partners gathered together">
-          <img :src="page?.heroImage || '/brand/ecran-hero.jpg'" :alt="heroImageAlt" />
+          <img
+            :src="page?.heroImage || '/brand/ecran-hero.jpg'"
+            :srcset="page?.heroImage ? undefined : heroSrcset"
+            sizes="(max-width: 860px) 100vw, 60vw"
+            width="975"
+            height="643"
+            fetchpriority="high"
+            :alt="heroImageAlt"
+          />
         </div>
       </div>
     </section>
@@ -152,7 +163,15 @@ const heroImageAlt = computed(
             :aria-hidden="partner.clone ? 'true' : undefined"
             :tabindex="partner.clone ? -1 : undefined"
           >
-            <img v-if="partner.logo" :src="partner.logo" :alt="partner.clone ? '' : partner.name" />
+            <img
+              v-if="partner.logo"
+              :src="partner.logo"
+              :width="partner.logoWidth || undefined"
+              :height="partner.logoHeight || undefined"
+              :alt="partner.clone ? '' : partner.name"
+              loading="lazy"
+              decoding="async"
+            />
             <span v-else class="partner-name">{{ partner.name }}</span>
           </a>
         </div>
@@ -251,7 +270,12 @@ const heroImageAlt = computed(
         class="news-card"
       >
         <div v-if="post.image" class="news-card-media">
-          <img :src="post.image" :alt="post.title" loading="lazy" />
+          <img
+            :src="cloudinaryResize(post.image, 'c_limit,w_800,f_auto,q_auto') || post.image"
+            :alt="post.title"
+            loading="lazy"
+            decoding="async"
+          />
         </div>
         <div class="news-card-meta">
           <span class="news-tag">{{ post.date }}</span>

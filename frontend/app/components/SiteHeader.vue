@@ -36,7 +36,12 @@ const navItems = computed(() => {
   })
   return merged
 })
-const logoUrl = computed(() => strapiMedia((site.value as any)?.logo?.url) || '/ecran-logo.jpg')
+const cmsLogo = computed(() => strapiMedia((site.value as any)?.logo?.url))
+const logoUrl = computed(() => cmsLogo.value || '/ecran-logo.jpg')
+// The header logo is the mobile LCP element: serve the built-in one as sized WebP.
+const logoSrcset = computed(() =>
+  cmsLogo.value ? undefined : '/ecran-logo-192.webp 192w, /ecran-logo.webp 316w'
+)
 const getInvolvedUrl = computed(
   () =>
     (site.value as any)?.getInvolvedUrl ||
@@ -90,7 +95,16 @@ onBeforeUnmount(() => {
   <header class="site-header">
     <div class="header-container">
       <NuxtLink to="/" class="brand-link" aria-label="ECRAN home">
-        <img :src="logoUrl" alt="ECRAN logo" class="brand-logo" />
+        <img
+          :src="logoUrl"
+          :srcset="logoSrcset"
+          sizes="(max-width: 560px) 96px, 165px"
+          width="316"
+          height="184"
+          alt="ECRAN logo"
+          class="brand-logo"
+          fetchpriority="high"
+        />
       </NuxtLink>
 
       <nav id="primary-navigation" class="primary-nav" :class="{ 'is-open': open }" aria-label="Primary navigation">

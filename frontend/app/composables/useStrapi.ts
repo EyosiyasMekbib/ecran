@@ -23,6 +23,19 @@ export function strapiMedia(url?: string | null): string | null {
 }
 
 /**
+ * Ask Cloudinary for a resized copy of a CMS upload. Uploads keep their original size
+ * (partner logos arrive 2000px wide for a 36px-tall slot), so without this the
+ * homepage downloads megabytes it then shrinks away. `transform` is a Cloudinary
+ * transformation such as `c_limit,w_800,f_auto,q_auto`; other URLs pass through, as
+ * do SVGs: Cloudinary rasterises them at their native size, which blurs on dense screens.
+ */
+export function cloudinaryResize(url: string | null | undefined, transform: string): string | null {
+  if (!url) return null
+  if (/\.svg(\?|$)/i.test(url)) return url
+  return url.replace(/(res\.cloudinary\.com\/[^/]+\/image\/upload\/)/, `$1${transform}/`)
+}
+
+/**
  * The CMS spins down when idle and is LVE-throttled, so its first response after a
  * quiet spell is far slower than a warm one — measured at 4.3s cold against 0.8s
  * warm. These reads run during `nuxt generate`, not in a visitor's browser, so a
@@ -254,7 +267,10 @@ export async function getPartners() {
   return rows.map((e: any) => ({
     name: e.name,
     url: e.website || '',
-    logo: strapiMedia(e.logo?.url)
+    // 2x the 36px-tall marquee slot.
+    logo: cloudinaryResize(strapiMedia(e.logo?.url), 'c_limit,h_72,w_320,f_auto,q_auto'),
+    logoWidth: e.logo?.width || null,
+    logoHeight: e.logo?.height || null
   }))
 }
 

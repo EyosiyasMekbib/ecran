@@ -1,8 +1,18 @@
+// Loaded as media="print" and switched to "all" once fetched, so it never blocks first
+// paint. As an @import in main.css it sat behind the entry CSS and held the first
+// render of every page by ~750 ms on mobile (PageSpeed, Oct 2026).
+const googleFonts =
+  'https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,300..900;1,300..900&family=Source+Serif+4:opsz,wght@8..60,400..800&display=swap'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
   srcDir: 'app',
   css: ['~/assets/css/main.css'],
+  // Inline page CSS into the HTML so the first render needs no extra stylesheet request.
+  features: {
+    inlineStyles: true
+  },
   app: {
     head: {
       htmlAttrs: {
@@ -17,7 +27,10 @@ export default defineNuxtConfig({
       link: [
         { key: 'favicon', rel: 'icon', href: '/favicon.ico', sizes: '48x48' },
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
-        { rel: 'manifest', href: '/site.webmanifest' }
+        { rel: 'manifest', href: '/site.webmanifest' },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: googleFonts, media: 'print', onload: "this.media='all'" }
       ]
     }
   },
