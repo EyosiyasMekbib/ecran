@@ -102,8 +102,10 @@ const newsCtaLabel = computed(() => page.value?.sections?.newsCtaLabel || 'All n
 // already guarantees an image, so a card and its detail page always agree.
 const latestPosts = computed(() => (latestNews.value || []).slice(0, 3))
 // Resized WebP copies of the built-in hero; a CMS hero image is used as uploaded.
+// 800w covers a 412px-wide phone at 1.75x, which otherwise jumps to 975w.
+// No fetchpriority: on phones the header logo is the LCP and the hero would compete with it.
 const heroSrcset =
-  '/brand/ecran-hero-480.webp 480w, /brand/ecran-hero-720.webp 720w, /brand/ecran-hero-975.webp 975w'
+  '/brand/ecran-hero-480.webp 480w, /brand/ecran-hero-720.webp 720w, /brand/ecran-hero-800.webp 800w, /brand/ecran-hero-975.webp 975w'
 const newsLinkLabel = computed(() => page.value?.sections?.newsLinkLabel || 'Read story')
 const resourcesEyebrow = computed(() => page.value?.sections?.resourcesEyebrow || 'Resource Library')
 const resourcesCtaLabel = computed(() => page.value?.sections?.resourcesCtaLabel || 'View all resources')
@@ -134,14 +136,13 @@ const heroImageAlt = computed(
             <NuxtLink to="/who-we-are/about-us" class="button secondary">{{ secondaryCtaLabel }}</NuxtLink>
           </div>
         </div>
-        <div class="hero-visual reveal delay-1" aria-label="ECRAN members and partners gathered together">
+        <div class="hero-visual" aria-label="ECRAN members and partners gathered together">
           <img
             :src="page?.heroImage || '/brand/ecran-hero.jpg'"
             :srcset="page?.heroImage ? undefined : heroSrcset"
             sizes="(max-width: 860px) 100vw, 60vw"
             width="975"
             height="643"
-            fetchpriority="high"
             :alt="heroImageAlt"
           />
         </div>

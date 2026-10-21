@@ -397,9 +397,10 @@ main {
   border-radius: 1rem 0 0 1rem;
   -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.02) 12%, rgba(0,0,0,0.15) 28%, rgba(0,0,0,0.5) 48%, rgba(0,0,0,0.85) 68%, black 85%);
   mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,0.02) 12%, rgba(0,0,0,0.15) 28%, rgba(0,0,0,0.5) 48%, rgba(0,0,0,0.85) 68%, black 85%);
-  opacity: 0;
+  /* Slide only, no fade: an image that starts at opacity 0 isn't counted as painted
+     until it's visible, which pushed the page's LCP back ~700 ms on mobile. */
   transform: translateY(20px);
-  animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .hero-visual img {
@@ -742,9 +743,8 @@ h1 {
 
 
 
-@keyframes slideUpFade {
+@keyframes slideUp {
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }
