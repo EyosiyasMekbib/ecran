@@ -79,6 +79,74 @@ const governanceLabels = computed(() => ({
   legalStatus: page.value?.sections?.governanceLabels?.legalStatus || 'Legal Status'
 }))
 
+// ── Five strategic pillars ──
+const strategyEyebrow = computed(() => page.value?.sections?.strategyEyebrow || 'Strategic Plan')
+const strategyTitle = computed(
+  () => page.value?.sections?.strategyTitle || 'Five strategic pillars guide our work.'
+)
+const strategySub = computed(
+  () =>
+    page.value?.sections?.strategySub ||
+    "Each pillar sets direction for ECRAN's programmes, partnerships, and internal systems across the strategic period."
+)
+const fallbackStrategicPillars = [
+  {
+    index: '01',
+    name: 'Advocacy, Policy Influence and Research',
+    desc: "Generate evidence and use it to shape the laws, policies, and budgets that uphold children's rights in Ethiopia."
+  },
+  {
+    index: '02',
+    name: 'Membership, Capacity and Institutional Strengthening',
+    desc: 'Grow an active membership and strengthen the skills, systems, and structures of members and the network.'
+  },
+  {
+    index: '03',
+    name: 'Resource Mobilization and Sustainability',
+    desc: 'Diversify funding and build the financial and operational base the network needs to sustain its work.'
+  },
+  {
+    index: '04',
+    name: 'Partnerships and Stakeholder Engagement',
+    desc: 'Work alongside government, development partners, civil society, communities, and children themselves.'
+  },
+  {
+    index: '05',
+    name: 'Governance, Accountability and Safeguarding',
+    desc: 'Uphold transparent leadership, accountability to members and partners, and safe practice for every child.'
+  }
+]
+const strategicPillars = computed(() =>
+  Array.isArray(page.value?.sections?.strategicPillars)
+    ? page.value.sections.strategicPillars
+    : fallbackStrategicPillars
+)
+
+// ── Cross-cutting commitment ──
+const crossCutting = computed(() => ({
+  eyebrow: page.value?.sections?.crossCuttingEyebrow || 'Our Cross-Cutting Commitment',
+  title: page.value?.sections?.crossCuttingTitle || 'Leaving No Child Behind',
+  text:
+    page.value?.sections?.crossCuttingText ||
+    'At ECRAN, we believe that child rights advocacy cannot exist in a vacuum. True child rights protection requires addressing the compounded vulnerabilities children face.',
+  lead:
+    page.value?.sections?.crossCuttingLead ||
+    'These are fully integrated as cross-cutting pillars across all our networks, thematic areas, and advocacy strategies.'
+}))
+const fallbackCrossCuttingItems = [
+  'Gender, Disability and Social Inclusion',
+  'Climate Change and Environmental Sustainability',
+  'Mental Health and Psychosocial Support (MHPSS)',
+  'Digital Rights and Online Safety',
+  'Child Safeguarding',
+  'Migration, Displacement and Urban/Rural Equity'
+]
+const crossCuttingItems = computed(() =>
+  Array.isArray(page.value?.sections?.crossCuttingItems)
+    ? page.value.sections.crossCuttingItems
+    : fallbackCrossCuttingItems
+)
+
 // ── Objectives accordion (4 thematic workstreams) ──
 const fallbackObjectives = [
   {
@@ -210,6 +278,42 @@ const cta = computed(() => ({
             <p>{{ howWeWork.text }}</p>
           </div>
         </article>
+      </div>
+    </section>
+
+    <!-- Five strategic pillars -->
+    <section class="au-strategy">
+      <div class="au-strategy-header">
+        <p class="au-eyebrow">{{ strategyEyebrow }}</p>
+        <h2>{{ strategyTitle }}</h2>
+        <p class="au-strategy-sub">{{ strategySub }}</p>
+      </div>
+      <ol class="au-strategy-grid">
+        <li v-for="pillar in strategicPillars" :key="pillar.name" class="au-strategy-card">
+          <span class="au-strategy-index">Pillar {{ pillar.index }}</span>
+          <h3>{{ pillar.name }}</h3>
+          <p>{{ pillar.desc }}</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Cross-cutting commitment -->
+    <section class="au-crosscut">
+      <div class="au-crosscut-inner">
+        <div class="au-crosscut-intro">
+          <p class="au-eyebrow">{{ crossCutting.eyebrow }}</p>
+          <h2>{{ crossCutting.title }}</h2>
+          <p>{{ crossCutting.text }}</p>
+        </div>
+        <div class="au-crosscut-body">
+          <ul class="au-crosscut-list">
+            <li v-for="(item, i) in crossCuttingItems" :key="item">
+              <span class="au-crosscut-index">{{ String(i + 1).padStart(2, '0') }}</span>
+              <span class="au-crosscut-name">{{ item }}</span>
+            </li>
+          </ul>
+          <p class="au-crosscut-lead">{{ crossCutting.lead }}</p>
+        </div>
       </div>
     </section>
 
@@ -449,6 +553,159 @@ const cta = computed(() => ({
   max-width: 38ch;
 }
 
+/* ── Strategic pillars ─────────────────────────────────── */
+.au-strategy {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(4rem, 8vw, 7rem) var(--gutter) 0;
+}
+
+.au-strategy-header {
+  max-width: 56ch;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.au-strategy-header h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700;
+  color: var(--brand-dark);
+  line-height: 1.2;
+  margin: 0.75rem 0 1rem;
+}
+
+.au-strategy-sub {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* 3 + 2 layout: top row thirds, bottom row halves */
+.au-strategy-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.au-strategy-card {
+  grid-column: span 2;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--brand);
+}
+
+.au-strategy-card:nth-child(n + 4) {
+  grid-column: span 3;
+}
+
+.au-strategy-index {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brand-text);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.au-strategy-card h3 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 1.8vw, 1.3rem);
+  font-weight: 700;
+  color: var(--brand-dark);
+  line-height: 1.25;
+  margin: 0 0 0.75rem;
+}
+
+.au-strategy-card p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.65;
+  margin: 0;
+  max-width: 48ch;
+}
+
+/* ── Cross-cutting commitment ──────────────────────────── */
+.au-crosscut {
+  background: var(--brand-soft);
+  margin-top: clamp(4rem, 8vw, 7rem);
+  padding: clamp(3.5rem, 7vw, 6rem) var(--gutter);
+}
+
+.au-crosscut-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: clamp(2rem, 5vw, 6rem);
+  align-items: start;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.au-crosscut-intro h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 700;
+  color: var(--brand-dark);
+  line-height: 1.2;
+  margin: 0.75rem 0 1rem;
+}
+
+.au-crosscut-intro p:not(.au-eyebrow) {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin: 0;
+  max-width: 42ch;
+}
+
+.au-crosscut-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-bottom: 1px solid rgba(36, 48, 111, 0.15);
+}
+
+.au-crosscut-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid rgba(36, 48, 111, 0.15);
+}
+
+.au-crosscut-index {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--brand-text);
+}
+
+.au-crosscut-name {
+  font-family: var(--font-heading);
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  font-weight: 700;
+  color: var(--brand-dark);
+  line-height: 1.3;
+}
+
+.au-crosscut-lead {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--brand-dark);
+  line-height: 1.7;
+  margin: 1.5rem 0 0;
+  max-width: 56ch;
+}
+
 /* ── Objectives ────────────────────────────────────────── */
 .au-objectives {
   max-width: 1200px;
@@ -652,6 +909,25 @@ details[open] .au-theme-toggle {
   }
 
   .au-governance-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .au-strategy-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .au-strategy-card,
+  .au-strategy-card:nth-child(n + 4) {
+    grid-column: auto;
+  }
+
+  .au-crosscut-inner {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .au-crosscut-list {
     grid-template-columns: 1fr;
   }
 
