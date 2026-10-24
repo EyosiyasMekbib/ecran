@@ -101,6 +101,7 @@ async function submitForm() {
     formSubject.value = ''
     formMessage.value = ''
     sent.value = true
+    trackPixelEvent('Lead')
   } else {
     error.value = true
     errorReason.value = result.reason ?? 'invalid'

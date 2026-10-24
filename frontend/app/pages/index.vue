@@ -305,18 +305,45 @@ const heroImageAlt = computed(
       </div>
 
       <div class="library-grid">
-        <article v-for="resource in resources" :key="resource.title" class="resource-card">
-          <div class="resource-card-top">
-            <span class="resource-badge">{{ resource.type }}</span>
-          </div>
-          <h3>{{ resource.title }}</h3>
-          <div class="resource-meta">
-            <span class="resource-status">{{ resource.meta }}</span>
-            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
-              <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            </svg>
-          </div>
-        </article>
+        <template v-for="resource in resources" :key="resource.title">
+          <a
+            v-if="resource.downloadUrl"
+            :href="resource.downloadUrl"
+            target="_blank"
+            rel="noopener noreferrer"
+            :download="resource.title"
+            class="resource-card"
+            :aria-label="`Download ${resource.title} (${resource.type})`"
+          >
+            <div class="resource-card-top">
+              <span class="resource-badge">{{ resource.type }}</span>
+            </div>
+            <h3>{{ resource.title }}</h3>
+            <div class="resource-meta">
+              <span class="resource-status">{{ resource.meta }}</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" fill="currentColor"/>
+              </svg>
+            </div>
+          </a>
+          <NuxtLink
+            v-else
+            to="/resources"
+            class="resource-card"
+            :aria-label="`View ${resource.title} in resource library`"
+          >
+            <div class="resource-card-top">
+              <span class="resource-badge">{{ resource.type }}</span>
+            </div>
+            <h3>{{ resource.title }}</h3>
+            <div class="resource-meta">
+              <span class="resource-status">{{ resource.meta }}</span>
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+              </svg>
+            </div>
+          </NuxtLink>
+        </template>
       </div>
     </section>
   </div>

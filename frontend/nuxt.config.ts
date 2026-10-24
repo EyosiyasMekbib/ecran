@@ -44,7 +44,11 @@ export default defineNuxtConfig({
       // Strapi CMS base URL. Override per environment with NUXT_PUBLIC_STRAPI_URL.
       strapiUrl: 'https://cms.ecran-et.org',
       // Canonical site origin for absolute links (e.g. share buttons). Override with NUXT_PUBLIC_SITE_URL.
-      siteUrl: 'https://ecran-et.org'
+      siteUrl: 'https://ecran-et.org',
+      // Meta Pixel ID from Events Manager (public, not a secret). Empty disables the pixel.
+      // Set it here as a string, not via NUXT_PUBLIC_META_PIXEL_ID: env values are parsed
+      // as numbers, which garbles 16-digit IDs above 9007199254740991.
+      metaPixelId: ''
     }
   }
 })

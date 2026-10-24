@@ -84,17 +84,7 @@ const typeMap: Record<string, string> = {
   Other: 'Publication'
 }
 
-const { data: cmsResources } = await useAsyncData('resources-all', async () => {
-  try {
-    const res = await $fetch<{ data: any[] }>(`${useStrapiUrl()}/api/resources`, {
-      query: { 'pagination[pageSize]': 100, populate: '*', sort: 'publishedOn:desc' },
-      timeout: 3500
-    })
-    return Array.isArray(res?.data) ? res.data : []
-  } catch {
-    return []
-  }
-})
+const { data: cmsResources } = await useAsyncData('resources-all', getResources)
 
 const allResources = computed<Resource[]>(() =>
   cmsResources.value?.length
@@ -103,10 +93,10 @@ const allResources = computed<Resource[]>(() =>
         type: typeMap[e.resourceType] || 'Publication',
         topic: e.topic || 'Advocacy',
         date: e.publishedOn || '',
-        fileSize: e.document?.size ? `${(e.document.size / 1024).toFixed(1)} MB` : '—',
+        fileSize: e.document?.size ? `${(e.document.size / 1024).toFixed(1)} MB` : (e.document?.url ? 'PDF' : '—'),
         pages: 0,
         description: e.summary || '',
-        downloadUrl: e.document?.url ? (strapiMedia(e.document.url) as string) : '#'
+        downloadUrl: formatDownloadUrl(e.document?.url) || '#'
       }))
     : resourcesData
 )
@@ -336,12 +326,31 @@ const formatDate = (dateString: string) => {
             <p>{{ resource.description }}</p>
           </div>
           <div class="resource-card-footer">
-            <button type="button" class="download-link-btn">
-              <svg viewBox="0 0 24 24" width="16" height="16">
+            <a
+              v-if="resource.downloadUrl && resource.downloadUrl !== '#'"
+              :href="resource.downloadUrl"
+              target="_blank"
+              rel="noopener noreferrer"
+              :download="resource.title"
+              class="download-link-btn"
+              :aria-label="`Download ${resource.title}`"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                 <path fill="currentColor" d="M5,20H19V18H5M19,9H15V3H9V9H5L12,16L19,9Z" />
               </svg>
               <span>{{ downloadLabel }}</span>
-            </button>
+            </a>
+            <span
+              v-else
+              class="download-link-btn is-disabled"
+              aria-disabled="true"
+              title="Document coming soon"
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14h2v2h-2zm0-10h2v8h-2z" />
+              </svg>
+              <span>Coming soon</span>
+            </span>
           </div>
         </article>
 

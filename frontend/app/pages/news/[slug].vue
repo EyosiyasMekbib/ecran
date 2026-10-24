@@ -187,6 +187,8 @@ await useSeo(
                 :href="a.url || '#'"
                 target="_blank"
                 rel="noopener noreferrer"
+                :download="a.name"
+                :aria-label="`Download ${a.name || 'document'}`"
                 class="attachment-card"
               >
                 <div class="attachment-icon">

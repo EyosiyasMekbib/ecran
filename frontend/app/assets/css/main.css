@@ -1604,6 +1604,13 @@ h1 {
   padding: 2rem 1.75rem;
   transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+}
+
+.library-grid .resource-card:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
 }
 
 .library-grid .resource-card:hover {
@@ -3557,12 +3564,23 @@ a.detail-value:hover {
   background: transparent;
   border: none;
   cursor: pointer;
+  text-decoration: none;
   transition: color 180ms ease;
   padding: 0;
 }
 
 .download-link-btn:hover {
   color: var(--brand-dark);
+}
+
+.download-link-btn.is-disabled {
+  color: var(--muted);
+  opacity: 0.65;
+  cursor: default;
+}
+
+.download-link-btn.is-disabled:hover {
+  color: var(--muted);
 }
 
 .no-results {

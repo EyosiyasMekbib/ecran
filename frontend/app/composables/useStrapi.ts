@@ -36,6 +36,21 @@ export function cloudinaryResize(url: string | null | undefined, transform: stri
 }
 
 /**
+ * Format a download URL. For Cloudinary media, injects `fl_attachment` so the
+ * CDN sends `Content-Disposition: attachment`, prompting a direct file download
+ * instead of displaying in-browser or failing cross-origin download policies.
+ */
+export function formatDownloadUrl(url?: string | null): string | null {
+  if (!url) return null
+  const resolved = strapiMedia(url)
+  if (!resolved) return null
+  if (resolved.includes('res.cloudinary.com') && resolved.includes('/upload/') && !resolved.includes('/fl_attachment/')) {
+    return resolved.replace(/\/upload\//, '/upload/fl_attachment/')
+  }
+  return resolved
+}
+
+/**
  * The CMS spins down when idle and is LVE-throttled, so its first response after a
  * quiet spell is far slower than a warm one — measured at 4.3s cold against 0.8s
  * warm. These reads run during `nuxt generate`, not in a visitor's browser, so a
@@ -131,7 +146,7 @@ function mapPost(e: any) {
     deadline: asDate(e.deadline) || staticMatch?.deadline || '',
     location: e.location || staticMatch?.location || '',
     image: strapiMedia(e.featuredImage?.url) || staticMatch?.image || POST_IMAGE_FALLBACK,
-    attachments: (e.attachment || []).map((a: any) => ({ name: a.name, url: strapiMedia(a.url) })),
+    attachments: (e.attachment || []).map((a: any) => ({ name: a.name, url: formatDownloadUrl(a.url) })),
     gallery: (e.gallery || [])
       .map((m: any) => ({ url: strapiMedia(m.url), alt: m.alternativeText || m.caption || '' }))
       .filter((m: any) => m.url),
@@ -232,7 +247,7 @@ export async function getSiteProfile() {
   return res?.data || null
 }
 
-/** Homepage resource cards: `{ type, title, meta }`. Falls back to static data. */
+/** Homepage resource cards: `{ type, title, meta, downloadUrl, slug }`. Falls back to static data. */
 export async function getResourceCards() {
   const rows = await fetchCollection('resources', { sort: 'publishedOn:desc' })
   if (!rows.length) return staticResources
@@ -243,8 +258,15 @@ export async function getResourceCards() {
       e.summary ||
       (e.publishedOn
         ? new Date(e.publishedOn).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })
-        : 'Available')
+        : 'Available'),
+    downloadUrl: formatDownloadUrl(e.document?.url),
+    slug: e.slug || ''
   }))
+}
+
+/** Full resource collection from Strapi. */
+export async function getResources() {
+  return await fetchCollection('resources', { sort: 'publishedOn:desc' })
 }
 
 /** Global settings single type: branding, SEO defaults, social, footer. Null on error. */
