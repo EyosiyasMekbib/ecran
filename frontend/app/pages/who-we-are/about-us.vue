@@ -342,6 +342,18 @@ const cta = computed(() => ({
       </div>
     </section>
 
+    <!-- Organizational Structure / Organogram -->
+    <section class="au-organogram">
+      <div class="au-organogram-header">
+        <p class="au-eyebrow">Governance & Structure</p>
+        <h2>Organizational Structure</h2>
+        <p class="au-organogram-sub">
+          ECRAN's governance model separates member-driven oversight from professional secretariat execution, ensuring transparency, accountability, and nationwide coordination.
+        </p>
+      </div>
+      <OrganogramChart />
+    </section>
+
     <!-- CTA -->
     <section class="au-cta">
       <div class="au-cta-inner">
@@ -934,6 +946,36 @@ details[open] .au-theme-toggle {
   .au-theme-summary {
     gap: 1rem;
   }
+}
+
+/* ── Organogram Section ────────────────────────────────── */
+.au-organogram {
+  padding: clamp(3.5rem, 7vw, 6rem) var(--gutter);
+  max-width: 1200px;
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+}
+
+.au-organogram-header {
+  text-align: center;
+  max-width: 44rem;
+  margin: 0 auto 1.5rem;
+}
+
+.au-organogram-header h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+  font-weight: 800;
+  color: var(--brand-dark);
+  margin: 0.5rem 0 1rem;
+  line-height: 1.2;
+}
+
+.au-organogram-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0;
 }
 
 @media (max-width: 480px) {

@@ -1,13 +1,36 @@
 <script setup lang="ts">
-// Projects are the CMS `program` entries — that collection already models what a
-// project needs (title, summary, body, image, order).
-const { data: projects } = await useAsyncData('projects-programs', getPrograms)
+// Projects are the CMS `program` entries. Only the Sida programme is featured as requested.
+const { data: rawProjects } = await useAsyncData('projects-programs', getPrograms)
 const { data: page } = await useAsyncData('page-projects', () => getPage('projects'))
 
 await useSeo(page.value)
 
 const emptyState = computed(() => page.value?.sections?.emptyState || 'No projects yet.')
 const listEyebrow = computed(() => page.value?.sections?.listEyebrow || 'Current portfolio')
+
+const legacyPlaceholders = [
+  'evidence and policy advocacy',
+  'child protection systems',
+  'child participation',
+  'network coordination'
+]
+
+const projects = computed(() => {
+  const list = rawProjects.value || []
+  if (!list.length) {
+    return [
+      {
+        title: 'Civil Society Strengthening Programme for Children Rights',
+        text: 'Project kick-off with Sida (Sweden), running from 2026 to 2029 to strengthen child-centered community systems for children, youth, women, and families.',
+        body: '<p><strong>Funder:</strong> Sida (Sweden / Sverige)</p><p><strong>Duration:</strong> 2026 to 2029</p><h3>Objective</h3><p>Strengthen child-centered community systems.</p><h3>Served</h3><p>Children, youth, women, families.</p><h3>Outcome</h3><p>Dignity, access, protection, resilience.</p>',
+        image: '/brand/network-card.svg'
+      }
+    ]
+  }
+  const filtered = list.filter((p: any) => !legacyPlaceholders.includes(p.title?.toLowerCase().trim()))
+  return filtered.length ? filtered : list
+})
+
 const countLabel = computed(() =>
   (projects.value?.length || 0) === 1 ? 'project' : 'projects'
 )
@@ -17,7 +40,7 @@ const countLabel = computed(() =>
   <PageHero
     class="news-hero"
     :title="page?.heroTitle || 'Projects'"
-    :text="page?.heroText || 'Each project is coordinated with member organizations and partners — spanning evidence and policy advocacy, protection systems, participation, and network coordination.'"
+    :text="page?.heroText || 'Coordinated initiatives and strategic programmes advancing child rights, protection, and community resilience in Ethiopia.'"
   />
 
   <section class="projects-section">

@@ -17,10 +17,6 @@ const slugify = (s) =>
 
 const PROGRAMS = [
   { title: "Civil Society Strengthening Programme for Children Rights", summary: "Project kick-off with Sida (Sweden), running from 2026 to 2029 to strengthen child-centered community systems for children, youth, women, and families.", body: "<p><strong>Funder:</strong> Sida (Sweden / Sverige)</p><p><strong>Duration:</strong> 2026 to 2029</p><h3>Objective</h3><p>Strengthen child-centered community systems.</p><h3>Served</h3><p>Children, youth, women, families.</p><h3>Outcome</h3><p>Dignity, access, protection, resilience.</p>", order: 0 },
-  { title: 'Evidence and Policy Advocacy', summary: 'Turning research, field learning, and child-rights data into policy asks that decision makers can act on.', order: 1 },
-  { title: 'Child Protection Systems', summary: 'Supporting stronger prevention, reporting, referral, and response pathways for children at risk of violence or neglect.', order: 2 },
-  { title: 'Child Participation', summary: 'Creating safe spaces where children and young people can contribute to decisions that affect their lives.', order: 3 },
-  { title: 'Network Coordination', summary: 'Bringing civil society members, technical partners, and community actors together around shared advocacy priorities.', order: 4 },
 ];
 
 const IMPACT_STORIES = [
@@ -63,6 +59,7 @@ const NAVIGATION = {
         { label: 'About Us', to: '/who-we-are/about-us' },
         { label: 'Our Members', to: '/who-we-are/our-members' },
         { label: 'Our Team', to: '/who-we-are/our-team' },
+        { label: 'Photo Gallery', to: '/gallery' },
       ],
     },
     {
@@ -70,7 +67,7 @@ const NAVIGATION = {
       to: '/news',
       children: [
         { label: 'News', to: '/news/news' },
-        { label: 'Media Center', to: '/news/media-center' },
+        { label: 'Press Releases', to: '/news/press-releases' },
         { label: 'Vacancies', to: '/news/vacancies' },
         { label: 'Bids', to: '/news/bids' },
       ],
@@ -122,7 +119,7 @@ const GLOBAL = {
     postNotFoundTitle: 'Story not found',
     postNotFoundText: 'This story may have been moved or unpublished.',
     factLabels: { department: 'Department', type: 'Type', location: 'Location / Ref', deadline: 'Deadline' },
-    categoryLabels: { news: 'News', vacancy: 'Vacancy', bid: 'Bid / Tender', media: 'Media', announcement: 'Announcement' },
+    categoryLabels: { news: 'News', vacancy: 'Vacancy', bid: 'Bid / Tender', 'press-release': 'Press Release', media: 'Press Release', announcement: 'Announcement' },
     defaultCtaLabel: 'Learn more',
     errorPage: {
       notFoundTitle: 'Page not found',
@@ -140,11 +137,9 @@ const POSTS = [
   { title: 'National Child Rights Advocacy Summit 2026 Announced', category: 'news', publishDate: '2026-05-15', excerpt: 'ECRAN is hosting the annual Child Rights Advocacy Summit next month in Addis Ababa, convening civil society organizations, government officials, and international development partners to align on national child protection policies.' },
   { title: 'Launch of the CSOs Complimentary Report on Child Rights', category: 'news', publishDate: '2026-04-28', excerpt: 'We are pleased to announce the upcoming launch of our Complimentary Report on the implementation of the UN Convention on the Rights of the Child (UNCRC) in Ethiopia. A stakeholder validation workshop will be held next week.' },
   { title: 'Advocacy & Child Safeguarding Training for Member CSOs', category: 'news', publishDate: '2026-04-12', excerpt: 'ECRAN will conduct a three-day intensive capacity building workshop focusing on child-led advocacy, ethical participation, and community protection systems for member organizations in the regional states.' },
-  { title: 'Consultancy Service: Midterm Review of ECRAN Strategic Plan', category: 'bid', publishDate: '2026-05-10', deadline: '2026-06-02', location: 'ECRAN/RFP/2026/04', excerpt: 'ECRAN invites qualified national consultants to submit proposals to conduct a comprehensive midterm review of our 5-year strategic plan, evaluating advocacy outcomes, partnership efficacy, and internal operations.' },
-  { title: 'Supply and Delivery of IT Equipment and Networking Hardware', category: 'bid', publishDate: '2026-04-15', deadline: '2026-05-05', location: 'ECRAN/IT/2026/02', excerpt: 'Bids are invited from eligible vendors for the supply of laptops, desktops, server infrastructure, and network configurations to support our new regional coordination nodes.' },
-  { title: 'Joint Statement on Regional Child Rights Compliance in Ethiopia', category: 'media', publishDate: '2026-05-10', location: 'Press Release', excerpt: 'Read the official statement jointly released by ECRAN and member CSOs regarding policy compliance checks across regional child protection structures.' },
-  { title: 'Consultative Assembly on Child Protection Systems', category: 'media', publishDate: '2026-05-02', location: 'Gallery', excerpt: 'Photos and summaries from the multi-stakeholder policy dialogue convening 40+ member network delegates.' },
-  { title: 'ECRAN Announces General Assembly & Executive Council Election Results', category: 'media', publishDate: '2026-04-15', location: 'Press Release', excerpt: 'The network is proud to share updates from its first formal General Assembly, highlighting the appointment of its new Executive board members.' },
+  { title: 'Joint Statement on Regional Child Rights Compliance in Ethiopia', category: 'press-release', publishDate: '2026-05-10', location: 'Press Release', excerpt: 'Read the official statement jointly released by ECRAN and member CSOs regarding policy compliance checks across regional child protection structures.' },
+  { title: 'Consultative Assembly on Child Protection Systems', category: 'news', publishDate: '2026-05-02', location: 'Gallery', excerpt: 'Photos and summaries from the multi-stakeholder policy dialogue convening 40+ member network delegates.' },
+  { title: 'ECRAN Announces General Assembly & Executive Council Election Results', category: 'press-release', publishDate: '2026-04-15', location: 'Press Release', excerpt: 'The network is proud to share updates from its first formal General Assembly, highlighting the appointment of its new Executive board members.' },
 ];
 
 // Editable copy for every static page (slug is what the frontend queries). Each
@@ -208,7 +203,7 @@ const PAGES = [
       ],
       cards: [
         { title: 'News', text: "Read about ECRAN's latest public updates, child-rights summits, workshops, and network reports.", linkLabel: 'Go to news', linkTo: '/news/news' },
-        { title: 'Media Center', text: "Access ECRAN's press statements, official joint releases, and multi-stakeholder gallery archives.", linkLabel: 'Go to media center', linkTo: '/news/media-center' },
+        { title: 'Press Releases', text: "Access ECRAN's official press statements, declarations, and public announcements.", linkLabel: 'Go to press releases', linkTo: '/news/press-releases' },
         { title: 'Vacancies', text: "Join ECRAN's team. Explore professional roles, consultancies, and career paths in child-rights advocacy.", linkLabel: 'Go to vacancies', linkTo: '/news/vacancies' },
         { title: 'Bids & Tenders', text: 'View open requests for proposals, consultancy services, and procurement notices for ECRAN projects.', linkLabel: 'Go to bids', linkTo: '/news/bids' },
       ],
@@ -231,8 +226,12 @@ const PAGES = [
     sections: { refFallback: 'ECRAN', ctaLabel: 'Request tender documents', refLabel: 'Ref:', publishedLabel: 'Published:', deadlineLabel: 'Deadline:', statusOpenLabel: 'Open', statusClosedLabel: 'Closed' },
   },
   {
-    title: 'Media Center', slug: 'media-center', heroTitle: 'Media Center', heroText: 'Access press releases, official statements, event photo galleries, and institutional video resources.',
-    sections: { typeLabel: 'Press Release', ctaLabel: 'View details' },
+    title: 'Press Releases', slug: 'press-releases', heroTitle: 'Press Releases', heroText: 'Official statements, joint declarations, and media announcements from ECRAN and coalition members.',
+    sections: { typeLabel: 'Press Release', ctaLabel: 'Read press release' },
+  },
+  {
+    title: 'Media Center', slug: 'media-center', heroTitle: 'Press Releases', heroText: 'Access official statements, declarations, and announcements from ECRAN.',
+    sections: { typeLabel: 'Press Release', ctaLabel: 'Read press release' },
   },
   {
     title: 'Contact', slug: 'contact',
@@ -363,7 +362,7 @@ const PAGES = [
     sections: {
       heroEyebrow: 'Get involved',
       cards: [
-        { title: 'Become a member', text: 'Join a coordinated network of organizations committed to child survival, development, protection, and participation.', linkLabel: 'Start a membership inquiry', linkTo: '/contact' },
+        { title: 'Become a member', text: 'Join a coordinated network of organizations committed to child survival, development, protection, and participation.', linkLabel: 'Start a membership inquiry', linkTo: '/get-involved#become-a-member' },
         { title: 'Partner on advocacy', text: 'Collaborate on evidence briefs, policy dialogue, public campaigns, and shared accountability moments.', linkLabel: 'Explore current resources', linkTo: '/resources' },
         { title: 'Support capacity building', text: 'Help member organizations strengthen safeguarding practice, data use, child participation, and advocacy planning.', linkLabel: 'View member network', linkTo: '/who-we-are/our-members' },
         { title: 'Share opportunities', text: "Send consultancies, events, procurement notices, and coalition opportunities that can serve ECRAN's members.", linkLabel: 'Contact the coordination team', linkTo: '/contact' },
@@ -536,6 +535,33 @@ async function runSeed(strapi, opts = {}) {
   const upsert = !!opts.upsert;
   const log = (strapi && strapi.log) || console;
   log.info(`Seeding ECRAN content${upsert ? ' (upsert)' : ''}...`);
+
+  // Clean legacy mock bids and non-Sida programs from the DB
+  try {
+    const mockBidSlugs = [
+      'consultancy-service-midterm-review-of-ecran-strategic-plan',
+      'supply-and-delivery-of-it-equipment-and-networking-hardware',
+    ];
+    for (const slug of mockBidSlugs) {
+      const existing = await strapi.documents('api::post.post').findMany({ filters: { slug } });
+      for (const doc of existing) {
+        await strapi.documents('api::post.post').delete({ documentId: doc.documentId });
+        log.info(`Cleaned mock bid post: ${doc.title}`);
+      }
+    }
+
+    const allowedProgramSlugs = PROGRAMS.map((p) => p.slug || slugify(p.title));
+    const allDbPrograms = await strapi.documents('api::program.program').findMany({});
+    for (const prog of allDbPrograms) {
+      if (!allowedProgramSlugs.includes(prog.slug)) {
+        await strapi.documents('api::program.program').delete({ documentId: prog.documentId });
+        log.info(`Cleaned non-Sida program: ${prog.title}`);
+      }
+    }
+  } catch (cleanErr) {
+    log.warn(`Clean legacy content warning: ${cleanErr?.message ?? cleanErr}`);
+  }
+
   await seedCollection(strapi, 'api::program.program', PROGRAMS, upsert);
   await seedCollection(strapi, 'api::impact-story.impact-story', IMPACT_STORIES, upsert);
   await seedCollection(strapi, 'api::resource.resource', RESOURCES, upsert);

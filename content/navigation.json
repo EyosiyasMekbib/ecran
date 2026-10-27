@@ -19,6 +19,10 @@
         {
           "label": "Our Team",
           "to": "/who-we-are/our-team"
+        },
+        {
+          "label": "Photo Gallery",
+          "to": "/gallery"
         }
       ]
     },
@@ -31,8 +35,8 @@
           "to": "/news/news"
         },
         {
-          "label": "Media Center",
-          "to": "/news/media-center"
+          "label": "Press Releases",
+          "to": "/news/press-releases"
         },
         {
           "label": "Vacancies",

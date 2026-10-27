@@ -74,4 +74,15 @@ const initials = (name: string) =>
     </div>
     <p v-else class="directory-intro" style="text-align:center;opacity:.7;">{{ emptyState }}</p>
   </section>
+
+  <section class="team-organogram-section" style="max-width: 80rem; margin: 2rem auto 5rem; padding: 0 1.5rem;">
+    <div style="text-align: center; max-width: 44rem; margin: 0 auto 1.5rem;">
+      <p class="eyebrow">Governance & Structure</p>
+      <h2 style="font-family: var(--font-heading); font-size: clamp(1.6rem, 2.8vw, 2.2rem); font-weight: 800; color: var(--dark, #06172f); margin: 0.5rem 0 0.75rem;">Organizational Chart</h2>
+      <p style="color: var(--muted, #64748b); line-height: 1.6; margin: 0;">
+        How ECRAN coordinates its general assembly, executive board oversight, and secretariat departments.
+      </p>
+    </div>
+    <OrganogramChart />
+  </section>
 </template>

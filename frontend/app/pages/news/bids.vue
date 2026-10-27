@@ -1,25 +1,6 @@
 <script setup lang="ts">
-// Baked-in fallback — used only when the CMS has no published bid posts.
-const fallback = [
-  {
-    slug: 'consultancy-service-midterm-review-of-ecran-strategic-plan',
-    title: 'Consultancy Service: Midterm Review of ECRAN Strategic Plan',
-    reference: 'ECRAN/RFP/2026/04',
-    status: 'Open',
-    published: 'May 10, 2026',
-    deadline: 'June 2, 2026',
-    description: 'ECRAN invites qualified national consultants to submit proposals to conduct a comprehensive midterm review of our 5-year strategic plan, evaluating advocacy outcomes, partnership efficacy, and internal operations.'
-  },
-  {
-    slug: 'supply-and-delivery-of-it-equipment-and-networking-hardware',
-    title: 'Supply and Delivery of IT Equipment and Networking Hardware',
-    reference: 'ECRAN/IT/2026/02',
-    status: 'Closed',
-    published: 'April 15, 2026',
-    deadline: 'May 5, 2026',
-    description: 'Bids are invited from eligible vendors for the supply of laptops, desktops, server infrastructure, and network configurations to support our new regional coordination nodes.'
-  }
-]
+// Clean bids data — no mock/sample bids. Real bids will appear when published in Strapi.
+const fallback: any[] = []
 
 const { data: cmsPosts } = await useAsyncData('posts-bid', () => getPosts('bid'))
 const { data: page } = await useAsyncData('page-bids', () => getPage('bids'))
@@ -58,7 +39,7 @@ const bids = computed(() =>
   />
 
   <section class="bids-list-section">
-    <div class="bids-grid">
+    <div v-if="bids.length" class="bids-grid">
       <article v-for="bid in bids" :key="bid.title" class="bid-card" :class="{ 'is-closed': bid.status === 'Closed' }">
         <div class="bid-meta">
           <span class="bid-ref">{{ refLabel }} {{ bid.reference }}</span>
@@ -76,5 +57,62 @@ const bids = computed(() =>
         </div>
       </article>
     </div>
+
+    <div v-else class="bids-empty-state">
+      <div class="bids-empty-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="44" height="44" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+      </div>
+      <h3>No Open Bids or Tenders</h3>
+      <p>There are currently no open procurement notices, requests for proposals (RFPs), or consultancy tenders. Please check back regularly for upcoming opportunities.</p>
+    </div>
   </section>
 </template>
+
+<style scoped>
+.bids-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: clamp(3rem, 6vw, 5rem) 1.5rem;
+  max-width: 38rem;
+  margin: 0 auto;
+  border-radius: 1rem;
+  background: var(--soft, #f8fafc);
+  border: 1px dashed var(--line, #e2e8f0);
+}
+
+.bids-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--primary, #24306f);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1.25rem;
+}
+
+.bids-empty-state h3 {
+  font-family: var(--font-heading, inherit);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--dark, #06172f);
+  margin: 0 0 0.5rem;
+}
+
+.bids-empty-state p {
+  color: var(--muted, #64748b);
+  line-height: 1.6;
+  margin: 0;
+  font-size: 0.95rem;
+}
+</style>

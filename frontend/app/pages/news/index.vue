@@ -16,10 +16,10 @@ const fallbackCards = [
     linkTo: '/news/news'
   },
   {
-    title: 'Media Center',
-    text: "Access ECRAN's press statements, official joint releases, and multi-stakeholder gallery archives.",
-    linkLabel: 'Go to media center',
-    linkTo: '/news/media-center'
+    title: 'Press Releases',
+    text: "Access ECRAN's official press releases, joint declarations, and public statements.",
+    linkLabel: 'Go to press releases',
+    linkTo: '/news/press-releases'
   },
   {
     title: 'Vacancies',

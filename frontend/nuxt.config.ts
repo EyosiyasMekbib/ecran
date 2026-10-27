@@ -39,6 +39,10 @@ export default defineNuxtConfig({
       include: ['marked']
     }
   },
+  routeRules: {
+    '/partner-with-us': { redirect: '/get-involved' },
+    '/news/media-center': { redirect: '/news/press-releases' }
+  },
   runtimeConfig: {
     public: {
       // Strapi CMS base URL. Override per environment with NUXT_PUBLIC_STRAPI_URL.

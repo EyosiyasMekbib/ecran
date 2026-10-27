@@ -183,14 +183,22 @@ function allPosts(): Promise<any[]> {
 }
 
 /**
- * Posts (news / vacancy / bid / announcement / media), newest first.
+ * Posts (news / vacancy / bid / announcement / media / press-release), newest first.
  * Returns [] when the CMS has none — callers decide their own fallback.
  */
-export async function getPosts(category?: 'news' | 'vacancy' | 'bid' | 'announcement' | 'media') {
+export async function getPosts(category?: 'news' | 'vacancy' | 'bid' | 'announcement' | 'media' | 'press-release') {
   const query: Record<string, unknown> = { sort: 'publishDate:desc' }
-  if (category) query['filters[category][$eq]'] = category
+  if (category === 'press-release' || category === 'media') {
+    query['filters[category][$in][0]'] = 'press-release'
+    query['filters[category][$in][1]'] = 'media'
+  } else if (category) {
+    query['filters[category][$eq]'] = category
+  }
   const rows = await fetchCollection('posts', query)
   if (!rows.length) {
+    if (category === 'press-release' || category === 'media') {
+      return staticPosts.filter((p: any) => p.category === 'press-release' || p.category === 'media')
+    }
     return category ? staticPosts.filter((p: any) => p.category === category) : staticPosts
   }
   return rows.map(mapPost)

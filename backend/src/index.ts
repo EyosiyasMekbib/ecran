@@ -56,6 +56,83 @@ async function ensurePublicReadPermissions(strapi: Core.Strapi) {
   }
 }
 
+/**
+ * Ensure dedicated Writer roles exist in both Strapi Admin panel and Users-Permissions
+ * with creation/editing privileges for posts, impact stories, and resources.
+ */
+async function ensureWriterRole(strapi: Core.Strapi) {
+  // 1. Strapi Admin Role (for CMS dashboard writers)
+  try {
+    const existingAdminWriter = await strapi.db
+      .query('admin::role')
+      .findOne({ where: { name: 'Writer' } });
+    if (!existingAdminWriter) {
+      const createdAdmin = await strapi.db.query('admin::role').create({
+        data: {
+          name: 'Writer',
+          code: 'strapi-writer',
+          description: 'Content creator: can draft, edit, and submit articles, stories, and posts.',
+        },
+      });
+      strapi.log.info(`Created Strapi Admin role: Writer (id: ${createdAdmin?.id})`);
+    }
+  } catch (err: any) {
+    strapi.log.warn(`Admin Writer role check/create note: ${err?.message ?? err}`);
+  }
+
+  // 2. Users-Permissions Role (for authenticated writers/API contributors)
+  try {
+    const existingApiWriter = await strapi.db
+      .query('plugin::users-permissions.role')
+      .findOne({ where: { type: 'writer' } });
+
+    let apiRoleId = existingApiWriter?.id;
+    if (!existingApiWriter) {
+      const createdApi = await strapi.db
+        .query('plugin::users-permissions.role')
+        .create({
+          data: {
+            name: 'Writer',
+            type: 'writer',
+            description: 'Can author and edit draft posts, impact stories, and resources.',
+          },
+        });
+      apiRoleId = createdApi?.id;
+      strapi.log.info(`Created Users-Permissions role: Writer (id: ${apiRoleId})`);
+    }
+
+    if (apiRoleId) {
+      const writerActions = [
+        'api::post.post.find',
+        'api::post.post.findOne',
+        'api::post.post.create',
+        'api::post.post.update',
+        'api::impact-story.impact-story.find',
+        'api::impact-story.impact-story.findOne',
+        'api::impact-story.impact-story.create',
+        'api::impact-story.impact-story.update',
+        'api::resource.resource.find',
+        'api::resource.resource.findOne',
+        'api::resource.resource.create',
+        'api::resource.resource.update',
+      ];
+      for (const action of writerActions) {
+        const existing = await strapi.db
+          .query('plugin::users-permissions.permission')
+          .findOne({ where: { action, role: apiRoleId } });
+        if (!existing) {
+          await strapi.db
+            .query('plugin::users-permissions.permission')
+            .create({ data: { action, role: apiRoleId } });
+        }
+      }
+      strapi.log.info('Granted Writer permissions for drafting and editing content.');
+    }
+  } catch (err: any) {
+    strapi.log.warn(`API Writer role check/create note: ${err?.message ?? err}`);
+  }
+}
+
 export default {
   register(/* { strapi }: { strapi: Core.Strapi } */) {},
 
@@ -67,6 +144,11 @@ export default {
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     await ensurePublicReadPermissions(strapi).catch((err) =>
       strapi.log.error(`ensurePublicReadPermissions failed: ${err?.message ?? err}`)
+    );
+
+    // Ensure Writer roles exist in both Admin and Users-Permissions
+    await ensureWriterRole(strapi).catch((err) =>
+      strapi.log.error(`ensureWriterRole failed: ${err?.message ?? err}`)
     );
 
     // Seed starter content when the DB is missing it. Runs on a fresh deploy AND

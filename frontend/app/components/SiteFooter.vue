@@ -19,6 +19,7 @@ const quickLinks = computed(() =>
     : [
         { label: 'Who We Are', to: '/who-we-are/about-us' },
         { label: 'News & Announcements', to: '/news/announcements' },
+        { label: 'Photo Gallery', to: '/gallery' },
         { label: 'Resources', to: '/resources' }
       ]
 )

@@ -6,7 +6,8 @@ export const navItems = [
     children: [
       { label: 'About Us', to: '/who-we-are/about-us' },
       { label: 'Our Members', to: '/who-we-are/our-members' },
-      { label: 'Our Team', to: '/who-we-are/our-team' }
+      { label: 'Our Team', to: '/who-we-are/our-team' },
+      { label: 'Photo Gallery', to: '/gallery' }
     ]
   },
   {
@@ -14,7 +15,7 @@ export const navItems = [
     to: '/news',
     children: [
       { label: 'News', to: '/news/news' },
-      { label: 'Media Center', to: '/news/media-center' },
+      { label: 'Press Releases', to: '/news/press-releases' },
       { label: 'Vacancies', to: '/news/vacancies' },
       { label: 'Bids', to: '/news/bids' }
     ]
@@ -99,41 +100,9 @@ export const staticPosts = [
     ctaLabel: 'Read full story'
   },
   {
-    title: 'Consultancy Service: Midterm Review of ECRAN Strategic Plan',
-    slug: 'consultancy-service-midterm-review-of-ecran-strategic-plan',
-    category: 'bid',
-    date: 'May 10, 2026',
-    deadline: 'June 2, 2026',
-    location: 'ECRAN/RFP/2026/04',
-    department: '',
-    employmentType: '',
-    excerpt: 'ECRAN invites qualified national consultants to submit proposals to conduct a comprehensive midterm review of our 5-year strategic plan, evaluating advocacy outcomes, partnership efficacy, and internal operations.',
-    body: '<p>ECRAN invites eligible and certified consulting firms or independent experts to submit technical and financial proposals for the Midterm Evaluation of our Strategic Plan.</p><h3>Scope of Work</h3><ul><li>Assess progress toward strategic goals, outcomes, and milestone achievements.</li><li>Evaluate stakeholder engagement, governance effectiveness, and coalition sustainability.</li><li>Provide actionable recommendations for the remaining implementation period.</li></ul><p>Complete terms of reference (ToR) can be requested by emailing <a href="mailto:info@ecran-et.org">info@ecran-et.org</a> with reference <strong>ECRAN/RFP/2026/04</strong>.</p>',
-    image: null,
-    attachments: [],
-    externalUrl: '',
-    ctaLabel: 'Request tender documents'
-  },
-  {
-    title: 'Supply and Delivery of IT Equipment and Networking Hardware',
-    slug: 'supply-and-delivery-of-it-equipment-and-networking-hardware',
-    category: 'bid',
-    date: 'April 15, 2026',
-    deadline: 'May 5, 2026',
-    location: 'ECRAN/IT/2026/02',
-    department: '',
-    employmentType: '',
-    excerpt: 'Bids are invited from eligible vendors for the supply of laptops, desktops, server infrastructure, and network configurations to support our new regional coordination nodes.',
-    body: '<p>ECRAN announces a competitive bid for the procurement of office IT equipment and networking hardware.</p><p>Eligible suppliers registered with relevant Ethiopian regulatory bodies are invited to submit their bids in sealed envelopes or via our designated procurement channel.</p>',
-    image: null,
-    attachments: [],
-    externalUrl: '',
-    ctaLabel: 'Request tender documents'
-  },
-  {
     title: 'Joint Statement on Regional Child Rights Compliance in Ethiopia',
     slug: 'joint-statement-on-regional-child-rights-compliance-in-ethiopia',
-    category: 'media',
+    category: 'press-release',
     date: 'May 10, 2026',
     deadline: '',
     location: 'Press Release',
@@ -149,7 +118,7 @@ export const staticPosts = [
   {
     title: 'Consultative Assembly on Child Protection Systems',
     slug: 'consultative-assembly-on-child-protection-systems',
-    category: 'media',
+    category: 'news',
     date: 'May 2, 2026',
     deadline: '',
     location: 'Gallery',
@@ -165,7 +134,7 @@ export const staticPosts = [
   {
     title: 'ECRAN Announces General Assembly & Executive Council Election Results',
     slug: 'ecran-announces-general-assembly-and-executive-council-election-results',
-    category: 'media',
+    category: 'press-release',
     date: 'April 15, 2026',
     deadline: '',
     location: 'Press Release',

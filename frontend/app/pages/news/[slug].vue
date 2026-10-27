@@ -13,7 +13,8 @@ const defaultCategoryLabels: Record<string, string> = {
   news: 'News',
   vacancy: 'Vacancy',
   bid: 'Bid / Tender',
-  media: 'Media Center',
+  'press-release': 'Press Release',
+  media: 'Press Release',
   announcement: 'Announcement'
 }
 const categoryLabels = computed<Record<string, string>>(() => ui().categoryLabels || defaultCategoryLabels)
@@ -29,7 +30,7 @@ const backLink = computed(() => {
   const cat = post.value?.category
   if (cat === 'vacancy') return '/news/vacancies'
   if (cat === 'bid') return '/news/bids'
-  if (cat === 'media') return '/news/media-center'
+  if (cat === 'media' || cat === 'press-release') return '/news/press-releases'
   return '/news/news'
 })
 
@@ -37,7 +38,7 @@ const backLabel = computed(() => {
   const cat = post.value?.category
   if (cat === 'vacancy') return 'Back to Vacancies'
   if (cat === 'bid') return 'Back to Bids'
-  if (cat === 'media') return 'Back to Media Center'
+  if (cat === 'media' || cat === 'press-release') return 'Back to Press Releases'
   return ui().backToNewsLabel || 'Back to News'
 })
 
