@@ -153,7 +153,7 @@ export default {
 
     // Ensure site profile has updated Mission and Vision
     try {
-      const existingProfile = await strapi.documents('api::site-profile.site-profile').findFirst({});
+      const existingProfile = (await strapi.documents('api::site-profile.site-profile').findFirst({})) as any;
       const updatedMission = 'To connect, strengthen and mobilize child-rights actors across Ethiopia to influence policies and systems for children through evidence-based advocacy, accountability and meaningful child participation.';
       const updatedVision = 'To see children in Ethiopia enjoy their rights to survival, development, protection and participation, championed by a strong and credible national network.';
 
@@ -164,7 +164,7 @@ export default {
             data: {
               mission: updatedMission,
               vision: updatedVision,
-            },
+            } as any,
           });
           await strapi.documents('api::site-profile.site-profile').publish({
             documentId: existingProfile.documentId,
@@ -172,7 +172,7 @@ export default {
           strapi.log.info('Updated and published new mission and vision in Site Profile.');
         }
       } else {
-        const createdProfile = await strapi.documents('api::site-profile.site-profile').create({
+        const createdProfile = (await strapi.documents('api::site-profile.site-profile').create({
           data: {
             organizationName: 'Ethiopian Child Rights Advocacy Network',
             mission: updatedMission,
@@ -181,8 +181,8 @@ export default {
             registrationNumber: '7750',
             email: 'info@ecran-et.org',
             address: 'Addis Ababa, Ethiopia',
-          },
-        });
+          } as any,
+        })) as any;
         await strapi.documents('api::site-profile.site-profile').publish({
           documentId: createdProfile.documentId,
         });
