@@ -8,12 +8,12 @@ await useSeo(page.value)
 const mission = computed(
   () =>
     profile.value?.mission ||
-    'Promote evidence-based advocacy for child rights in Ethiopia through practical coordination and public dialogue.'
+    'To connect, strengthen and mobilize child-rights actors across Ethiopia to influence policies and systems for children through evidence-based advocacy, accountability and meaningful child participation.'
 )
 const vision = computed(
   () =>
     profile.value?.vision ||
-    'A country where all children enjoy survival, development, protection, and participation rights.'
+    'To see children in Ethiopia enjoy their rights to survival, development, protection and participation, championed by a strong and credible national network.'
 )
 const legalStatus = computed(
   () =>

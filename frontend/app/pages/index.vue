@@ -8,8 +8,16 @@ const { data: latestNews } = await useAsyncData('home-latest-news', () => getPos
 
 await useSeo(page.value)
 
-const mission = computed(() => profile.value?.mission || 'Promote evidence-based advocacy for child rights in Ethiopia.')
-const vision = computed(() => profile.value?.vision || 'A country where all children enjoy survival, development, protection, and participation rights.')
+const mission = computed(
+  () =>
+    profile.value?.mission ||
+    'To connect, strengthen and mobilize child-rights actors across Ethiopia to influence policies and systems for children through evidence-based advocacy, accountability and meaningful child participation.'
+)
+const vision = computed(
+  () =>
+    profile.value?.vision ||
+    'To see children in Ethiopia enjoy their rights to survival, development, protection and participation, championed by a strong and credible national network.'
+)
 const legalStatus = computed(() => profile.value?.legalStatus || 'Registered as a local organization under Proclamation No. 1113/2019.')
 
 // Objectives block (10 objectives → 4 workstreams) — CMS-managed via page `home`

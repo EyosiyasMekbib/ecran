@@ -36,8 +36,8 @@ const RESOURCES = [
 
 const SITE_PROFILE = {
   organizationName: 'Ethiopian Child Rights Advocacy Network',
-  mission: 'Promote evidence-based advocacy for child rights in Ethiopia.',
-  vision: 'A country where all children enjoy survival, development, protection, and participation rights.',
+  mission: 'To connect, strengthen and mobilize child-rights actors across Ethiopia to influence policies and systems for children through evidence-based advocacy, accountability and meaningful child participation.',
+  vision: 'To see children in Ethiopia enjoy their rights to survival, development, protection and participation, championed by a strong and credible national network.',
   legalStatus: 'Registered as a local organization under Proclamation No. 1113/2019.',
   registrationNumber: '7750',
   email: 'info@ecran-et.org',

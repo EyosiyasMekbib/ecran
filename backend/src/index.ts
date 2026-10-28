@@ -151,6 +151,47 @@ export default {
       strapi.log.error(`ensureWriterRole failed: ${err?.message ?? err}`)
     );
 
+    // Ensure site profile has updated Mission and Vision
+    try {
+      const existingProfile = await strapi.documents('api::site-profile.site-profile').findFirst({});
+      const updatedMission = 'To connect, strengthen and mobilize child-rights actors across Ethiopia to influence policies and systems for children through evidence-based advocacy, accountability and meaningful child participation.';
+      const updatedVision = 'To see children in Ethiopia enjoy their rights to survival, development, protection and participation, championed by a strong and credible national network.';
+
+      if (existingProfile) {
+        if (existingProfile.mission !== updatedMission || existingProfile.vision !== updatedVision) {
+          await strapi.documents('api::site-profile.site-profile').update({
+            documentId: existingProfile.documentId,
+            data: {
+              mission: updatedMission,
+              vision: updatedVision,
+            },
+          });
+          await strapi.documents('api::site-profile.site-profile').publish({
+            documentId: existingProfile.documentId,
+          });
+          strapi.log.info('Updated and published new mission and vision in Site Profile.');
+        }
+      } else {
+        const createdProfile = await strapi.documents('api::site-profile.site-profile').create({
+          data: {
+            organizationName: 'Ethiopian Child Rights Advocacy Network',
+            mission: updatedMission,
+            vision: updatedVision,
+            legalStatus: 'Registered as a local organization under Proclamation No. 1113/2019.',
+            registrationNumber: '7750',
+            email: 'info@ecran-et.org',
+            address: 'Addis Ababa, Ethiopia',
+          },
+        });
+        await strapi.documents('api::site-profile.site-profile').publish({
+          documentId: createdProfile.documentId,
+        });
+        strapi.log.info('Created and published Site Profile with mission and vision.');
+      }
+    } catch (err: any) {
+      strapi.log.warn(`Site profile sync note: ${err?.message ?? err}`);
+    }
+
     // Seed starter content when the DB is missing it. Runs on a fresh deploy AND
     // when new seedable types ship to an already-seeded DB (e.g. global added
     // after programs). runSeed is fully idempotent, so this is safe to re-run.
