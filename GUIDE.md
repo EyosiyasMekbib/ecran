@@ -1,5 +1,7 @@
 # ECRAN — One-Time Setup Guide (do these once, ~15 min)
 
+> **Retired.** This describes the old cPanel setup at `cms.ecran-et.com`, and its GitHub Actions have been removed. See [DEPLOYMENT.md](DEPLOYMENT.md) for how the site runs now.
+
 After this, you never touch code, cPanel, Strapi, or Netlify for content again — you just tell Claude what to change.
 
 ## 1. Push the code (2 min)
