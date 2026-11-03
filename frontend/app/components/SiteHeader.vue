@@ -5,36 +5,17 @@ import { navItems as staticNavItems } from '~/data/site'
 const { data: nav } = await useAsyncData('navigation', getNavigation)
 const { data: site } = await useAsyncData('global', getGlobal)
 
-/**
- * The CMS navigation entry is authoritative for labels and ordering, but it is
- * edited by hand and lags the code: a page can ship, exist at its route, and still
- * be unreachable from the menu because nobody added it there. Sub-items defined in
- * the code's own structure are therefore merged in where the CMS entry omits them,
- * matched on `to` so nothing is duplicated.
- *
- * The trade-off: a child deliberately removed in the CMS comes back. Remove it from
- * `navItems` in ~/data/site.ts to drop it for good.
- */
+// The CMS navigation entry is authoritative for labels and ordering; mergeLinks keeps it
+// in step with the code's own structure, which is where a new page first appears.
 const navItems = computed(() => {
   const cmsItems = nav.value
   if (!cmsItems || !cmsItems.length) return staticNavItems
 
-  // Fill in sub-items the CMS entry omits, matched on `to` so nothing duplicates.
-  const merged: any[] = cmsItems.map((item: any) => {
+  const withChildren = cmsItems.map((item: any) => {
     const known = staticNavItems.find((entry) => entry.to === item.to)
-    if (!known?.children?.length) return item
-    const listed = new Set((item.children || []).map((child: any) => child.to))
-    const missing = known.children.filter((child) => !listed.has(child.to))
-    return missing.length ? { ...item, children: [...(item.children || []), ...missing] } : item
+    return known?.children?.length ? { ...item, children: mergeLinks(item.children || [], known.children) } : item
   })
-
-  // Then top-level entries it omits, inserted at the position the code gives them
-  // so a new page lands where it belongs rather than after Contact.
-  const present = new Set(merged.map((item) => item.to))
-  staticNavItems.forEach((entry, index) => {
-    if (!present.has(entry.to)) merged.splice(Math.min(index, merged.length), 0, entry)
-  })
-  return merged
+  return mergeLinks<any>(withChildren, staticNavItems)
 })
 const cmsLogo = computed(() => strapiMedia((site.value as any)?.logo?.url))
 const logoUrl = computed(() => cmsLogo.value || '/ecran-logo.jpg')
@@ -122,7 +103,7 @@ onBeforeUnmount(() => {
             v-if="item.children?.length"
             class="nav-trigger"
             type="button"
-            :class="{ active: isActive(item.to) }"
+            :class="{ active: isActive(item.to) || item.children.some((child: any) => isActive(child.to)) }"
             :aria-expanded="openSubnav === item.to"
             @click="showSubnav(item.to)"
           >

@@ -810,10 +810,9 @@ h1 {
 .form-layout,
 .contact-grid,
 .news-index-grid-section,
-.announcements-list-section,
 .vacancies-list-section,
 .bids-list-section,
-.media-center-section,
+.press-releases-section,
 .projects-section {
   max-width: 1400px;
   margin: 0 auto;
@@ -3063,7 +3062,6 @@ a.detail-value:hover {
 }
 
 .news-index-card h2,
-.announcement-item h2,
 .media-card h2,
 .vacancy-card h2,
 .bid-card h2 {
@@ -3080,7 +3078,6 @@ a.detail-value:hover {
 }
 
 .news-index-card p,
-.announcement-item p,
 .media-card p,
 .vacancy-card p,
 .bid-card p {
@@ -3098,7 +3095,6 @@ a.detail-value:hover {
   margin-top: 2rem;
 }
 
-.announcements-grid,
 .media-grid,
 .vacancies-grid,
 .bids-grid {
@@ -3109,11 +3105,6 @@ a.detail-value:hover {
   border-bottom: 1px solid var(--line);
 }
 
-.announcements-grid {
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-}
-
-.announcement-item,
 .media-card,
 .vacancy-card,
 .bid-card {
@@ -3125,13 +3116,6 @@ a.detail-value:hover {
   transition: background-color 180ms ease, transform 180ms ease;
 }
 
-.announcement-item:first-child {
-  grid-row: span 2;
-  min-height: 30rem;
-  background: #fff;
-}
-
-.announcement-item:hover,
 .media-card:hover,
 .vacancy-card:hover,
 .bid-card:hover {
@@ -3139,7 +3123,6 @@ a.detail-value:hover {
   transform: translateY(-2px);
 }
 
-.announcement-meta,
 .media-meta,
 .vacancy-meta,
 .bid-meta {
@@ -3151,7 +3134,6 @@ a.detail-value:hover {
   margin-bottom: clamp(1.4rem, 3vw, 2.25rem);
 }
 
-.announcement-date,
 .media-meta time,
 .bid-ref {
   color: var(--muted);
@@ -3159,7 +3141,6 @@ a.detail-value:hover {
   font-weight: 650;
 }
 
-.announcement-badge,
 .media-meta span,
 .vacancy-dept,
 .vacancy-type,
@@ -3175,7 +3156,6 @@ a.detail-value:hover {
   text-transform: uppercase;
 }
 
-.announcement-badge,
 .media-meta span,
 .vacancy-dept {
   color: var(--brand-dark);
@@ -3196,7 +3176,6 @@ a.detail-value:hover {
   border: 1px solid rgba(138, 73, 73, 0.18);
 }
 
-.read-more-link,
 .text-action {
   display: inline-flex;
   width: fit-content;
@@ -3210,7 +3189,6 @@ a.detail-value:hover {
   transition: transform 180ms ease, color 180ms ease;
 }
 
-.read-more-link:hover,
 .text-action:hover {
   color: var(--brand-text);
   transform: translateX(0.2rem);
@@ -3267,7 +3245,6 @@ a.detail-value:hover {
 
 @media (max-width: 960px) {
   .news-index-grid,
-  .announcements-grid,
   .media-grid,
   .vacancies-grid,
   .bids-grid {
@@ -3275,7 +3252,6 @@ a.detail-value:hover {
   }
 
   .news-index-card:first-child,
-  .announcement-item:first-child,
   .media-card:first-child {
     grid-column: auto;
     grid-row: auto;

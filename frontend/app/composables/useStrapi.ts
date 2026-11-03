@@ -191,6 +191,9 @@ export async function getPosts(category?: 'news' | 'vacancy' | 'bid' | 'announce
   if (category === 'press-release' || category === 'media') {
     query['filters[category][$in][0]'] = 'press-release'
     query['filters[category][$in][1]'] = 'media'
+  } else if (category === 'news' || category === 'announcement') {
+    query['filters[category][$in][0]'] = 'news'
+    query['filters[category][$in][1]'] = 'announcement'
   } else if (category) {
     query['filters[category][$eq]'] = category
   }
@@ -202,6 +205,53 @@ export async function getPosts(category?: 'news' | 'vacancy' | 'bid' | 'announce
     return category ? staticPosts.filter((p: any) => p.category === category) : staticPosts
   }
   return rows.map(mapPost)
+}
+
+/**
+ * Gallery tiles, newest album first. An album's files each become a tile sharing its title
+ * and caption; an album with only a videoUrl keeps one tile. Photos attached to posts follow,
+ * so an event's pictures need uploading only once.
+ */
+export async function getGalleryItems() {
+  const [albums, posts] = await Promise.all([
+    fetchCollection('galleries', { sort: 'publishedAt:desc' }),
+    getPosts()
+  ])
+
+  const items = albums.flatMap((album: any) => {
+    const base = { title: album.title, caption: album.caption || '' }
+    const files = (album.asset || []).map((file: any) => {
+      const url = strapiMedia(file.url) as string
+      const isVideo = (file.mime || '').startsWith('video/')
+      return {
+        ...base,
+        url,
+        alt: file.alternativeText || album.caption || album.title,
+        kind: isVideo ? 'video' : 'image',
+        mime: file.mime || '',
+        poster: isVideo ? videoPoster(url) : undefined
+      }
+    }).filter((file: any) => file.url)
+    if (files.length || !album.videoUrl) return files
+    return [{
+      ...base,
+      url: album.videoUrl,
+      alt: album.caption || album.title,
+      kind: 'video',
+      videoUrl: album.videoUrl,
+      poster: videoThumbnail(album.videoUrl)
+    }]
+  })
+
+  for (const post of posts as any[]) {
+    // Skips the brand card a post without a photo falls back to.
+    const photos = [{ url: post.image, alt: post.title }, ...(post.gallery || [])]
+      .filter((photo) => photo.url && !photo.url.startsWith('/brand/'))
+    items.push(...photos.map((photo) => ({ title: post.title, caption: '', url: photo.url, alt: photo.alt || post.title, kind: 'image' })))
+  }
+
+  const seen = new Set<string>()
+  return items.filter((item: any) => !seen.has(item.url) && seen.add(item.url))
 }
 
 /** Team members ordered by `order`. Returns [] when CMS has none. */

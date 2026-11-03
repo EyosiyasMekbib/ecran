@@ -59,7 +59,6 @@ const NAVIGATION = {
         { label: 'About Us', to: '/who-we-are/about-us' },
         { label: 'Our Members', to: '/who-we-are/our-members' },
         { label: 'Our Team', to: '/who-we-are/our-team' },
-        { label: 'Photo Gallery', to: '/gallery' },
       ],
     },
     {
@@ -68,6 +67,7 @@ const NAVIGATION = {
       children: [
         { label: 'News', to: '/news/news' },
         { label: 'Press Releases', to: '/news/press-releases' },
+        { label: 'Gallery', to: '/gallery' },
         { label: 'Vacancies', to: '/news/vacancies' },
         { label: 'Bids', to: '/news/bids' },
       ],
@@ -101,7 +101,10 @@ const GLOBAL = {
     'Evidence-based advocacy for every Ethiopian child to survive, develop, be protected, and participate',
   footerQuickLinks: [
     { label: 'Who We Are', to: '/who-we-are/about-us' },
-    { label: 'News & Announcements', to: '/news/announcements' },
+    { label: 'News & Announcements', to: '/news/news' },
+    { label: 'Press Releases', to: '/news/press-releases' },
+    { label: 'Gallery', to: '/gallery' },
+    { label: 'Projects', to: '/projects' },
     { label: 'Resources', to: '/resources' },
     { label: 'Contact', to: '/contact' },
   ],
@@ -218,10 +221,6 @@ const PAGES = [
     sections: { typeBadge: 'Vacancy', ctaLabel: 'Apply now', locationLabel: 'Location:', deadlineLabel: 'Deadline:' },
   },
   {
-    title: 'Announcements', slug: 'announcements', heroTitle: 'News & Announcements', heroText: "Stay up to date with ECRAN's latest public announcements, press releases, events, advocacy campaigns, and workshops.",
-    sections: { badgeLabel: 'Announcement', readMoreLabel: 'Read full story' },
-  },
-  {
     title: 'Bids', slug: 'bids', heroTitle: 'Bids & Tenders', heroText: 'View open procurement bids, requests for proposals (RFPs), and consultancy opportunities with ECRAN.',
     sections: { refFallback: 'ECRAN', ctaLabel: 'Request tender documents', refLabel: 'Ref:', publishedLabel: 'Published:', deadlineLabel: 'Deadline:', statusOpenLabel: 'Open', statusClosedLabel: 'Closed' },
   },
@@ -230,8 +229,8 @@ const PAGES = [
     sections: { typeLabel: 'Press Release', ctaLabel: 'Read press release' },
   },
   {
-    title: 'Media Center', slug: 'media-center', heroTitle: 'Press Releases', heroText: 'Access official statements, declarations, and announcements from ECRAN.',
-    sections: { typeLabel: 'Press Release', ctaLabel: 'Read press release' },
+    title: 'Gallery', slug: 'gallery', heroTitle: "Photos and videos from ECRAN's work.", heroText: "A visual record of ECRAN's assemblies, trainings, and child-rights advocacy across Ethiopia.",
+    sections: { heroEyebrow: 'Gallery', emptyTitle: 'Our gallery is being organized.', emptyText: 'Photos and videos from our work across Ethiopia will appear here.' },
   },
   {
     title: 'Contact', slug: 'contact',

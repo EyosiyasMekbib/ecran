@@ -17,7 +17,11 @@ const defaultCategoryLabels: Record<string, string> = {
   media: 'Press Release',
   announcement: 'Announcement'
 }
-const categoryLabels = computed<Record<string, string>>(() => ui().categoryLabels || defaultCategoryLabels)
+const categoryLabels = computed<Record<string, string>>(() => {
+  const labels = { ...defaultCategoryLabels, ...(ui().categoryLabels || {}) }
+  // `media` posts are listed as press releases, whatever label the CMS still holds for them.
+  return { ...labels, media: labels['press-release'] }
+})
 const defaultFactLabels = { department: 'Department', type: 'Type', location: 'Location / Ref', deadline: 'Deadline' }
 const factLabels = computed<Record<string, string>>(() => ({ ...defaultFactLabels, ...(ui().factLabels || {}) }))
 const attachmentsHeading = computed(() => ui().attachmentsHeading || 'Attachments & Documents')

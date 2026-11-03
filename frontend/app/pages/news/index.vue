@@ -44,7 +44,7 @@ const iconPaths = computed(() =>
     : fallbackIconPaths
 )
 const cards = computed(() =>
-  Array.isArray(page.value?.sections?.cards) ? page.value.sections.cards : fallbackCards
+  Array.isArray(page.value?.sections?.cards) ? mergeLinks(page.value.sections.cards, fallbackCards, 'linkTo') : fallbackCards
 )
 </script>
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { footerLinks } from '~/data/site'
+
 // Footer content comes from the CMS: global (branding/links/labels/social) + site profile (contact).
 const { data: site } = await useAsyncData('global', getGlobal)
 const { data: profile } = await useAsyncData('site-profile', getSiteProfile)
@@ -13,16 +15,7 @@ const tagline = computed(
     (profile.value as any)?.tagline ||
     'Evidence-based advocacy for every Ethiopian child to survive, develop, be protected, and participate'
 )
-const quickLinks = computed(() =>
-  g().footerQuickLinks?.length
-    ? g().footerQuickLinks
-    : [
-        { label: 'Who We Are', to: '/who-we-are/about-us' },
-        { label: 'News & Announcements', to: '/news/announcements' },
-        { label: 'Photo Gallery', to: '/gallery' },
-        { label: 'Resources', to: '/resources' }
-      ]
-)
+const quickLinks = computed(() => mergeLinks(g().footerQuickLinks || [], footerLinks))
 const legalLinks = computed(() =>
   g().footerLegalLinks?.length
     ? g().footerLegalLinks
@@ -30,11 +23,6 @@ const legalLinks = computed(() =>
         { label: 'Privacy Policy', to: '/privacy-policy' },
         { label: 'Terms of Service', to: '/terms-of-service' }
       ]
-)
-const getInvolvedUrl = computed(
-  () =>
-    g().getInvolvedUrl ||
-    'https://docs.google.com/forms/d/e/1FAIpQLSefVosbpua5Zkh_CwGoPpwil4VCdnJAUOJhr4fsP0cspBtZ1A/viewform'
 )
 
 // Site-wide chrome labels (Global.ui JSON) — all fall back to the current copy.
@@ -114,7 +102,7 @@ const year = new Date().getFullYear()
           <h2>{{ headings.quickLinks || 'Quick Links' }}</h2>
           <nav class="footer-nav">
             <NuxtLink v-for="link in quickLinks" :key="link.to" :to="link.to">{{ link.label }}</NuxtLink>
-            <a :href="getInvolvedUrl" target="_blank" rel="noopener noreferrer">{{ getInvolvedLabel }}</a>
+            <NuxtLink to="/get-involved">{{ getInvolvedLabel }}</NuxtLink>
           </nav>
         </section>
         <section>

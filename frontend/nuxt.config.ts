@@ -41,7 +41,8 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/partner-with-us': { redirect: '/get-involved' },
-    '/news/media-center': { redirect: '/news/press-releases' }
+    '/news/media-center': { redirect: { to: '/news/press-releases', statusCode: 301 } },
+    '/news/announcements': { redirect: { to: '/news/news', statusCode: 301 } }
   },
   runtimeConfig: {
     public: {

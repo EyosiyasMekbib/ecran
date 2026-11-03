@@ -20,12 +20,8 @@ const fallback = [
 ]
 
 const { data: cmsPosts } = await useAsyncData('posts-press-releases', () => getPosts('press-release'))
-const { data: page } = await useAsyncData('page-press-releases', async () => {
-  const p = await getPage('press-releases')
-  if (p) return p
-  return getPage('media-center')
-})
-await useSeo(page.value)
+const { data: page } = await useAsyncData('page-press-releases', () => getPage('press-releases'))
+await useSeo(page.value, { title: page.value?.seoTitle || 'Press Releases' })
 
 const defaultTypeLabel = computed(() => page.value?.sections?.typeLabel || 'Press Release')
 const defaultCtaLabel = computed(() => page.value?.sections?.ctaLabel || 'Read press release')
@@ -50,7 +46,7 @@ const items = computed(() =>
     :text="page?.heroText || 'Official statements, joint declarations, and media announcements from ECRAN and coalition partners.'"
   />
 
-  <section class="media-center-section">
+  <section class="press-releases-section">
     <div v-if="items.length" class="media-grid">
       <article v-for="item in items" :key="item.title" class="media-card">
         <div class="media-meta">

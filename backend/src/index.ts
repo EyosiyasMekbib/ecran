@@ -13,6 +13,7 @@ const WATCHED_UIDS = [
   'api::member-org.member-org',
   'api::global.global',
   'api::navigation.navigation',
+  'api::gallery.gallery',
 ];
 
 // Document-service actions that change what the published site shows.

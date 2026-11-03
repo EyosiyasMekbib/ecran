@@ -6,8 +6,7 @@ export const navItems = [
     children: [
       { label: 'About Us', to: '/who-we-are/about-us' },
       { label: 'Our Members', to: '/who-we-are/our-members' },
-      { label: 'Our Team', to: '/who-we-are/our-team' },
-      { label: 'Photo Gallery', to: '/gallery' }
+      { label: 'Our Team', to: '/who-we-are/our-team' }
     ]
   },
   {
@@ -16,10 +15,21 @@ export const navItems = [
     children: [
       { label: 'News', to: '/news/news' },
       { label: 'Press Releases', to: '/news/press-releases' },
+      { label: 'Gallery', to: '/gallery' },
       { label: 'Vacancies', to: '/news/vacancies' },
       { label: 'Bids', to: '/news/bids' }
     ]
   },
+  { label: 'Projects', to: '/projects' },
+  { label: 'Resources', to: '/resources' },
+  { label: 'Contact', to: '/contact' }
+]
+
+export const footerLinks = [
+  { label: 'Who We Are', to: '/who-we-are/about-us' },
+  { label: 'News & Announcements', to: '/news/news' },
+  { label: 'Press Releases', to: '/news/press-releases' },
+  { label: 'Gallery', to: '/gallery' },
   { label: 'Projects', to: '/projects' },
   { label: 'Resources', to: '/resources' },
   { label: 'Contact', to: '/contact' }

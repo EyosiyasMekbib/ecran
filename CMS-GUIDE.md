@@ -57,6 +57,19 @@ Inside **Content Manager**, content is split into two groups:
 - **Single types** — things there is exactly *one* of: Site Profile, Global,
   Navigation. You only ever edit them.
 
+### Gallery: photos and videos
+
+| Field | Notes |
+| --- | --- |
+| **Title** | Required. Shown on every photo in this entry |
+| **Asset** | The photos and videos. Select or drag in several at once; each becomes its own tile. Keep each video under 100 MB |
+| **Video URL** | Instead of Asset, for a YouTube or Vimeo link |
+| **Caption** | Optional |
+
+One entry per event works well, e.g. "Consultative assembly 2026" with all its
+photos in Asset. Publish it and it appears at /gallery, newest first. Photos
+already added to a post show there too, so they don't need uploading twice.
+
 ---
 
 ## 4. Draft and Published
@@ -131,8 +144,8 @@ All five live in **Post**, separated by the **Category** field.
 | `news` | /news/news |
 | `vacancy` | /news/vacancies |
 | `bid` | /news/bids |
-| `announcement` | /news/announcements |
-| `media` | /news/media-center |
+| `announcement` | /news/news, alongside news |
+| `press-release`, `media` | /news/press-releases |
 
 Extra fields that only matter for some categories:
 
@@ -195,7 +208,8 @@ Page text lives in **Page**, one entry per page. Find the entry by its **Slug**:
 | `contact` | Contact |
 | `get-involved` | Get Involved |
 | `news-hub` | News landing page |
-| `news`, `vacancies`, `bids`, `announcements`, `media-center` | The five news sections |
+| `news`, `press-releases`, `vacancies`, `bids` | The four news sections |
+| `gallery` | Gallery |
 | `privacy-policy`, `terms-of-service` | Legal pages |
 
 Safe fields to edit:
