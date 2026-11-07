@@ -34,7 +34,7 @@ const initials = (name: string) =>
 </script>
 
 <template>
-  <section class="team-overview" style="padding-top: clamp(6rem, 10vw, 10rem);">
+  <section class="team-overview">
     <div class="team-overview-copy">
       <p class="eyebrow">{{ roleEyebrow }}</p>
       <h2>{{ page?.heroTitle || 'Small enough to stay focused, connected enough to support a national platform.' }}</h2>
@@ -47,13 +47,16 @@ const initials = (name: string) =>
       <ol>
         <li v-for="principle in principles" :key="principle">{{ principle }}</li>
       </ol>
+      <SiteMotto class="team-principles-motto" />
     </div>
   </section>
 
   <section class="team-directory">
     <div class="directory-header">
-      <p class="eyebrow">{{ directoryEyebrow }}</p>
-      <h2>{{ directoryTitle }}</h2>
+      <div>
+        <p class="eyebrow">{{ directoryEyebrow }}</p>
+        <h2>{{ directoryTitle }}</h2>
+      </div>
       <p class="directory-intro">
         {{ page?.body || 'Meet the coordination team supporting ECRAN\'s members, board, and partners.' }}
       </p>
@@ -72,10 +75,10 @@ const initials = (name: string) =>
         </div>
       </article>
     </div>
-    <p v-else class="directory-intro" style="text-align:center;opacity:.7;">{{ emptyState }}</p>
+    <p v-else class="directory-intro" style="opacity:.7;">{{ emptyState }}</p>
   </section>
 
-  <section class="team-organogram-section" style="max-width: 80rem; margin: 2rem auto 5rem; padding: 0 1.5rem;">
+  <section class="team-organogram-section">
     <div style="text-align: center; max-width: 44rem; margin: 0 auto 1.5rem;">
       <p class="eyebrow">Governance & Structure</p>
       <h2 style="font-family: var(--font-heading); font-size: clamp(1.6rem, 2.8vw, 2.2rem); font-weight: 800; color: var(--dark, #06172f); margin: 0.5rem 0 0.75rem;">Organizational Chart</h2>
@@ -86,3 +89,35 @@ const initials = (name: string) =>
     <OrganogramChart />
   </section>
 </template>
+
+<style scoped>
+/* Tighter than the site-wide section default: overview, directory and chart read as one page. */
+.team-overview {
+  padding-top: clamp(2.5rem, 4vw, 3.5rem);
+  padding-bottom: clamp(2rem, 3.5vw, 3rem);
+}
+
+.team-directory {
+  padding-top: clamp(2rem, 3.5vw, 3rem);
+  padding-bottom: clamp(2rem, 3.5vw, 3rem);
+}
+
+.team-directory .directory-header {
+  margin-bottom: clamp(1.25rem, 2vw, 1.75rem);
+}
+
+.team-organogram-section {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: clamp(2rem, 3.5vw, 3rem) var(--gutter) clamp(2.5rem, 4vw, 3.5rem);
+  border-top: 1px solid var(--line);
+}
+
+.team-principles .team-principles-motto {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  color: #fff;
+  font-size: 1.25rem;
+}
+</style>

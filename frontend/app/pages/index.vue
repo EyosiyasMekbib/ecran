@@ -139,6 +139,7 @@ const heroImageAlt = computed(
           <p>
             {{ page?.heroText || `ECRAN brings partners, communities, and decision-makers together to turn evidence into action for children's rights.` }}
           </p>
+          <SiteMotto class="hero-motto" />
           <div class="hero-actions">
             <NuxtLink to="/get-involved" class="button primary">{{ partnerCtaLabel }}</NuxtLink>
             <NuxtLink to="/who-we-are/about-us" class="button secondary">{{ secondaryCtaLabel }}</NuxtLink>
@@ -186,6 +187,10 @@ const heroImageAlt = computed(
         </div>
       </div>
     </section>
+  </div>
+
+  <div class="motto-band">
+    <SiteMotto />
   </div>
 
   <div class="section-dark">

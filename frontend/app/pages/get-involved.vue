@@ -56,6 +56,10 @@ const cards = computed(() => {
       :text="page?.heroText || 'ECRAN works with civil society organizations, public institutions, donors, researchers, and community actors who want evidence to move into coordinated action.'"
     />
 
+    <div class="motto-band">
+      <SiteMotto />
+    </div>
+
     <section id="become-a-member" class="governance-grid">
       <article v-for="(card, i) in cards" :key="card.title">
         <span>{{ String(i + 1).padStart(2, '0') }}</span>

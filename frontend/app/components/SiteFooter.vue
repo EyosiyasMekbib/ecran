@@ -75,6 +75,7 @@ const year = new Date().getFullYear()
           loading="lazy"
           decoding="async"
         />
+        <SiteMotto class="footer-motto" />
         <p>{{ tagline }}</p>
         <div v-if="socialLinks.length" class="footer-social">
           <a

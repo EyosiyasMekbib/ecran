@@ -260,6 +260,8 @@ have not set their own.
 - **Social links:** fill in a platform's URL and its icon appears in the footer;
   leave it empty and it does not. Supported: Facebook, X/Twitter, LinkedIn,
   Instagram, YouTube, Telegram.
+- **Motto:** "Together for Every Child!" appears in the header, footer and on
+  several pages. To reword it everywhere, set `motto` inside the `ui` JSON field.
 
 **Navigation** (single type) — the top menu. It is in the technical format
 described in §6.6. Menu changes are best requested from a developer.

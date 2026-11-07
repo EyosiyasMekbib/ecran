@@ -357,6 +357,7 @@ const cta = computed(() => ({
     <!-- CTA -->
     <section class="au-cta">
       <div class="au-cta-inner">
+        <SiteMotto class="au-cta-motto" />
         <h2>{{ cta.title }}</h2>
         <p>{{ cta.text }}</p>
         <div class="au-cta-actions">
@@ -372,12 +373,14 @@ const cta = computed(() => ({
 <style scoped>
 /* ── Layout shell ──────────────────────────────────────── */
 .about-page {
+  --au-section-y: clamp(2.5rem, 4.5vw, 4rem);
+  --au-heading-gap: clamp(1.5rem, 2.5vw, 2.25rem);
   background: var(--paper);
 }
 
 /* ── Hero ──────────────────────────────────────────────── */
 .au-hero {
-  padding: clamp(4rem, 10vw, 9rem) var(--gutter) 0;
+  padding: var(--au-section-y) var(--gutter) 0;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -398,8 +401,8 @@ const cta = computed(() => ({
   font-weight: 700;
   color: var(--brand-dark);
   line-height: 1.15;
-  max-width: 22ch;
-  margin: 0 0 1.5rem;
+  max-width: 34ch;
+  margin: 0 0 1.25rem;
 }
 
 .au-hero-sub {
@@ -407,7 +410,7 @@ const cta = computed(() => ({
   color: var(--muted);
   line-height: 1.7;
   max-width: 60ch;
-  margin: 0 0 2.5rem;
+  margin: 0 0 1.75rem;
 }
 
 .au-hero-meta {
@@ -444,7 +447,7 @@ const cta = computed(() => ({
   align-items: start;
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(4rem, 8vw, 7rem) var(--gutter);
+  padding: var(--au-section-y) var(--gutter);
 }
 
 .au-purpose-label h2 {
@@ -503,7 +506,7 @@ const cta = computed(() => ({
 /* ── Governance ────────────────────────────────────────── */
 .au-governance {
   background: var(--brand-dark);
-  padding: clamp(3.5rem, 7vw, 6rem) var(--gutter);
+  padding: var(--au-section-y) var(--gutter);
 }
 
 .au-governance-grid {
@@ -569,12 +572,12 @@ const cta = computed(() => ({
 .au-strategy {
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(4rem, 8vw, 7rem) var(--gutter) 0;
+  padding: var(--au-section-y) var(--gutter) 0;
 }
 
 .au-strategy-header {
   max-width: 56ch;
-  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: var(--au-heading-gap);
 }
 
 .au-strategy-header h2 {
@@ -645,8 +648,8 @@ const cta = computed(() => ({
 /* ── Cross-cutting commitment ──────────────────────────── */
 .au-crosscut {
   background: var(--brand-soft);
-  margin-top: clamp(4rem, 8vw, 7rem);
-  padding: clamp(3.5rem, 7vw, 6rem) var(--gutter);
+  margin-top: var(--au-section-y);
+  padding: var(--au-section-y) var(--gutter);
 }
 
 .au-crosscut-inner {
@@ -722,12 +725,12 @@ const cta = computed(() => ({
 .au-objectives {
   max-width: 1200px;
   margin: 0 auto;
-  padding: clamp(4rem, 8vw, 7rem) var(--gutter);
+  padding: var(--au-section-y) var(--gutter);
 }
 
 .au-objectives-header {
   max-width: 56ch;
-  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: var(--au-heading-gap);
 }
 
 .au-objectives-header h2 {
@@ -876,13 +879,21 @@ details[open] .au-theme-toggle {
 .au-cta {
   background: var(--soft);
   border-top: 1px solid var(--line);
-  padding: clamp(3.5rem, 7vw, 6rem) var(--gutter);
+  padding: var(--au-section-y) var(--gutter);
 }
 
 .au-cta-inner {
   max-width: 640px;
   margin: 0 auto;
   text-align: center;
+}
+
+.au-cta-inner .au-cta-motto {
+  margin: 0 0 0.75rem;
+  color: var(--brand-text);
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  line-height: 1.25;
 }
 
 .au-cta-inner h2 {
@@ -950,7 +961,7 @@ details[open] .au-theme-toggle {
 
 /* ── Organogram Section ────────────────────────────────── */
 .au-organogram {
-  padding: clamp(3.5rem, 7vw, 6rem) var(--gutter);
+  padding: var(--au-section-y) var(--gutter);
   max-width: 1200px;
   margin: 0 auto;
   border-top: 1px solid var(--line);

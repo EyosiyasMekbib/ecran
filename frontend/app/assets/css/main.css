@@ -159,6 +159,32 @@ textarea {
   letter-spacing: 0.08em;
 }
 
+/* Motto (SiteMotto.vue): shared look, with each placement's sizing beside it. */
+.site-motto {
+  margin: 0;
+  color: var(--brand-dark);
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.header-motto {
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .header-motto {
+    display: block;
+    margin-left: 1.1rem;
+    padding: 0.35rem 0 0.35rem 1.1rem;
+    border-left: 1px solid var(--line);
+    color: var(--brand-text);
+    white-space: nowrap;
+  }
+}
+
 .primary-nav {
   display: flex;
   align-items: center;
@@ -683,6 +709,30 @@ h1 {
   color: var(--muted);
   font-size: clamp(1.1rem, 1.5vw, 1.3rem);
   line-height: 1.75;
+}
+
+.hero-copy > p.hero-motto {
+  margin: 0 0 1.5rem;
+  color: var(--brand-text);
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
+  line-height: 1.25;
+}
+
+@media (min-width: 1200px) {
+  .hero-copy > p.hero-motto {
+    display: none;
+  }
+}
+
+.motto-band {
+  padding: clamp(1.25rem, 2.5vw, 2rem) var(--gutter);
+  background: var(--brand-soft);
+  text-align: center;
+}
+
+.motto-band .site-motto {
+  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
+  letter-spacing: -0.02em;
 }
 
 .hero-signals {
@@ -2303,6 +2353,16 @@ a.detail-value:hover {
   line-height: 1.6;
 }
 
+.footer-brand .footer-motto {
+  margin-top: 1.25rem;
+  font-size: clamp(1.35rem, 2vw, 1.6rem);
+  line-height: 1.2;
+}
+
+.footer-brand .footer-motto + p {
+  margin-top: 0.6rem;
+}
+
 .footer-logo {
   height: 3.5rem;
   width: auto;
@@ -2709,6 +2769,7 @@ a.detail-value:hover {
   .story-timeline,
   .form-layout,
   .contact-grid,
+  .footer-main,
   .site-footer {
     grid-template-columns: 1fr;
   }

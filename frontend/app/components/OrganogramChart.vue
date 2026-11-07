@@ -127,7 +127,7 @@ const departments: OrgNode[] = [
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin: 3rem auto;
+  margin: 1.5rem auto 0;
   padding: 0 1rem;
 }
 

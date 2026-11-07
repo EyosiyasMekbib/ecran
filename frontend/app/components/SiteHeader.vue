@@ -87,6 +87,7 @@ onBeforeUnmount(() => {
           fetchpriority="high"
         />
       </NuxtLink>
+      <SiteMotto class="header-motto" />
 
       <nav id="primary-navigation" class="primary-nav" :class="{ 'is-open': open }" aria-label="Primary navigation">
         <div
