@@ -7,10 +7,12 @@ defineProps<{
 </script>
 
 <template>
-  <section class="page-hero">
+  <section class="page-hero" :class="{ 'page-hero--visual': $slots.visual }">
     <p v-if="eyebrow" class="eyebrow">{{ eyebrow }}</p>
     <h1>{{ title }}</h1>
     <p>{{ text }}</p>
-    <slot name="visual" />
+    <div v-if="$slots.visual" class="page-hero-visual">
+      <slot name="visual" />
+    </div>
   </section>
 </template>

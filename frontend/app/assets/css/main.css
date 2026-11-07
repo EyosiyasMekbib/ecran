@@ -1736,14 +1736,62 @@ h1 {
 
 .page-hero {
   display: grid;
-  grid-template-columns: 0.78fr 1.22fr;
-  gap: clamp(1.5rem, 6vw, 6rem);
-  align-items: end;
-  padding-top: clamp(4rem, 8vw, 8rem);
+  grid-template-columns: minmax(0, 1fr);
+  /* Eyebrow and intro margins space the copy. Every following section brings its
+     own top padding, so the bottom stays short. */
+  padding-block: clamp(2.5rem, 4.5vw, 4rem) clamp(1rem, 2vw, 1.75rem);
 }
 
 .page-hero h1 {
-  max-width: 15ch;
+  max-width: 26ch;
+}
+
+.page-hero-visual {
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.page-hero-visual img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Optional #visual slot: sits beside the copy on wide screens, under it otherwise. */
+@media (min-width: 861px) {
+  .page-hero--visual {
+    grid-template-columns: minmax(0, 1.22fr) minmax(0, 0.78fr);
+    grid-template-rows: auto auto 1fr;
+    column-gap: clamp(2rem, 5vw, 5rem);
+  }
+
+  .page-hero--visual > .page-hero-visual {
+    grid-column: 2;
+    grid-row: 1 / -1;
+  }
+}
+
+/* The hero already opens this space, so the first section after it starts closer
+   than the usual section rhythm. `section.` outweighs the scoped .news-page-section. */
+section.page-hero + :is(
+  .split-section,
+  .news-section,
+  .projects-section,
+  .contact-page-layout,
+  .resources-layout,
+  .news-index-grid-section,
+  .news-page-section,
+  .bids-list-section,
+  .press-releases-section,
+  .vacancies-list-section
+),
+section.page-hero + .motto-band + .governance-grid {
+  padding-top: clamp(2.5rem, 4.5vw, 4rem);
+}
+
+/* This grid sits inside a wrapper that already supplies the section padding. */
+.contact-page-layout > .contact-grid {
+  padding: 0;
 }
 
 .split-section {
@@ -1839,6 +1887,16 @@ h1 {
   grid-column: 3;
   align-self: start;
   color: rgba(255, 255, 255, 0.82);
+}
+
+/* These banners already fill both text tracks, so a visual goes on its own row. */
+@media (min-width: 861px) {
+  .news-hero > .page-hero-visual,
+  .resources-hero > .page-hero-visual,
+  .contact-hero > .page-hero-visual {
+    grid-column: 2 / 4;
+    grid-row: auto;
+  }
 }
 
 .about-purpose {
