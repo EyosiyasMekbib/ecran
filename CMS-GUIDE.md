@@ -153,6 +153,9 @@ Extra fields that only matter for some categories:
 - **Bids:** *Deadline*, plus the tender document under *Attachment*.
 - **Media coverage:** *External URL* to link out to the original article, and
   *CTA label* for the button wording.
+- **Press releases:** *Location* is the small label on the card. Set it to
+  `Gallery` and the card's button reads "View gallery" and opens the Gallery page
+  instead of the post.
 
 > **When a vacancy or bid closes,** open it and press **Unpublish**. The deadline
 > date does not remove it automatically.

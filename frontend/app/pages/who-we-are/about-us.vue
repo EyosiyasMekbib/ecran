@@ -890,8 +890,7 @@ details[open] .au-theme-toggle {
 
 .au-cta-inner .au-cta-motto {
   margin: 0 0 0.75rem;
-  color: var(--brand-text);
-  font-family: var(--font-heading);
+  color: var(--brand-dark);
   font-size: 1.25rem;
   line-height: 1.25;
 }

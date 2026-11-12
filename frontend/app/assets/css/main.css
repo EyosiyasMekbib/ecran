@@ -159,11 +159,12 @@ textarea {
   letter-spacing: 0.08em;
 }
 
-/* Motto (SiteMotto.vue): shared look, with each placement's sizing beside it. */
+/* Motto (SiteMotto.vue): shared look, with each placement's sizing beside it.
+   Brand navy in the sans-serif text face; only dark backgrounds override the colour. */
 .site-motto {
   margin: 0;
   color: var(--brand-dark);
-  font-family: var(--font-heading);
+  font-family: var(--font-text);
   font-size: 1.125rem;
   font-weight: 700;
   line-height: 1.25;
@@ -180,7 +181,6 @@ textarea {
     margin-left: 1.1rem;
     padding: 0.35rem 0 0.35rem 1.1rem;
     border-left: 1px solid var(--line);
-    color: var(--brand-text);
     white-space: nowrap;
   }
 }
@@ -713,7 +713,7 @@ h1 {
 
 .hero-copy > p.hero-motto {
   margin: 0 0 1.5rem;
-  color: var(--brand-text);
+  color: var(--brand-dark);
   font-size: clamp(1.25rem, 3vw, 1.5rem);
   line-height: 1.25;
 }
@@ -725,13 +725,14 @@ h1 {
 }
 
 .motto-band {
-  padding: clamp(1.25rem, 2.5vw, 2rem) var(--gutter);
+  padding: clamp(0.7rem, 1.2vw, 1rem) var(--gutter);
   background: var(--brand-soft);
   text-align: center;
 }
 
 .motto-band .site-motto {
-  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
+  font-size: clamp(1.5rem, 2.8vw, 2.25rem);
+  line-height: 1.15;
   letter-spacing: -0.02em;
 }
 
@@ -1346,6 +1347,7 @@ h1 {
 .manifesto-item {
   position: relative;
   display: grid;
+  grid-template-rows: auto 1fr;
   min-height: 16rem;
   padding: clamp(1.2rem, 2.2vw, 1.8rem);
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -1381,11 +1383,12 @@ h1 {
   letter-spacing: -0.04em;
 }
 
+/* Text starts at the same height in every card, under the number, whatever its length. */
 .manifesto-item .content {
   position: relative;
   z-index: 1;
-  align-self: end;
-  margin-top: clamp(2rem, 4vw, 3.5rem);
+  align-self: start;
+  margin-top: clamp(1.5rem, 3vw, 2.25rem);
 }
 
 .manifesto-item .content p {

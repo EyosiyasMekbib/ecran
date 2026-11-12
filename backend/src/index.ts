@@ -214,6 +214,17 @@ export default {
       strapi.log.error(`Auto-seed failed: ${err?.message ?? err}`);
     }
 
+    // Remove the sample bid posts on every boot. runSeed also does this, but it only runs
+    // on an empty DB or with RESEED=1, so already-seeded databases kept them. A no-op once gone.
+    let removedMockBids = 0;
+    try {
+      const seedPath = require('path').join(__dirname, '..', '..', 'scripts', 'seed.js');
+      const { removeMockBids } = require(seedPath);
+      removedMockBids = await removeMockBids(strapi);
+    } catch (err: any) {
+      strapi.log.warn(`Sample bid cleanup note: ${err?.message ?? err}`);
+    }
+
     const buildHook = process.env.NETLIFY_BUILD_HOOK;
     if (!buildHook) {
       strapi.log.info('NETLIFY_BUILD_HOOK not set — frontend auto-rebuild disabled.');
@@ -230,6 +241,9 @@ export default {
           .catch((err) => strapi.log.error(`Netlify build hook failed: ${err?.message ?? err}`));
       }, DEBOUNCE_MS);
     };
+
+    // The cleanup above ran before this watcher existed, so rebuild the static site here.
+    if (removedMockBids > 0) scheduleRebuild('sample bids removed');
 
     strapi.documents.use(async (context, next) => {
       const result = await next();

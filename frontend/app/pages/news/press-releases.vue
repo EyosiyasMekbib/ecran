@@ -25,8 +25,14 @@ await useSeo(page.value, { title: page.value?.seoTitle || 'Press Releases' })
 
 const defaultTypeLabel = computed(() => page.value?.sections?.typeLabel || 'Press Release')
 const defaultCtaLabel = computed(() => page.value?.sections?.ctaLabel || 'Read press release')
+const galleryCtaLabel = computed(() => page.value?.sections?.galleryCtaLabel || 'View gallery')
+
+// Entries tagged "Gallery" (the post's location/type field) are photo albums, not
+// statements, so their button opens the Gallery page instead of the post.
+const isGalleryEntry = (type?: string) => /gallery/i.test(type || '')
+
 const items = computed(() =>
-  cmsPosts.value?.length
+  (cmsPosts.value?.length
     ? cmsPosts.value.map((p) => ({
         slug: p.slug,
         type: p.location || defaultTypeLabel.value,
@@ -36,6 +42,11 @@ const items = computed(() =>
         ctaLabel: p.ctaLabel || defaultCtaLabel.value
       }))
     : fallback
+  ).map((item) =>
+    isGalleryEntry(item.type)
+      ? { ...item, to: '/gallery', ctaLabel: galleryCtaLabel.value }
+      : { ...item, to: item.slug ? `/news/${item.slug}` : '' }
+  )
 )
 </script>
 
@@ -55,7 +66,7 @@ const items = computed(() =>
         </div>
         <h2>{{ item.title }}</h2>
         <p>{{ item.desc }}</p>
-        <NuxtLink v-if="item.slug" :to="`/news/${item.slug}`" class="text-action">{{ item.ctaLabel || defaultCtaLabel }} &rarr;</NuxtLink>
+        <NuxtLink v-if="item.to" :to="item.to" class="text-action">{{ item.ctaLabel || defaultCtaLabel }} &rarr;</NuxtLink>
         <span v-else class="text-action">{{ item.ctaLabel || defaultCtaLabel }} &rarr;</span>
       </article>
     </div>

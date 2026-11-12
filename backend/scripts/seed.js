@@ -525,6 +525,32 @@ async function seedSingleGeneric(strapi, uid, data, upsert = false) {
   return 1;
 }
 
+// Sample bids an early seed published. They are not real tenders, so they are removed
+// wherever they still exist. Matched by slug only, so bids editors add are untouched.
+const MOCK_BID_SLUGS = [
+  'consultancy-service-midterm-review-of-ecran-strategic-plan',
+  'supply-and-delivery-of-it-equipment-and-networking-hardware',
+];
+
+/**
+ * Delete the sample bid posts. Idempotent (a no-op once they are gone), so the app
+ * bootstrap runs it on every boot: databases seeded before the cleanup existed still
+ * carried them, because runSeed only runs on an empty DB or with RESEED=1.
+ */
+async function removeMockBids(strapi) {
+  const log = (strapi && strapi.log) || console;
+  let removed = 0;
+  for (const slug of MOCK_BID_SLUGS) {
+    const existing = await strapi.documents('api::post.post').findMany({ filters: { slug } });
+    for (const doc of existing) {
+      await strapi.documents('api::post.post').delete({ documentId: doc.documentId });
+      log.info(`Removed sample bid post: ${doc.title}`);
+      removed += 1;
+    }
+  }
+  return removed;
+}
+
 /**
  * Seed all starter content using an EXISTING Strapi instance. Idempotent
  * (skips entries whose slug already exists). Called both by the CLI wrapper
@@ -537,17 +563,7 @@ async function runSeed(strapi, opts = {}) {
 
   // Clean legacy mock bids and non-Sida programs from the DB
   try {
-    const mockBidSlugs = [
-      'consultancy-service-midterm-review-of-ecran-strategic-plan',
-      'supply-and-delivery-of-it-equipment-and-networking-hardware',
-    ];
-    for (const slug of mockBidSlugs) {
-      const existing = await strapi.documents('api::post.post').findMany({ filters: { slug } });
-      for (const doc of existing) {
-        await strapi.documents('api::post.post').delete({ documentId: doc.documentId });
-        log.info(`Cleaned mock bid post: ${doc.title}`);
-      }
-    }
+    await removeMockBids(strapi);
 
     const allowedProgramSlugs = PROGRAMS.map((p) => p.slug || slugify(p.title));
     const allDbPrograms = await strapi.documents('api::program.program').findMany({});
@@ -572,7 +588,7 @@ async function runSeed(strapi, opts = {}) {
   log.info('Seed complete.');
 }
 
-module.exports = { runSeed };
+module.exports = { runSeed, removeMockBids };
 
 // Direct invocation: `node scripts/seed.js` — boots the built app, seeds, exits.
 if (require.main === module) {
